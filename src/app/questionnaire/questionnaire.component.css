@@ -1,0 +1,50 @@
+
+:host /deep/ ng2-smart-table-title a:focus {
+  color: #009ECE;
+}
+
+:host /deep/ ng2-smart-table thead>tr>th>div {
+  color: #009ECE;
+}
+
+:host /deep/ ng2-smart-table tbody {
+  line-height: 7px;
+  font-size: 18px !important;
+}
+
+:host /deep/ ng2-smart-table thead {
+  line-height: 7px;
+  font-size: 18px !important;
+}
+
+
+:host /deep/ td.ng2-smart-actions a {
+  cursor: pointer;
+  color: #009ECE;
+}
+.edit-button {
+  margin-right: 10px !important;
+}
+:host /deep/ ng2-smart-table input[type=checkbox], input[type=radio] {
+  width: 14px !important;
+  height: 14px !important;
+  line-height: 7px !important;
+}
+.import-model{
+  width: 800px !important;
+
+}
+.create-model{
+  width: 600px !important;
+  position: fixed;
+  top: 30%;
+  left: 30%;
+}
+.btn-upload{
+  width: 100px !important;
+  float: right;
+}
+.upload-modal-body{
+  min-height: 80px;
+  height: auto;
+}

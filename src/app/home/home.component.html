@@ -1,0 +1,93 @@
+<div class="wrapper">
+
+  <!-- Main Header -->
+  <header class="main-header">
+
+    <!-- Logo -->
+    <a href="" class="logo">
+      <!-- mini logo for sidebar mini 50x50 pixels -->
+      <span class="logo-mini"><img src="../assets/dist/img/theme/visual-iot-sm.png"></span>
+      <!-- logo for regular state and mobile devices -->
+      <span class="logo-lg"><img src="../assets/dist/img/theme/visual-iot-sm.png"><b>  Zeno</b>在线诊断系统</span>
+    </a>
+
+    <!-- Header Navbar -->
+    <nav class="navbar navbar-static-top" role="navigation">
+      <!-- Sidebar toggle button-->
+      <a href="#" class="sidebar-toggle" data-toggle="offcanvas" role="button">
+        <span class="sr-only">Toggle navigation</span>
+      </a>
+      <!-- Navbar Right Menu -->
+      <div class="navbar-custom-menu">
+        <ul class="nav navbar-nav">
+          <!-- Bosch Logo -->
+          <li>
+            <img src="../assets/dist/img/theme/bosch_logo_english.png" alt="Bosch" class="bosch-logo"/>
+          </li>
+          <button class="btn btn-default" (click)="logOut()">登出</button>
+        </ul>
+      </div>
+    </nav>
+  </header>
+  <!-- Left side column. contains the logo and sidebar -->
+  <aside class="main-sidebar">
+    <!-- sidebar: style can be found in sidebar.less -->
+    <section class="sidebar">
+
+
+      <!-- Sidebar Menu -->
+      <ul class="sidebar-menu">
+        <li class="header"></li>
+        <!-- Optionally, you can add icons to the links    class="active"-->
+        <li (click)="changePage()"><a routerLink="diagnosis"><i class='fa fa-link'></i> <span>诊断</span></a></li>
+        <li (click)="changePage()"><a routerLink="questionnaire"><i class='fa fa-link'></i> <span>题库管理</span></a></li>
+        <li (click)="changePage()">
+          <a routerLink="report"><i class='fa fa-link'></i> <span>结果报告</span></a>
+          <!--<ul class="treeview-menu">
+            <li><a href="#">Link in level 2</a></li>
+            <li><a href="#">Link in level 2</a></li>
+          </ul>-->
+        </li>
+        <li (click)="changePage()"><a routerLink="contact"><i class='fa fa-link'></i> <span>联系我们</span></a></li>
+      </ul><!-- /.sidebar-menu -->
+    </section>
+    <!-- /.sidebar -->
+  </aside>
+
+  <!-- Content Wrapper. Contains page content -->
+  <div class="content-wrapper">
+
+    <!-- Main content -->
+    <section class="content">
+      <div *ngIf="user.mainShowing" class="box">
+        <div style="height: 900px;background-color: white">
+          <img width=100% src="../../assets/dist/img/Zenologo-1.png">
+          <div style="margin-top: 50px">
+            <button class="btn btn-block btn-primary btn-lg"
+                    style="width: 20%; margin: 0 auto"
+                    (click)="changePage()" routerLink="diagnosis">
+              开始诊断</button>
+          </div>
+        </div>
+      </div>
+      <router-outlet></router-outlet>
+
+      <!-- Your Page Content Here -->
+
+    </section><!-- /.content -->
+  </div><!-- /.content-wrapper -->
+
+  <!-- Main Footer -->
+  <footer class="main-footer">
+    <!-- To the right -->
+    <div class="pull-right hidden-xs">
+      Simply. Connected.
+    </div>
+    <!-- Default to the left -->
+    <strong>&copy; Robert Bosch GmbH</strong> <a href="http://www.bosch.de/imprint/en/html/imprint.htm">Imprint</a>
+  </footer>
+
+
+
+
+</div>

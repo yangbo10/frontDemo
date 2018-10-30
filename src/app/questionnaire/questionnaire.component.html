@@ -1,0 +1,101 @@
+<section class="content-header">
+  <h1>
+    题库管理
+  </h1>
+  <ol class="breadcrumb">
+
+  </ol>
+</section>
+<div class="box col-md-12">
+  <div style="padding-top: 15px">
+
+  </div>
+  <div class="col-md-12">
+    <input #search class="search form-inline" style="width: 200px" type="text" placeholder="Search..." (keydown.enter)="onSearch(search.value)">
+    <button class="btn btn-block btn-danger btn-sm"
+            style="width: 6%; float: right; margin-bottom: 15px; margin-left: 20px; margin-top: 5px;"
+            (click)="batchDelete()">批量删除</button>
+    <button class="btn btn-block btn-success btn-sm"
+            style="width: 6%; float: right; margin-bottom: 15px; margin-top: 0px; margin-left: 20px; margin-top: 5px;"
+            (click)="openCreateModal(template)">创建试卷</button>
+    <button class="btn btn-block btn-primary btn-sm" style="width: 6%; float: right; margin-bottom: 15px"
+            data-toggle="modal" data-target="#import-modal" (click)="openUpload()">导入试题</button>
+
+  </div>
+
+  <div class="table-responsive col-md-12">
+    <ng2-smart-table [settings]="settings" [source]="source"
+                     (deleteConfirm)="onDeleteConfirm($event)"
+                     (editConfirm)="onSaveConfirm($event)"
+                     (userRowSelect)="rowSelectEvent($event)"></ng2-smart-table>
+  </div>
+  <div class="col-md-12">
+
+  </div>
+</div>
+
+<div class="modal fade" id="import-modal" tabindex="-1" role="dialog" aria-labelledby="modalLabel">
+  <div class="modal-dialog import-model" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <span class="modal-title" style="font-size: 20px">导入试题</span>
+        <button type="button" class="close" aria-label="Close" data-dismiss="modal" data-dismiss="modal">
+          <span aria-hidden="true">×</span>
+        </button>
+      </div>
+      <div class="modal-body upload-modal-body">
+        <div class="col-md-12">
+          <label class="upload-button">
+            <input type="file" ngFileSelect [options]="options" (uploadOutput)="onUploadOutput($event)" [uploadInput]="uploadInput" multiple>
+          </label>
+          <button type="button" class="btn btn-block btn-primary btn-sm btn-upload" (click)="startUpload()">
+            开始上传
+          </button>
+        </div>
+        <div class="table-responsive col-md-12" *ngIf="uploadDone">
+          <div class="col-md-12">
+            <label>结果预览</label>
+          </div>
+          <ng2-smart-table [settings]="newSettings" [source]="newSource"></ng2-smart-table>
+        </div>
+      </div>
+      <div class="modal-footer" style="border-top: none !important">
+
+      </div>
+    </div>
+  </div>
+</div>
+
+<ng-template #template>
+      <div class="modal-header">
+        <span class="modal-title" style="font-size: 20px">创建试卷</span>
+        <button type="button" class="close" aria-label="Close" (click)="modalRef.hide()">
+          <span aria-hidden="true">×</span>
+        </button>
+      </div>
+      <div class="modal-body upload-modal-body">
+        <div class="col-md-12">
+          <label>已选试题：</label>
+          <span *ngFor="let item of deleteList">{{item}}   </span>
+
+        </div>
+        <div class="col-md-12">
+          <div class="col-md-6">
+            <input name='createType' type="radio" value="existed" (click)="isExistCheck()">
+            <label> 添加至试卷：</label>
+            <select [(ngModel)]="selectTestId" (ngModelChange)="selectedNameChanged($event)" [disabled]="newTestOrNot">
+              <option *ngFor="let item of testList" [value]="item.test.testId">{{item.test.name}}</option>
+            </select>
+          </div>
+          <div class="col-md-6">
+            <input name='createType' type="radio" checked value="new" (click)="isNewCheck()">
+            <label> 新建试卷名：</label>
+            <input type="text" class="form-inline" placeholder="试卷名称" name="questionnaireName" [(ngModel)]="questionnaireName" [disabled]="!newTestOrNot">
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer" style="border-top: none !important">
+        <button class="btn btn-block btn-primary btn-sm" style="width: 100px; float: right;" (click)="createQuestionnaire()">创建</button>
+      </div>
+</ng-template>
+

@@ -1,0 +1,174 @@
+
+<section class="content-header">
+  <h1>
+    结果报告
+  </h1>
+  <ol class="breadcrumb">
+
+  </ol>
+</section>
+<div class="box col-md-12" style="background-color: white !important;">
+  <div #main class="row" style="padding-top: 20px">
+    <table class="table table-striped table-bordered" style="font-size: 14px;max-width: 1000px; margin-left: 20px;border: 1px solid #f4f4f4;">
+      <thead>
+      <tr>
+        <th style="width: 25%">  </th>
+        <th>Enabler</th>
+        <th>Lean</th>
+        <th>I4.0</th>
+      </tr>
+      </thead>
+
+      <tbody>
+      <tr>
+        <td>Full Score</td>
+        <td>{{simpleResultList.Enabler.total}}</td>
+        <td>{{simpleResultList.Lean.total}}</td>
+        <td>{{simpleResultList['I4.0'].total}}</td>
+      </tr>
+      <tr>
+        <td>Actual Score</td>
+        <td>{{simpleResultList.Enabler.actual}}</td>
+        <td>{{simpleResultList.Lean.actual}}</td>
+        <td>{{simpleResultList['I4.0'].actual}}</td>
+      </tr>
+      <tr>
+        <td>Unified Score(Full 100)</td>
+        <td>{{simpleResultList.Enabler.normalized}}</td>
+        <td>{{simpleResultList.Lean.normalized}}</td>
+        <td>{{simpleResultList['I4.0'].normalized}}</td>
+      </tr>
+      </tbody>
+    </table>
+
+    <table class="table table-striped table-bordered" style="font-size: 14px;max-width: 1000px; margin-left: 20px;border: 1px solid #f4f4f4;">
+      <thead>
+      <tr style="border: 1px solid #f4f4f4;">
+        <th>  </th>
+        <th>SubItem</th>
+        <th>Full Score</th>
+        <th>Actual Score</th>
+        <th>Unified Score(Full 100)</th>
+      </tr>
+      </thead>
+
+      <tbody>
+      <tr style="border: 1px solid #f4f4f4;">
+        <td>Enabler</td>
+        <td>Standardization</td>
+        <td>{{fullResultList.Enabler.Standardization.total}}</td>
+        <td>{{fullResultList.Enabler.Standardization.actual}}</td>
+        <td>{{fullResultList.Enabler.Standardization.normalized}}</td>
+      </tr>
+      <tr style="border: 1px solid #f4f4f4;">
+        <td></td>
+        <td>Transparent Processes</td>
+        <td>{{fullResultList.Enabler['Transparent Processes'].total}}</td>
+        <td>{{fullResultList.Enabler['Transparent Processes'].actual}}</td>
+        <td>{{fullResultList.Enabler["Transparent Processes"].normalized}}</td>
+      </tr>
+      <tr style="border: 1px solid #f4f4f4;">
+        <td></td>
+        <td>Associate Involvement</td>
+        <td>{{fullResultList.Enabler['Associate Involvement'].total}}</td>
+        <td>{{fullResultList.Enabler['Associate Involvement'].actual}}</td>
+        <td>{{fullResultList.Enabler['Associate Involvement'].normalized}}</td>
+      </tr>
+      <tr style="border: 1px solid #f4f4f4;">
+        <td>Lean</td>
+        <td>Continuous Improvement</td>
+        <td>{{fullResultList.Lean["Continuous Improvement"].total}}</td>
+        <td>{{fullResultList.Lean["Continuous Improvement"].actual}}</td>
+        <td>{{fullResultList.Lean["Continuous Improvement"].normalized}}</td>
+      </tr>
+      <tr style="border: 1px solid #f4f4f4;">
+        <td></td>
+        <td>Flexibility</td>
+        <td>{{fullResultList.Lean.Flexibility.total}}</td>
+        <td>{{fullResultList.Lean.Flexibility.actual}}</td>
+        <td>{{fullResultList.Lean.Flexibility.normalized}}</td>
+      </tr>
+      <tr  style="border: 1px solid #f4f4f4;">
+        <td></td>
+        <td>Perfect Quality</td>
+        <td>{{fullResultList.Lean["Perfect Quality"].total}}</td>
+        <td>{{fullResultList.Lean["Perfect Quality"].actual}}</td>
+        <td>{{fullResultList.Lean["Perfect Quality"].normalized}}</td>
+      </tr>
+      <tr  style="border: 1px solid #f4f4f4;">
+        <td></td>
+        <td>Process Orientation</td>
+        <td>{{fullResultList.Lean["Process Orientation"].total}}</td>
+        <td>{{fullResultList.Lean["Process Orientation"].actual}}</td>
+        <td>{{fullResultList.Lean["Process Orientation"].normalized}}</td>
+      </tr>
+      <tr  style="border: 1px solid #f4f4f4;">
+        <td></td>
+        <td>Pull System</td>
+        <td>{{fullResultList.Lean["Pull System"].total}}</td>
+        <td>{{fullResultList.Lean["Pull System"].actual}}</td>
+        <td>{{fullResultList.Lean["Pull System"].normalized}}</td>
+      </tr>
+      <tr style="border: 1px solid #f4f4f4;">
+        <td>I4.0</td>
+        <td>Resource</td>
+        <td>{{fullResultList['I4.0'].resource.total}}</td>
+        <td>{{fullResultList['I4.0'].resource.actual}}</td>
+        <td>{{fullResultList['I4.0'].resource.normalized}}</td>
+      </tr>
+      <tr style="border: 1px solid #f4f4f4;">
+        <td></td>
+        <td>Digitization</td>
+        <td>{{fullResultList['I4.0'].digitization.total}}</td>
+        <td>{{fullResultList['I4.0'].digitization.actual}}</td>
+        <td>{{fullResultList['I4.0'].digitization.normalized}}</td>
+      </tr>
+      <tr style="border: 1px solid #f4f4f4;">
+        <td></td>
+        <td>Automation</td>
+        <td>{{fullResultList['I4.0'].automation.total}}</td>
+        <td>{{fullResultList['I4.0'].automation.actual}}</td>
+        <td>{{fullResultList['I4.0'].automation.normalized}}</td>
+      </tr>
+      </tbody>
+    </table>
+
+    <div *ngIf="!showStaticImg" id="myChart6" class="col-md-12" echarts [options]="options6" style="min-width: 400px; max-width: 1200px; height: 400px; margin: 0 auto"></div>
+    <div *ngIf="showStaticImg" class="col-md-12">
+      <img src="{{imgSrc6}}" width="100%"/>
+    </div>
+    <div *ngIf="!showStaticImg" id="myChart1" class="col-md-6" echarts [options]="options1" style="min-width: 400px; max-width: 800px; height: 400px; margin: 0 auto"></div>
+    <div *ngIf="showStaticImg" class="col-md-6">
+      <img src="{{imgSrc1}}" width="100%"/>
+    </div>
+    <div *ngIf="!showStaticImg" id="myChart2" class="col-md-6" echarts [options]="options2" style="min-width: 400px; max-width: 800px; height: 400px; margin: 0 auto"></div>
+    <div *ngIf="showStaticImg" class="col-md-6">
+      <img src="{{imgSrc2}}" width="100%"/>
+    </div>
+    <div *ngIf="!showStaticImg" id="myChart3" class="col-md-6" echarts [options]="options3" style="min-width: 400px; max-width: 800px; height: 400px; margin: 0 auto"></div>
+    <div *ngIf="showStaticImg" class="col-md-6">
+      <img src="{{imgSrc3}}" width="100%"/>
+    </div>
+    <div *ngIf="!showStaticImg" id="myChart4" class="col-md-6" echarts [options]="options4" style="min-width: 400px; max-width: 800px; height: 400px; margin: 0 auto"></div>
+    <div *ngIf="showStaticImg" class="col-md-6">
+      <img src="{{imgSrc4}}" width="100%"/>
+    </div>
+    <div *ngIf="!showStaticImg" id="myChart5" class="col-md-6" echarts [options]="options5" style="min-width: 400px; max-width: 800px; height: 400px; margin: 0 auto"></div>
+    <div *ngIf="showStaticImg" class="col-md-6">
+      <img src="{{imgSrc5}}" width="100%"/>
+    </div>
+  </div>
+
+  <div class="col-md-12">
+    <button class="btn btn-block btn-primary btn-lg" style="width: 10%; float: right; margin-bottom: 15px" (click)="createPdf()">导出报告</button>
+  </div>
+
+</div>
+
+<ng-template #template>
+  <div class="modal-body text-center">
+    <p>导出到PDF？</p>
+    <button type="button" class="btn btn-primary" (click)="confirm()" style="margin-right: 10px">确定</button>
+    <button type="button" class="btn btn-default" (click)="decline()" style="margin-left: 10px">取消</button>
+  </div>
+</ng-template>

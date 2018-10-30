@@ -1,0 +1,15 @@
+<div class="box col-md-12">
+  <div class = "box-header">
+    <b>{{questionItem.name}}.</b> {{questionItem.detail}}
+    <div *ngIf="commentShowing" class="help-tip"><p>{{comment}}<!--<br><br><img src="../../assets/commentImage/balloon.jpg" width="60" height="100"/>--></p></div>
+  </div>
+  <div class="form-group">
+    <ng-container *ngFor="let item of questionItem.answer.options">
+      <label class = "box-header">
+        <input name= {{questionItem.name}} value={{item.optionId}} [ngModel]="chooseItem"
+               (ngModelChange)="chooseItemChange($event)" type="radio" class="a-radio">
+        <span class="b-radio"></span> {{item.name}}. {{item.detail}}
+      </label>
+    </ng-container>
+  </div>
+</div>
