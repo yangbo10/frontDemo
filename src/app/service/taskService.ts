@@ -4,7 +4,7 @@ import {Router} from '@angular/router';
 import Swal from 'sweetalert2';
 @Injectable()
 export class TaskService {
-    TASK_URL = 'http://10.177.241.51:8000/service/';
+    TASK_URL = 'http://10.177.241.51:8000/';
     constructor(public http: Http, private router: Router) { }
 
     createAuthorizationHeader(headers: Headers) {
