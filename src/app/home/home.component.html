@@ -24,7 +24,7 @@
           <li>
             <img src="assets/dist/img/theme/bosch_logo_english.png" alt="Bosch" class="bosch-logo"/>
           </li>
-          <button class="btn btn-default" (click)="logOut()">登出</button>
+          <button class="btn btn-default" (click)="logOut()" style="margin-top: 8px">登出</button>
         </ul>
       </div>
     </nav>
@@ -40,14 +40,10 @@
         <li class="header"></li>
         <!-- Optionally, you can add icons to the links    class="active"-->
         <li (click)="changePage()"><a routerLink="diagnosis"><i class='fa fa-link'></i> <span>诊断</span></a></li>
+        <li (click)="changePage()"><a routerLink="report"><i class='fa fa-link'></i> <span>结果报告</span></a></li>
         <li (click)="changePage()"><a routerLink="questionnaire"><i class='fa fa-link'></i> <span>题库管理</span></a></li>
-        <li (click)="changePage()">
-          <a routerLink="report"><i class='fa fa-link'></i> <span>结果报告</span></a>
-          <!--<ul class="treeview-menu">
-            <li><a href="#">Link in level 2</a></li>
-            <li><a href="#">Link in level 2</a></li>
-          </ul>-->
-        </li>
+        <li (click)="changePage()"><a routerLink="test"><i class='fa fa-link'></i> <span>试卷管理</span></a></li>
+        <li (click)="changePage()"><a routerLink="user"><i class='fa fa-link'></i> <span>用户管理</span></a></li>
         <li (click)="changePage()"><a routerLink="contact"><i class='fa fa-link'></i> <span>联系我们</span></a></li>
       </ul><!-- /.sidebar-menu -->
     </section>

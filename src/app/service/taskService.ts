@@ -4,7 +4,7 @@ import {Router} from '@angular/router';
 import Swal from 'sweetalert2';
 @Injectable()
 export class TaskService {
-    TASK_URL = 'http://10.177.241.51:8000/';
+    TASK_URL = 'http://10.177.241.51:8000/service/';
     constructor(public http: Http, private router: Router) { }
 
     createAuthorizationHeader(headers: Headers) {
@@ -170,5 +170,45 @@ export class TaskService {
         responseType: ResponseContentType.Blob
 
     });
+    }
+
+    deleteTest(testId) {
+      const headers = new Headers();
+      this.createAuthorizationHeader(headers);
+      return this.http.delete(this.TASK_URL + 'api/tests/' + testId, {
+        headers: headers
+      });
+    }
+
+    updateTest(testObj) {
+      const headers = new Headers();
+      this.createAuthorizationHeader(headers);
+      return this.http.put(this.TASK_URL + 'api/tests', testObj, {
+        headers: headers
+      });
+    }
+
+    getAllUser() {
+      const headers = new Headers();
+      this.createAuthorizationHeader(headers);
+      return this.http.get(this.TASK_URL + 'api/users',  {
+        headers: headers
+      });
+    }
+
+    deleteUser(userId) {
+      const headers = new Headers();
+      this.createAuthorizationHeader(headers);
+      return this.http.delete(this.TASK_URL + 'api/users/' + userId, {
+        headers: headers
+      });
+    }
+
+    updateUser(userObj) {
+      const headers = new Headers();
+      this.createAuthorizationHeader(headers);
+      return this.http.put(this.TASK_URL + 'api/users', userObj, {
+        headers: headers
+      });
     }
 }

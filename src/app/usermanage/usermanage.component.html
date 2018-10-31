@@ -1,0 +1,28 @@
+<section class="content-header">
+  <h1>
+    用户管理
+  </h1>
+  <ol class="breadcrumb">
+
+  </ol>
+</section>
+<div class="box col-md-12" style="min-height: 700px">
+  <div style="padding-top: 15px">
+
+  </div>
+  <div class="col-md-12">
+    <button class="btn btn-block btn-success btn-sm"
+            style="width: 6%; float: right; margin-bottom: 15px; margin-top: 0px; margin-left: 20px; margin-top: 5px;">创建用户</button>
+
+  </div>
+
+  <div class="table-responsive col-md-12">
+    <ng2-smart-table [settings]="settings" [source]="source"
+                     (deleteConfirm)="onDeleteConfirm($event)"
+                     (editConfirm)="onSaveConfirm($event)"></ng2-smart-table>
+  </div>
+  <div class="col-md-12">
+
+  </div>
+</div>
+

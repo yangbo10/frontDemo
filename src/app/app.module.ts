@@ -20,6 +20,8 @@ import {AlertModule, ModalModule} from 'ngx-bootstrap';
 import { NgxEchartsModule } from 'ngx-echarts';
 import {User} from './models/user';
 import { ContactComponent } from './contact/contact.component';
+import { UsermanageComponent } from './usermanage/usermanage.component';
+import { TestmanageComponent } from './testmanage/testmanage.component';
 
 
 const appChildRoutes: Routes = [
@@ -38,6 +40,14 @@ const appChildRoutes: Routes = [
   {
     path: 'contact',
     component: ContactComponent
+  },
+  {
+    path: 'user',
+    component: UsermanageComponent
+  },
+  {
+    path: 'test',
+    component: TestmanageComponent
   }
 ];
 
@@ -62,7 +72,9 @@ export const appRoutes: Routes = [
     QuestionnaireComponent,
     ReportComponent,
     QuestionboxComponent,
-    ContactComponent
+    ContactComponent,
+    UsermanageComponent,
+    TestmanageComponent
   ],
   imports: [
     BrowserModule,
