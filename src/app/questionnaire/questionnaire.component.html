@@ -13,12 +13,12 @@
   <div class="col-md-12">
     <input #search class="search form-inline" style="width: 200px" type="text" placeholder="Search..." (keydown.enter)="onSearch(search.value)">
     <button class="btn btn-block btn-danger btn-sm"
-            style="width: 6%; float: right; margin-bottom: 15px; margin-left: 20px; margin-top: 5px;"
+            style="min-width: 80px; width: 6%; float: right; margin-bottom: 15px; margin-left: 20px; margin-top: 5px;"
             (click)="batchDelete()">批量删除</button>
     <button class="btn btn-block btn-success btn-sm"
-            style="width: 6%; float: right; margin-bottom: 15px; margin-top: 0px; margin-left: 20px; margin-top: 5px;"
-            (click)="openCreateModal(template)">创建试卷</button>
-    <button class="btn btn-block btn-primary btn-sm" style="width: 6%; float: right; margin-bottom: 15px"
+            style="min-width: 80px; width: 6%; float: right; margin-bottom: 15px; margin-top: 0px; margin-left: 20px; margin-top: 5px;"
+            (click)="openCreateModal(template)">添加到试卷</button>
+    <button class="btn btn-block btn-primary btn-sm" style="min-width: 80px; width: 6%; float: right; margin-bottom: 15px"
             data-toggle="modal" data-target="#import-modal" (click)="openUpload()">导入试题</button>
 
   </div>
@@ -80,18 +80,17 @@
 
         </div>
         <div class="col-md-12">
-          <div class="col-md-6">
-            <input name='createType' type="radio" value="existed" (click)="isExistCheck()">
+          <div class="col-md-12">
             <label> 添加至试卷：</label>
-            <select [(ngModel)]="selectTestId" (ngModelChange)="selectedNameChanged($event)" [disabled]="newTestOrNot">
+            <select [(ngModel)]="selectTestId" (ngModelChange)="selectedNameChanged($event)">
               <option *ngFor="let item of testList" [value]="item.test.testId">{{item.test.name}}</option>
             </select>
           </div>
-          <div class="col-md-6">
+          <!--<div class="col-md-6">
             <input name='createType' type="radio" checked value="new" (click)="isNewCheck()">
             <label> 新建试卷名：</label>
             <input type="text" class="form-inline" placeholder="试卷名称" name="questionnaireName" [(ngModel)]="questionnaireName" [disabled]="!newTestOrNot">
-          </div>
+          </div>-->
         </div>
       </div>
       <div class="modal-footer" style="border-top: none !important">

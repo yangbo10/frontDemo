@@ -1,9 +1,10 @@
-import { Component, OnInit } from '@angular/core';
-import {BsModalService} from 'ngx-bootstrap';
+import {Component, OnInit, TemplateRef} from '@angular/core';
+import {BsModalRef, BsModalService} from 'ngx-bootstrap';
 import {User} from '../models/user';
 import {TaskService} from '../service/taskService';
 import {LocalDataSource} from 'ng2-smart-table';
 import Swal from 'sweetalert2';
+import {Router} from '@angular/router';
 
 @Component({
   selector: 'app-testmanage',
@@ -14,8 +15,14 @@ export class TestmanageComponent implements OnInit {
   testList: [any];
   tableData: [any];
   source: LocalDataSource;
+  public modalRef: BsModalRef;
+  testName: string;
+  testComment: string;
 
-  constructor(public user: User, private taskService: TaskService, private modalService: BsModalService) { }
+  constructor(public user: User, private taskService: TaskService, private modalService: BsModalService, private router: Router) {
+    this.testName = '';
+    this.testComment = '';
+  }
 
   public settings = {
     columns: {
@@ -155,6 +162,40 @@ export class TestmanageComponent implements OnInit {
       } else if (result.dismiss === Swal.DismissReason.cancel) {
         Swal(
           '已取消',
+          '',
+          'error'
+        );
+      }
+    });
+  }
+
+  openCreateModal(template: TemplateRef<any>) {
+    this.modalRef = this.modalService.show(template, {class: 'modal-lg create-model'});
+  }
+
+  createNewTest() {
+    const newTestObj = {'name': this.testName, 'comment': this.testComment, 'questions': []};
+    this.taskService.createTest(newTestObj).subscribe( res => {
+      this.modalRef.hide();
+      if (res.status === 200) {
+        Swal({
+          title: '创建成功，是否立即添加试题？',
+          text: '将会跳转至题库管理',
+          type: 'success',
+          showCancelButton: true,
+          confirmButtonText: '是',
+          cancelButtonText: '否'
+        }).then((result) => {
+          if (result.value) {
+            console.log('aaa');
+            this.router.navigate(['home/questionnaire']);
+          } else if (result.dismiss === Swal.DismissReason.cancel) {
+            this.ngOnInit();
+          }
+        });
+      } else {
+        Swal(
+          '创建失败',
           '',
           'error'
         );

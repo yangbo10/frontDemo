@@ -2,12 +2,14 @@
 
 @Injectable()
 export class User {
-  public id: number;
+  public username: string;
   public password: string;
+  public roles: any;
   public mainShowing: boolean;
   constructor() {
-    this.id = 0;
+    this.username = '';
     this.password = '';
+    this.roles = [{'roleId': 3, 'rolesName': ''}];
     this.mainShowing = false;
   }
 }

@@ -1,5 +1,5 @@
-import { Component, OnInit } from '@angular/core';
-import {BsModalService} from 'ngx-bootstrap';
+import {Component, OnInit, TemplateRef} from '@angular/core';
+import {BsModalRef, BsModalService} from 'ngx-bootstrap';
 import {User} from '../models/user';
 import {LocalDataSource} from 'ng2-smart-table';
 import {TaskService} from '../service/taskService';
@@ -15,8 +15,16 @@ export class UsermanageComponent implements OnInit {
   userList: [any];
   tableData: [any];
   source: LocalDataSource;
+  newUser: User = new User();
+  public modalRef: BsModalRef;
+  public roleList = [
+    {'roleId': 1, 'roleName': 'Admin'},
+    {'roleId': 2, 'roleName': 'Manager'},
+    {'roleId': 3, 'roleName': 'User'}
+  ];
 
-  constructor(public user: User, private taskService: TaskService, private modalService: BsModalService) { }
+  constructor(public user: User, private taskService: TaskService, private modalService: BsModalService) {
+  }
 
   public settings = {
     columns: {
@@ -80,7 +88,9 @@ export class UsermanageComponent implements OnInit {
         item.id = this.userList[i].user.userId;
         item.name = this.userList[i].user.username;
         item.comment = this.userList[i].user.comment;
-        item.roles = this.userList[i].user.roles[0].name;
+        if (this.userList[i].user.roles.length > 0) {
+          item.roles = this.userList[i].user.roles[0].name;
+        }
         this.tableData.push(item);
       }
       this.source = new LocalDataSource(this.tableData);
@@ -161,6 +171,30 @@ export class UsermanageComponent implements OnInit {
       } else if (result.dismiss === Swal.DismissReason.cancel) {
         Swal(
           '已取消',
+          '',
+          'error'
+        );
+      }
+    });
+  }
+
+  openCreateModal(template: TemplateRef<any>) {
+    this.modalRef = this.modalService.show(template, {class: 'modal-lg create-model'});
+  }
+
+  createNewUser() {
+    this.taskService.createUser(this.newUser).subscribe( res => {
+      this.modalRef.hide();
+      if (res.status === 200) {
+        this.ngOnInit();
+        Swal(
+          '创建成功',
+          '',
+          'success'
+        );
+      } else {
+        Swal(
+          '创建失败',
           '',
           'error'
         );

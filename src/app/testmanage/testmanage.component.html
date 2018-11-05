@@ -12,7 +12,8 @@
   </div>
   <div class="col-md-12">
     <button class="btn btn-block btn-success btn-sm"
-            style="width: 6%; float: right; margin-bottom: 15px; margin-top: 0px; margin-left: 20px; margin-top: 5px;">创建试卷</button>
+            style="min-width: 80px; width: 6%; float: right; margin-bottom: 15px; margin-top: 0px; margin-left: 20px; margin-top: 5px;"
+            (click)="openCreateModal(template)">创建试卷</button>
 
   </div>
 
@@ -25,3 +26,27 @@
 
   </div>
 </div>
+
+<ng-template #template>
+  <div class="modal-header">
+    <span class="modal-title" style="font-size: 20px">创建试卷</span>
+    <button type="button" class="close" aria-label="Close" (click)="modalRef.hide()">
+      <span aria-hidden="true">×</span>
+    </button>
+  </div>
+  <div class="modal-body upload-modal-body">
+    <div class="col-md-12">
+      <div class="col-md-6">
+        <label> 试卷名称：</label>
+        <input type="text" class="form-inline" placeholder="试卷名称" name="testName" [(ngModel)]="testName">
+      </div>
+      <div class="col-md-6">
+        <label> 试卷备注：</label>
+        <input type="text" class="form-inline" placeholder="试卷备注" name="testComment" [(ngModel)]="testComment">
+      </div>
+    </div>
+  </div>
+  <div class="modal-footer" style="border-top: none !important">
+    <button class="btn btn-block btn-primary btn-sm" style="width: 100px; float: right;" (click)="createNewTest()">创建</button>
+  </div>
+</ng-template>

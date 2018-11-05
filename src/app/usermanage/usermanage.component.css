@@ -48,3 +48,10 @@
   min-height: 80px;
   height: auto;
 }
+:host /deep/ ng2-smart-table input[type=checkbox]:checked{
+  content: '';
+  font-size: 0;
+  background: rgb(100, 150, 238);
+  border-radius: 2px !important;
+  display: block;
+}

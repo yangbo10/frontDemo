@@ -52,10 +52,54 @@ export class QuestionnaireComponent implements OnInit {
         title: '试题详情',
         filter: false,
       },
-      /*tag: {
-        title: '标签',
-        filter: false
-      }*/
+      tag1: {
+        title: '标签1',
+        filter: {
+          type: 'list',
+          config: {
+            selectText: 'Select...',
+            list: [
+              { value: 'Enabler', title: 'Enabler' },
+              { value: 'Lean', title: 'Lean' },
+              { value: 'I4.0', title: 'I4.0' },
+            ],
+          },
+        },
+      },
+      tag2: {
+        title: '标签2',
+        filter: {
+          type: 'list',
+          config: {
+            selectText: 'Select...',
+            list: [
+              { value: 'Source', title: 'Source' }
+            ],
+          },
+        },
+      },
+      tag3: {
+        title: '标签3',
+        filter: {
+          type: 'list',
+          config: {
+            selectText: 'Select...',
+            list: [
+              { value: 'Standardization', title: 'Standardization' },
+              { value: 'Transparent Processes', title: 'Transparent Processes' },
+              { value: 'Associate Involvement', title: 'Associate Involvement' },
+              { value: 'Continuous Improvement', title: 'Continuous Improvement' },
+              { value: 'Flexibility', title: 'Flexibility' },
+              { value: 'Perfect Quality', title: 'Perfect Quality' },
+              { value: 'Process Orientation', title: 'Process Orientation' },
+              { value: 'Pull System', title: 'Pull System' },
+              { value: 'Resource', title: 'Resource' },
+              { value: 'Digitization', title: 'Digitization' },
+              { value: 'Automation', title: 'Automation' }
+            ],
+          },
+        },
+      }
     },
     pager: {
       display: true,
@@ -126,11 +170,13 @@ export class QuestionnaireComponent implements OnInit {
       // @ts-ignore
       this.tableData = [];
       for ( let i = 0; i < this.questionList.length; i++) {
-        const item = {'id': '', 'name': '', 'detail': '', 'tag': ''};
+        const item = {'id': '', 'name': '', 'detail': '', 'tag1': '', 'tag2': '', 'tag3': ''};
         item.id = this.questionList[i].question.questionId;
         item.name = this.questionList[i].question.name;
         item.detail = this.questionList[i].question.detail;
-        item.tag = this.questionList[i].question.tags[1].name;
+        item.tag1 = this.questionList[i].question.tags[0].name;
+        item.tag2 = this.questionList[i].question.tags[1].name;
+        item.tag3 = this.questionList[i].question.tags[2].name;
         this.tableData.push(item);
       }
       this.source = new LocalDataSource(this.tableData);
@@ -159,9 +205,17 @@ export class QuestionnaireComponent implements OnInit {
         search: query,
       },
       {
-        field: 'tag',
+        field: 'tag1',
         search: query,
       },
+      {
+        field: 'tag2',
+        search: query,
+      },
+      {
+        field: 'tag3',
+        search: query,
+      }
     ], false);
   }
 

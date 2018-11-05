@@ -12,7 +12,8 @@
   </div>
   <div class="col-md-12">
     <button class="btn btn-block btn-success btn-sm"
-            style="width: 6%; float: right; margin-bottom: 15px; margin-top: 0px; margin-left: 20px; margin-top: 5px;">创建用户</button>
+            style="min-width: 80px; width: 6%; float: right; margin-bottom: 15px; margin-top: 0px; margin-left: 20px; margin-top: 5px;"
+            (click)="openCreateModal(template)">创建用户</button>
 
   </div>
 
@@ -26,3 +27,32 @@
   </div>
 </div>
 
+<ng-template #template>
+  <div class="modal-header">
+    <span class="modal-title" style="font-size: 20px">创建试卷</span>
+    <button type="button" class="close" aria-label="Close" (click)="modalRef.hide()">
+      <span aria-hidden="true">×</span>
+    </button>
+  </div>
+  <div class="modal-body upload-modal-body">
+    <div class="col-md-12">
+      <div class="col-md-4">
+        <label> 用户名：</label>
+        <input type="text" class="form-inline" placeholder="用户名" name="testName" [(ngModel)]="newUser.username">
+      </div>
+      <div class="col-md-4">
+        <label> 密码：</label>
+        <input type="password" class="form-inline" placeholder="密码" name="testComment" [(ngModel)]="newUser.password">
+      </div>
+      <div class="col-md-4">
+        <label> 角色：</label>
+        <select [(ngModel)]="newUser.roles[0].roleId">
+          <option *ngFor="let item of roleList" [value]="item.roleId">{{item.roleName}}</option>
+        </select>
+      </div>
+    </div>
+  </div>
+  <div class="modal-footer" style="border-top: none !important">
+    <button class="btn btn-block btn-primary btn-sm" style="width: 100px; float: right;" (click)="createNewUser()">创建</button>
+  </div>
+</ng-template>

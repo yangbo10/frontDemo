@@ -10,6 +10,7 @@ export class TaskService {
     createAuthorizationHeader(headers: Headers) {
       headers.append('Authorization', 'Bearer ' +
         localStorage.getItem('access_token'));
+      headers.append('X-Requested-With', 'XMLHttpRequest');
     }
 
     login(username, password) {
@@ -196,6 +197,13 @@ export class TaskService {
       });
     }
 
+    createUser(userObj) {
+      const headers = new Headers();
+      this.createAuthorizationHeader(headers);
+      return this.http.put(this.TASK_URL + 'api/users', userObj, {
+        headers: headers
+      });
+    }
     deleteUser(userId) {
       const headers = new Headers();
       this.createAuthorizationHeader(headers);
