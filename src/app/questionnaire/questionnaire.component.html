@@ -49,7 +49,7 @@
             <input type="file" ngFileSelect [options]="options" (uploadOutput)="onUploadOutput($event)" [uploadInput]="uploadInput" multiple>
           </label>
           <button type="button" class="btn btn-block btn-primary btn-sm btn-upload" (click)="startUpload()">
-            开始上传
+            {{uploadButtonMsg}}
           </button>
         </div>
         <div class="table-responsive col-md-12" *ngIf="uploadDone">
@@ -68,33 +68,42 @@
 
 <ng-template #template>
       <div class="modal-header">
-        <span class="modal-title" style="font-size: 20px">创建试卷</span>
+        <span class="modal-title" style="font-size: 20px">添加至试卷</span>
         <button type="button" class="close" aria-label="Close" (click)="modalRef.hide()">
           <span aria-hidden="true">×</span>
         </button>
       </div>
       <div class="modal-body upload-modal-body">
         <div class="col-md-12">
-          <label>已选试题：</label>
-          <span *ngFor="let item of deleteList">{{item}}   </span>
+          <label>被选中试题：</label>
+          <span *ngFor="let item of selectedQuestions">{{item}}   </span>
 
         </div>
+        <div class="col-md-12" style="height: 20px">
+        </div>
         <div class="col-md-12">
-          <div class="col-md-12">
-            <label> 添加至试卷：</label>
-            <select [(ngModel)]="selectTestId" (ngModelChange)="selectedNameChanged($event)">
-              <option *ngFor="let item of testList" [value]="item.test.testId">{{item.test.name}}</option>
-            </select>
-          </div>
+          <label> 添加至试卷：</label>
+          <select [(ngModel)]="selectTestId" (ngModelChange)="selectedNameChanged($event)">
+            <option *ngFor="let item of testList" [value]="item.test.testId">{{item.test.name}}</option>
+          </select>
+          <button class="btn btn-success btn-sm" style="width: 70px; margin-left: 20px; position: relative" (click)="addToCache()">添加</button>
+          <button class="btn btn-warning btn-sm" style="width: 70px; margin-left: 20px; position: relative" (click)="clearCache()">清空</button>
           <!--<div class="col-md-6">
             <input name='createType' type="radio" checked value="new" (click)="isNewCheck()">
             <label> 新建试卷名：</label>
             <input type="text" class="form-inline" placeholder="试卷名称" name="questionnaireName" [(ngModel)]="questionnaireName" [disabled]="!newTestOrNot">
           </div>-->
         </div>
+        <div class="col-md-12" style="height: 20px">
+        </div>
+        <div class="col-md-12">
+          <label>已添加试题：</label>
+          <span *ngFor="let item of nameCache">{{item}}   </span>
+
+        </div>
       </div>
       <div class="modal-footer" style="border-top: none !important">
-        <button class="btn btn-block btn-primary btn-sm" style="width: 100px; float: right;" (click)="createQuestionnaire()">创建</button>
+        <button class="btn btn-block btn-primary btn-sm" style="width: 150px; float: right;" (click)="createQuestionnaire()">创建</button>
       </div>
 </ng-template>
 

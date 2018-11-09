@@ -3,6 +3,7 @@ import {TaskService} from '../service/taskService';
 import {Router} from '@angular/router';
 import Swal from 'sweetalert2';
 import {User} from '../models/user';
+import {toNumber} from '../../../node_modules/ngx-bootstrap/timepicker/timepicker.utils';
 
 @Component({
   selector: 'app-home',
@@ -15,9 +16,11 @@ export class HomeComponent implements OnInit {
 
   constructor(public user: User, private taskService: TaskService, private router: Router) {
     this.user.mainShowing = true;
+    this.user.roles[0].roleId = toNumber(localStorage.getItem('user_role'));
 }
 
   ngOnInit() {
+    console.log(this.user.roles[0].roleId);
     if (localStorage.getItem('access_token') === null) {
       this.router.navigate(['']);
     }

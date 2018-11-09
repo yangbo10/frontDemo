@@ -25,15 +25,17 @@ export class TaskService {
               // @ts-ignore
               const userList = JSON.parse(data._body);
               const userId = userList._embedded.users[0].user.userId;
-              console.log(userId);
+              const userRole = userList._embedded.users[0].user.roles[0].roleId;
               localStorage.setItem('user_id', userId);
+              localStorage.setItem('user_role', userRole);
+              console.log(localStorage);
+              this.router.navigate(['/home']);
             });
-            Swal(
+            /*Swal(
               '登录成功',
               '',
               'success'
-            );
-             this.router.navigate(['/home']);
+            );*/
           } else {
             Swal(
               '登录失败',

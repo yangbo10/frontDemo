@@ -100,8 +100,7 @@ export class TestmanageComponent implements OnInit {
     }).then((result) => {
       if (result.value) {
         this.taskService.deleteTest(event.data.id).subscribe(res => {
-            console.log(res);
-            if (res.status === 200) {
+            if (res.status >= 200) {
               Swal(
                 '删除成功',
                 '',
@@ -111,14 +110,12 @@ export class TestmanageComponent implements OnInit {
             }
           },
           error => {
-            if (error.status === 409) {
               Swal(
                 '删除失败',
                 '',
                 'error'
               );
               event.confirm.reject();
-            }
           });
       } else if (result.dismiss === Swal.DismissReason.cancel) {
         Swal(
@@ -143,7 +140,7 @@ export class TestmanageComponent implements OnInit {
       if (result.value) {
         this.taskService.updateTest(testObj).subscribe(res => {
             console.log(res);
-            if (res.status === 200) {
+            if (res.status >= 200) {
               Swal(
                 '修改成功',
                 '',
@@ -174,10 +171,10 @@ export class TestmanageComponent implements OnInit {
   }
 
   createNewTest() {
-    const newTestObj = {'name': this.testName, 'comment': this.testComment, 'questions': []};
+    const newTestObj = {'name': this.testName, 'comment': this.testComment};
     this.taskService.createTest(newTestObj).subscribe( res => {
       this.modalRef.hide();
-      if (res.status === 200) {
+      if (res.status >= 200) {
         Swal({
           title: '创建成功，是否立即添加试题？',
           text: '将会跳转至题库管理',

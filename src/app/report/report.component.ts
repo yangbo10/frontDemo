@@ -110,17 +110,17 @@ export class ReportComponent implements OnInit {
         }
       },
       'I4.0': {
-        'resource': {
+        'Resource': {
           'total': 0,
           'actual': 0,
           'normalized': 0
         },
-        'digitization': {
+        'Digitization': {
           'total': 0,
           'actual': 0,
           'normalized': 0
         },
-        'automation': {
+        'Automation': {
           'total': 0,
           'actual': 0,
           'normalized': 0
@@ -147,7 +147,7 @@ export class ReportComponent implements OnInit {
         // @ts-ignore
         this.resultObjRaw = JSON.parse(data._body);
         this.fullResultList.Enabler = this.resultObjRaw.Enabler;
-        this.fullResultList.Lean = this.resultObjRaw['精益原则'];
+        this.fullResultList.Lean = this.resultObjRaw['Lean'];
         this.fullResultList['I4.0'] = this.resultObjRaw['I4.0'];
 
         console.log(this.fullResultList.Enabler);
@@ -170,10 +170,10 @@ export class ReportComponent implements OnInit {
         this.simpleResultList.Lean.normalized =
           ((this.simpleResultList.Lean.actual / this.simpleResultList.Lean.total) * 100).toFixed(2);
 
-        this.simpleResultList['I4.0'].total = this.fullResultList['I4.0'].resource.total +
-          this.fullResultList['I4.0'].digitization.total + this.fullResultList['I4.0'].automation.total;
-        this.simpleResultList['I4.0'].actual = this.fullResultList['I4.0'].resource.actual +
-          this.fullResultList['I4.0'].digitization.actual + this.fullResultList['I4.0'].automation.actual;
+        this.simpleResultList['I4.0'].total = this.fullResultList['I4.0'].Resource.total +
+          this.fullResultList['I4.0'].Digitization.total + this.fullResultList['I4.0'].Automation.total;
+        this.simpleResultList['I4.0'].actual = this.fullResultList['I4.0'].Resource.actual +
+          this.fullResultList['I4.0'].Digitization.actual + this.fullResultList['I4.0'].Automation.actual;
         this.simpleResultList['I4.0'].normalized =
           ((this.simpleResultList['I4.0'].actual / this.simpleResultList['I4.0'].total) * 100).toFixed(2);
 
@@ -400,8 +400,8 @@ export class ReportComponent implements OnInit {
             // areaStyle: {normal: {}},
             data : [
               {
-                value : [this.fullResultList.Enabler.Standardization.normalized, this.fullResultList['I4.0'].automation.normalized,
-                  this.fullResultList['I4.0'].digitization.normalized, this.fullResultList['I4.0'].resource.normalized,
+                value : [this.fullResultList.Enabler.Standardization.normalized, this.fullResultList['I4.0'].Automation.normalized,
+                  this.fullResultList['I4.0'].Digitization.normalized, this.fullResultList['I4.0'].Resource.normalized,
                   this.fullResultList.Lean['Pull System'].normalized, this.fullResultList.Lean['Process Orientation'].normalized,
                   this.fullResultList.Lean['Perfect Quality'].normalized, this.fullResultList.Lean.Flexibility.normalized,
                   this.fullResultList.Lean['Continuous Improvement'].normalized,

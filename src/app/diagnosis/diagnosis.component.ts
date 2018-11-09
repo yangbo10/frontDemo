@@ -17,28 +17,50 @@ import Swal from 'sweetalert2';
 export class DiagnosisComponent implements OnInit {
   testDemo: any;
   questionList: [any];
+  sourceList: [any];
+  makeList: [any];
+  deliveryList: [any];
   unsubmitable: boolean;
   reChoose: boolean;
   questionShowing: boolean;
   answerList: [any];
   answerObj: any;
   resultDemo: any;
+  diagnosisPhase: number;
+
   constructor(public user: User, private taskService: TaskService, private router: Router) {
     this.user.mainShowing = false;
   }
 
   ngOnInit() {
+    this.diagnosisPhase = 1;
     this.unsubmitable = true;
     this.questionShowing = true;
     // @ts-ignore
     this.answerList = [];
+    // @ts-ignore
+    this.sourceList = [];
+    // @ts-ignore
+    this.makeList = [];
+    // @ts-ignore
+    this.deliveryList = [];
     if (localStorage.getItem('access_token') === null) {
       this.router.navigate(['']);
     } else {
-      this.taskService.getTestById(1).subscribe(data => {
+      this.taskService.getAllTest().subscribe(data => {
         // @ts-ignore
         this.testDemo = JSON.parse(data._body);
         this.questionList = this.testDemo._embedded.tests[0].test.questions;
+        for ( const item of this.questionList) {
+          if (item.tags[1].tagId === 4) {
+            this.sourceList.push(item);
+          } else if (item.tags[1].tagId === 5) {
+            this.makeList.push(item);
+          } else {
+            this.deliveryList.push(item);
+          }
+        }
+        console.log(this.makeList);
       });
     }
   }
@@ -87,6 +109,7 @@ export class DiagnosisComponent implements OnInit {
             this.resultDemo = JSON.parse(data._body);
             this.questionShowing = false;
             console.log(this.resultDemo);
+            this.diagnosisPhase++;
           });
         } else if (result.dismiss === Swal.DismissReason.cancel) {
           Swal(
@@ -98,7 +121,37 @@ export class DiagnosisComponent implements OnInit {
       });
     } else {
       Swal(
-        '请答完所有题目',
+        '请答完此阶段所有题目',
+        '',
+        'error'
+      );
+    }
+  }
+
+  gotoNextPhase() {
+    this.diagnosisPhase ++;
+  }
+
+  getPhaseOneResult() {
+    if (this.answerList.length === this.sourceList.length) {
+
+      this.diagnosisPhase++;
+    } else {
+      Swal(
+        '请答完此阶段所有题目',
+        '',
+        'error'
+      );
+    }
+  }
+
+  getPhaseTwoResult() {
+    if (this.answerList.length === this.sourceList.length + this.makeList.length) {
+
+      this.diagnosisPhase++;
+    } else {
+      Swal(
+        '请答完此阶段所有题目',
         '',
         'error'
       );

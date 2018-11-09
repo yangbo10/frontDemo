@@ -8,29 +8,86 @@
     </ol>
   </section>
 
-<div class="box col-md-12" *ngIf="questionShowing">
-  <div style="padding-top: 10px">
-    <div class="info-box bg-gray">
-      <span class="info-box-icon"><i class="ion ion-ios-pricetag-outline"></i></span>
-      <div class="info-box-content">
-        <span class="info-box-text">问卷 1</span>
-        <span class="info-box-number">45 Items</span>
-        <div class="progress">
-          <div class="progress-bar" style="width: 0%"></div>
-        </div>
-        <span class="progress-description">
+  <div class="box col-md-12" *ngIf="diagnosisPhase == 1">
+    <div style="padding-top: 10px;">
+      <div class="info-box bg-gray">
+        <span class="info-box-icon"><i class="ion ion-ios-pricetag-outline"></i></span>
+        <div class="info-box-content">
+          <span class="info-box-text">Source</span>
+          <span class="info-box-number">{{sourceList.length}} Items</span>
+          <div class="progress">
+            <div class="progress-bar" style="width: 0%"></div>
+          </div>
+          <span class="progress-description">
+                          git 0% finished
+          </span>
+        </div><!-- /.info-box-content -->
+      </div>
+    </div>
+    <ng-container *ngFor="let item of sourceList">
+      <app-questionbox [questionFromFather] = item   (answerFromChild)="getFromChild($event)"></app-questionbox>
+    </ng-container>
+    <button class="btn btn-block btn-primary btn-lg" style="width: 20%; float: right; margin-bottom: 15px" (click)="getPhaseOneResult()" [disabled]="unsubmitable">下一步</button>
+  </div>
+
+  <div class="box col-md-12" *ngIf="diagnosisPhase == 2">
+    <h1>第一阶段诊断结束，结果如下，点击继续进入下一阶段诊断</h1>
+    <h1>55.6分</h1>
+    <button class="btn btn-block btn-primary btn-lg" style="width: 20%; float: left; margin-bottom: 15px" (click)="gotoNextPhase()">继续</button>
+  </div>
+
+  <div class="box col-md-12" *ngIf="diagnosisPhase == 3">
+    <div style="padding-top: 10px;">
+      <div class="info-box bg-gray">
+        <span class="info-box-icon"><i class="ion ion-ios-pricetag-outline"></i></span>
+        <div class="info-box-content">
+          <span class="info-box-text">Make</span>
+          <span class="info-box-number">{{makeList.length}} Items</span>
+          <div class="progress">
+            <div class="progress-bar" style="width: 0%"></div>
+          </div>
+          <span class="progress-description">
                         0% finished
         </span>
-      </div><!-- /.info-box-content -->
+        </div><!-- /.info-box-content -->
+      </div>
     </div>
+    <ng-container *ngFor="let item of makeList">
+      <app-questionbox [questionFromFather] = item   (answerFromChild)="getFromChild($event)"></app-questionbox>
+    </ng-container>
+    <button class="btn btn-block btn-primary btn-lg" style="width: 20%; float: right; margin-bottom: 15px" (click)="getPhaseTwoResult()" [disabled]="unsubmitable">下一步</button>
   </div>
-  <ng-container *ngFor="let item of questionList">
-    <app-questionbox [questionFromFather] = item   (answerFromChild)="getFromChild($event)"></app-questionbox>
-  </ng-container>
-  <button class="btn btn-block btn-primary btn-lg" style="width: 20%; float: right; margin-bottom: 15px" (click)="sentAnswer()" [disabled]="unsubmitable">提交</button>
-</div>
 
-  <div class="box col-md-12" *ngIf="!questionShowing">
+  <div class="box col-md-12" *ngIf="diagnosisPhase == 4">
+    <h1>第二阶段诊断结束，结果如下，点击继续进入下一阶段诊断</h1>
+    <h1>48.3分</h1>
+    <button class="btn btn-block btn-primary btn-lg" style="width: 20%; float: left; margin-bottom: 15px" (click)="gotoNextPhase()">继续</button>
+  </div>
+
+  <div class="box col-md-12" *ngIf="diagnosisPhase == 5">
+    <div style="padding-top: 10px;">
+      <div class="info-box bg-gray">
+        <span class="info-box-icon"><i class="ion ion-ios-pricetag-outline"></i></span>
+        <div class="info-box-content">
+          <span class="info-box-text">Delivery</span>
+          <span class="info-box-number">{{deliveryList.length}} Items</span>
+          <div class="progress">
+            <div class="progress-bar" style="width: 0%"></div>
+          </div>
+          <span class="progress-description">
+                        0% finished
+        </span>
+        </div><!-- /.info-box-content -->
+      </div>
+    </div>
+    <ng-container *ngFor="let item of deliveryList">
+      <app-questionbox [questionFromFather] = item   (answerFromChild)="getFromChild($event)"></app-questionbox>
+    </ng-container>
+    <button class="btn btn-block btn-primary btn-lg" style="width: 20%; float: right; margin-bottom: 15px" (click)="sentAnswer()" [disabled]="unsubmitable">提交</button>
+  </div>
+
+  <div class="box col-md-12" *ngIf="diagnosisPhase == 6">
+    <h1>诊断结束，结果如下</h1>
     <h1>{{resultDemo.result.name}}</h1>
     <h1>{{resultDemo.result.score}}</h1>
     <button class="btn btn-block btn-primary btn-lg" style="width: 20%; float: left; margin-bottom: 15px" (click)="gotoResultDetail()">详细结果报告</button>

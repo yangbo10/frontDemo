@@ -6,6 +6,8 @@ import {BsModalRef, BsModalService} from 'ngx-bootstrap';
 import Swal from 'sweetalert2';
 
 import {User} from '../models/user';
+import {e} from '../../../node_modules/@angular/core/src/render3';
+import {toNumber} from '../../../node_modules/ngx-bootstrap/timepicker/timepicker.utils';
 
 @Component({
   selector: 'app-questionnaire',
@@ -31,6 +33,10 @@ export class QuestionnaireComponent implements OnInit {
   newTestOrNot: boolean;
   public modalRef: BsModalRef;
   resultMessage: string;
+  uploadButtonMsg: string;
+  selectedQuestions: [any];
+  questionCache: [any];
+  nameCache: [any];
 
   constructor(public user: User, private taskService: TaskService, private modalService: BsModalService) {
     this.options = { concurrency: 1, maxUploads: 3 };
@@ -40,7 +46,29 @@ export class QuestionnaireComponent implements OnInit {
     this.selectTestId = 0;
     this.resultMessage = '';
     this.user.mainShowing = false;
+    this.uploadButtonMsg = '开始上传';
   }
+
+  public tagList = [
+    { value: 1, title: 'Enabler' },
+    { value: 2, title: 'Lean' },
+    { value: 3, title: 'I4.0' },
+    { value: 4, title: 'Source' },
+    { value: 5, title: 'Make' },
+    { value: 6, title: 'Delivery' },
+    { value: 7, title: 'Standardization' },
+    { value: 8, title: 'Perfect Quality' },
+    { value: 9, title: 'Transparent Processes' },
+    { value: 10, title: 'Flexibility' },
+    { value: 11, title: 'Pull System' },
+    { value: 12, title: 'Process Orientation' },
+    { value: 13, title: 'Continuous Improvement' },
+    { value: 14, title: 'Resource' },
+    { value: 15, title: 'Digitization' },
+    { value: 16, title: 'Automation' },
+    { value: 17, title: 'Associate Involvement' },
+
+  ];
 
   public settings = {
     columns: {
@@ -51,6 +79,7 @@ export class QuestionnaireComponent implements OnInit {
       detail: {
         title: '试题详情',
         filter: false,
+        width: '50%',
       },
       tag1: {
         title: '标签1',
@@ -65,6 +94,15 @@ export class QuestionnaireComponent implements OnInit {
             ],
           },
         },
+        editor: {
+          type: 'list',
+          config: {
+            list: [
+              { value: 'Enabler', title: 'Enabler' },
+              { value: 'Lean', title: 'Lean' },
+              { value: 'I4.0', title: 'I4.0' }]
+          }
+        }
       },
       tag2: {
         title: '标签2',
@@ -73,10 +111,22 @@ export class QuestionnaireComponent implements OnInit {
           config: {
             selectText: 'Select...',
             list: [
-              { value: 'Source', title: 'Source' }
+              { value: 'Source', title: 'Source' },
+              { value: 'Make', title: 'Make' },
+              { value: 'Delivery', title: 'Delivery' }
             ],
           },
         },
+        editor: {
+          type: 'list',
+          config: {
+            list: [
+              { value: 'Source', title: 'Source' },
+              { value: 'Make', title: 'Make' },
+              { value: 'Delivery', title: 'Delivery' }
+              ]
+          }
+        }
       },
       tag3: {
         title: '标签3',
@@ -99,6 +149,24 @@ export class QuestionnaireComponent implements OnInit {
             ],
           },
         },
+        editor: {
+          type: 'list',
+          config: {
+            list: [
+              { value: 'Standardization', title: 'Standardization' },
+              { value: 'Transparent Processes', title: 'Transparent Processes' },
+              { value: 'Associate Involvement', title: 'Associate Involvement' },
+              { value: 'Continuous Improvement', title: 'Continuous Improvement' },
+              { value: 'Flexibility', title: 'Flexibility' },
+              { value: 'Perfect Quality', title: 'Perfect Quality' },
+              { value: 'Process Orientation', title: 'Process Orientation' },
+              { value: 'Pull System', title: 'Pull System' },
+              { value: 'Resource', title: 'Resource' },
+              { value: 'Digitization', title: 'Digitization' },
+              { value: 'Automation', title: 'Automation' }
+            ]
+          }
+        }
       }
     },
     pager: {
@@ -163,6 +231,13 @@ export class QuestionnaireComponent implements OnInit {
   ngOnInit() {
     // @ts-ignore
     this.deleteList = [];
+    // @ts-ignore
+    this.selectedQuestions = [];
+    // @ts-ignore
+    this.questionCache = [];
+    // @ts-ignore
+    this.nameCache = [];
+
     this.taskService.getAllQuestions().subscribe(data => {
       // @ts-ignore
       this.testDemo = JSON.parse(data._body);
@@ -174,11 +249,18 @@ export class QuestionnaireComponent implements OnInit {
         item.id = this.questionList[i].question.questionId;
         item.name = this.questionList[i].question.name;
         item.detail = this.questionList[i].question.detail;
-        item.tag1 = this.questionList[i].question.tags[0].name;
-        item.tag2 = this.questionList[i].question.tags[1].name;
-        item.tag3 = this.questionList[i].question.tags[2].name;
+        if (this.questionList[i].question.tags.length > 0) {
+          item.tag1 = this.questionList[i].question.tags[0].name;
+        }
+        if (this.questionList[i].question.tags.length > 1) {
+          item.tag2 = this.questionList[i].question.tags[1].name;
+        }
+        if (this.questionList[i].question.tags.length > 2) {
+          item.tag3 = this.questionList[i].question.tags[2].name;
+        }
         this.tableData.push(item);
       }
+      console.log(this.source);
       this.source = new LocalDataSource(this.tableData);
     });
     this.taskService.getAllTest().subscribe( res => {
@@ -203,18 +285,6 @@ export class QuestionnaireComponent implements OnInit {
       {
         field: 'detail',
         search: query,
-      },
-      {
-        field: 'tag1',
-        search: query,
-      },
-      {
-        field: 'tag2',
-        search: query,
-      },
-      {
-        field: 'tag3',
-        search: query,
       }
     ], false);
   }
@@ -231,7 +301,7 @@ export class QuestionnaireComponent implements OnInit {
       if (result.value) {
         this.taskService.deleteQuestion(event.data.id).subscribe(res => {
             console.log(res);
-            if (res.status === 200) {
+            if (res.status  >= 200) {
               Swal(
                 '删除成功',
                 '',
@@ -241,14 +311,12 @@ export class QuestionnaireComponent implements OnInit {
             }
           },
           error => {
-            if (error.status === 409) {
               Swal(
                 '删除失败',
                 '',
                 'error'
               );
               event.confirm.reject();
-            }
           });
       } else if (result.dismiss === Swal.DismissReason.cancel) {
         Swal(
@@ -279,7 +347,7 @@ export class QuestionnaireComponent implements OnInit {
         } else {
           this.taskService.batchDeleteQuestion( this.deleteList ).subscribe(res => {
               console.log(res);
-              if (res.status === 200) {
+              if (res.status  >= 200) {
                 Swal(
                   '删除成功',
                   '',
@@ -307,9 +375,36 @@ export class QuestionnaireComponent implements OnInit {
       }
     });
   }
+  getTagIdByName(tagName) {
+    for (const item of this.tagList) {
+      if (item.title === tagName) {
+        return item.value;
+      }
+    }
+  }
 
   onSaveConfirm(event) {
-    const questionObj = {'questionId': event.newData.id, 'name': event.newData.name, 'detail': event.newData.detail};
+    console.log(event);
+    const questionObj = {
+      'questionId': event.newData.id,
+      'name': event.newData.name,
+      'detail': event.newData.detail,
+      'tags': [
+        {
+          'tagId': this.getTagIdByName(event.newData.tag1)
+        },
+        {
+          'tagId': this.getTagIdByName(event.newData.tag2)
+        },
+        {
+          'tagId': this.getTagIdByName(event.newData.tag3)
+        }
+      ]};
+    if (event.newData.tag1 === event.data.tag1 &&
+      event.newData.tag2 === event.data.tag2 &&
+      event.newData.tag3 === event.data.tag3) {
+      questionObj.tags = null;
+    }
     Swal({
       title: '确认修改？',
       text: '',
@@ -321,7 +416,7 @@ export class QuestionnaireComponent implements OnInit {
       if (result.value) {
         this.taskService.updateQuestion(questionObj).subscribe(res => {
             console.log(res);
-            if (res.status === 200) {
+            if (res.status  >= 200) {
               Swal(
                 '修改成功',
                 '',
@@ -354,24 +449,47 @@ export class QuestionnaireComponent implements OnInit {
       // is selected or not
       // @ts-ignore
       this.deleteList = [];
+      // @ts-ignore
+      this.selectedQuestions = [];
       if ( event.selected.length > 0) {
         for (let i = 0; i < event.selected.length; i++) {
           this.deleteList.push(event.selected[i].id);
+          this.selectedQuestions.push(event.selected[i].name);
         }
       }
     } else {
       // is selected or not
       if ( event.isSelected === true) {
           this.deleteList.push(event.data.id);
+          this.selectedQuestions.push(event.data.name);
       } else {
         // @ts-ignore
         this.deleteList = [];
+        // @ts-ignore
+        this.selectedQuestions = [];
         for (let i = 0; i < event.selected.length; i++) {
           this.deleteList.push(event.selected[i].id);
+          this.selectedQuestions.push(event.selected[i].name);
         }
       }
     }
-    console.log(this.deleteList);
+    console.log(this.selectedQuestions);
+  }
+
+  addToCache() {
+    for (const item of this.deleteList) {
+      this.questionCache.push(item);
+    }
+    for (const item of this.selectedQuestions) {
+      this.nameCache.push(item);
+    }
+  }
+
+  clearCache() {
+    // @ts-ignore
+    this.questionCache = [];
+    // @ts-ignore
+    this.nameCache = [];
   }
 
   onUploadOutput(output: UploadOutput): void {
@@ -409,6 +527,7 @@ export class QuestionnaireComponent implements OnInit {
         this.newSource = new LocalDataSource(this.newTableData);
         this.uploadDone = true;
         this.ngOnInit();
+        this.uploadButtonMsg = '继续上传';
         break;
     }
   }
@@ -420,15 +539,15 @@ export class QuestionnaireComponent implements OnInit {
       url: this.taskService.TASK_URL + 'api/importer/questions' + '?locale=' + 'zh_CN',
       method: 'POST',
       headers: { 'Authorization': 'Bearer ' +
-        localStorage.getItem('access_token') }
+        localStorage.getItem('access_token'),
+        'X-Requested-With': 'XMLHttpRequest'}
     };
 
     this.uploadInput.emit(event);
   }
 
   openUpload() {
-    console.log(this.files);
-    this.files = [];
+    this.uploadButtonMsg = '开始上传';
   }
 
   openCreateModal(template: TemplateRef<any>) {
@@ -442,54 +561,28 @@ export class QuestionnaireComponent implements OnInit {
 
   createQuestionnaire() {
     const testObj = {'questions': [], 'testId': 0 };
-    const newTestObj = {'name': '', 'questions': []};
-    if (this.newTestOrNot) {
-      for (const item of this.deleteList) {
-        const questionObj = {'questionId': item};
-        newTestObj.questions.push(questionObj);
-      }
-      newTestObj.name = this.questionnaireName;
-      this.taskService.createTest(newTestObj).subscribe( res => {
-        console.log(res);
-        this.modalRef.hide();
-        if (res.status === 200) {
-          Swal(
-            '创建成功',
-            '',
-            'success'
-          );
-        } else {
-          Swal(
-            '创建失败',
-            '',
-            'error'
-          );
-        }
-      });
-    } else {
-      for (const item of this.deleteList) {
-        const questionObj = {'questionId': item};
-        testObj.questions.push(questionObj);
-      }
-      testObj.testId = this.selectTestId;
-      this.taskService.createTest(testObj).subscribe( res => {
-        console.log(res.status);
-        this.modalRef.hide();
-        if (res.status === 200) {
-          Swal(
-            '创建成功',
-            '',
-            'success'
-          );
-        } else {
-          Swal(
-            '创建失败',
-            '',
-            'error'
-          );
-        }
-      });
+    for (const item of this.questionCache) {
+      const questionObj = {'questionId': item};
+      testObj.questions.push(questionObj);
     }
+    testObj.testId = this.selectTestId;
+    this.taskService.createTest(testObj).subscribe( res => {
+      console.log(res.status);
+      this.modalRef.hide();
+      if (res.status >= 200) {
+        Swal(
+          '创建成功',
+          '',
+          'success'
+        );
+      } else {
+        Swal(
+          '创建失败',
+          '',
+          'error'
+        );
+      }
+    });
   }
 
   isExistCheck() {

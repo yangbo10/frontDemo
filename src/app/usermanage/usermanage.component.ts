@@ -18,9 +18,9 @@ export class UsermanageComponent implements OnInit {
   newUser: User = new User();
   public modalRef: BsModalRef;
   public roleList = [
-    {'roleId': 1, 'roleName': 'Admin'},
-    {'roleId': 2, 'roleName': 'Manager'},
-    {'roleId': 3, 'roleName': 'User'}
+    {'roleId': 1, 'roleName': 'ADMIN'},
+    {'roleId': 2, 'roleName': 'MANAGER'},
+    {'roleId': 3, 'roleName': 'USER'}
   ];
 
   constructor(public user: User, private taskService: TaskService, private modalService: BsModalService) {
@@ -31,10 +31,21 @@ export class UsermanageComponent implements OnInit {
       name: {
         title: '用户名称',
         filter: false,
+        editable: false
       },
       roles: {
         title: '用户角色',
         filter: false,
+        editor: {
+          type: 'list',
+          config: {
+            list: [
+              { value: 'ADMIN', title: 'ADMIN' },
+              { value: 'MANAGER', title: 'MANAGER' },
+              { value: 'USER', title: 'USER' }
+            ]
+          }
+        }
       },
       comment: {
         title: '用户详情',
@@ -110,7 +121,7 @@ export class UsermanageComponent implements OnInit {
       if (result.value) {
         this.taskService.deleteUser(event.data.id).subscribe(res => {
             console.log(res);
-            if (res.status === 200) {
+            if (res.status  >= 200) {
               Swal(
                 '删除成功',
                 '',
@@ -120,14 +131,12 @@ export class UsermanageComponent implements OnInit {
             }
           },
           error => {
-            if (error.status === 409) {
               Swal(
                 '删除失败',
                 '',
                 'error'
               );
               event.confirm.reject();
-            }
           });
       } else if (result.dismiss === Swal.DismissReason.cancel) {
         Swal(
@@ -139,8 +148,24 @@ export class UsermanageComponent implements OnInit {
     });
   }
 
+  getRoleIdByName(roleName) {
+    const roleIdSet = [];
+    for (let i = 0; i < this.roleList.length; i++) {
+      if (this.roleList[i].roleName === roleName) {
+        for (let j = i; j < this.roleList.length; j++) {
+          roleIdSet.push({'roleId': this.roleList[j].roleId});
+        }
+        return roleIdSet;
+      }
+    }
+  }
   onSaveConfirm(event) {
-    const userObj = {'userId': event.newData.id, 'username': event.newData.name, 'comment': event.newData.comment};
+    const userObj = {
+      'userId': event.newData.id,
+      'username': event.newData.name,
+      'comment': event.newData.comment,
+      'roles': this.getRoleIdByName(event.newData.roles)
+    };
     Swal({
       title: '确认修改？',
       text: '',
@@ -152,7 +177,7 @@ export class UsermanageComponent implements OnInit {
       if (result.value) {
         this.taskService.updateUser(userObj).subscribe(res => {
             console.log(res);
-            if (res.status === 200) {
+            if (res.status  >= 200) {
               Swal(
                 '修改成功',
                 '',
@@ -183,23 +208,46 @@ export class UsermanageComponent implements OnInit {
   }
 
   createNewUser() {
-    this.taskService.createUser(this.newUser).subscribe( res => {
-      this.modalRef.hide();
-      if (res.status === 200) {
-        this.ngOnInit();
+    const maxRoleId = this.newUser.roles[0].roleId;
+    for ( let i = 1; i <= maxRoleId; i++ ) {
+      this.newUser.roles.push({'roleId': i});
+    }
+    console.log(this.newUser);
+    Swal({
+      title: '确认创建？',
+      text: '',
+      type: 'warning',
+      showCancelButton: true,
+      confirmButtonText: '确定',
+      cancelButtonText: '取消'
+    }).then((result) => {
+      if (result.value) {
+        this.taskService.createUser(this.newUser).subscribe(res => {
+            console.log(res);
+            if (res.status >= 200) {
+              Swal(
+                '创建成功',
+                '',
+                'success'
+              );
+              this.modalRef.hide();
+              this.ngOnInit();
+            }
+          },
+          error => {
+            Swal(
+              '创建失败',
+              '',
+              'error'
+            );
+          });
+      } else if (result.dismiss === Swal.DismissReason.cancel) {
         Swal(
-          '创建成功',
-          '',
-          'success'
-        );
-      } else {
-        Swal(
-          '创建失败',
+          '已取消',
           '',
           'error'
         );
       }
     });
   }
-
 }

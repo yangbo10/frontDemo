@@ -41,9 +41,9 @@
         <!-- Optionally, you can add icons to the links    class="active"-->
         <li (click)="changePage()"><a routerLink="diagnosis"><i class='fa fa-link'></i> <span>诊断</span></a></li>
         <li (click)="changePage()"><a routerLink="report"><i class='fa fa-link'></i> <span>结果报告</span></a></li>
-        <li (click)="changePage()"><a routerLink="questionnaire"><i class='fa fa-link'></i> <span>题库管理</span></a></li>
-        <li (click)="changePage()"><a routerLink="test"><i class='fa fa-link'></i> <span>试卷管理</span></a></li>
-        <li (click)="changePage()"><a routerLink="user"><i class='fa fa-link'></i> <span>用户管理</span></a></li>
+        <li (click)="changePage()" *ngIf="user.roles[0].roleId == 1 || user.roles[0].roleId == 2"><a routerLink="questionnaire"><i class='fa fa-link'></i> <span>题库管理</span></a></li>
+        <li (click)="changePage()" *ngIf="user.roles[0].roleId == 1 || user.roles[0].roleId == 2"><a routerLink="test"><i class='fa fa-link'></i> <span>试卷管理</span></a></li>
+        <li (click)="changePage()" *ngIf="user.roles[0].roleId == 1"><a routerLink="user"><i class='fa fa-link'></i> <span>用户管理</span></a></li>
         <li (click)="changePage()"><a routerLink="contact"><i class='fa fa-link'></i> <span>联系我们</span></a></li>
       </ul><!-- /.sidebar-menu -->
     </section>
