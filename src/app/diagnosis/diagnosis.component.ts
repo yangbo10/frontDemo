@@ -1,13 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import {TaskService} from '../service/taskService';
-import {
-  CanActivate,
-  Router,
-  ActivatedRouteSnapshot,
-  RouterStateSnapshot
-} from '@angular/router';
+import {Router} from '@angular/router';
 import {User} from '../models/user';
 import Swal from 'sweetalert2';
+import {TranslateService} from 'ng2-translate';
 
 @Component({
   selector: 'app-diagnosis',
@@ -16,6 +12,7 @@ import Swal from 'sweetalert2';
 })
 export class DiagnosisComponent implements OnInit {
   testDemo: any;
+  testList: [any];
   questionList: [any];
   sourceList: [any];
   makeList: [any];
@@ -28,14 +25,17 @@ export class DiagnosisComponent implements OnInit {
   resultDemo: any;
   diagnosisPhase: number;
 
-  constructor(public user: User, private taskService: TaskService, private router: Router) {
+  constructor(public user: User, private taskService: TaskService, private router: Router, private translate: TranslateService) {
     this.user.mainShowing = false;
+    this.diagnosisPhase = 0;
   }
 
   ngOnInit() {
-    this.diagnosisPhase = 1;
+    this.diagnosisPhase = 0;
     this.unsubmitable = true;
     this.questionShowing = true;
+    // @ts-ignore
+    this.testList = [];
     // @ts-ignore
     this.answerList = [];
     // @ts-ignore
@@ -50,18 +50,31 @@ export class DiagnosisComponent implements OnInit {
       this.taskService.getAllTest().subscribe(data => {
         // @ts-ignore
         this.testDemo = JSON.parse(data._body);
-        this.questionList = this.testDemo._embedded.tests[0].test.questions;
-        for ( const item of this.questionList) {
-          if (item.tags[1].tagId === 4) {
-            this.sourceList.push(item);
-          } else if (item.tags[1].tagId === 5) {
-            this.makeList.push(item);
-          } else {
-            this.deliveryList.push(item);
-          }
-        }
-        console.log(this.makeList);
+        this.testList = this.testDemo._embedded.tests;
       });
+    }
+  }
+
+  startDiagnosis(test) {
+    console.log(test);
+    if (test.questions.length === 0 ) {
+      Swal(
+        this.translate.instant('testZeroAlert'),
+        '',
+        'error'
+      );
+    } else {
+      this.questionList = test.questions;
+      for ( const item of this.questionList) {
+        if (item.tags[1].tagId === 4) {
+          this.sourceList.push(item);
+        } else if (item.tags[1].tagId === 5) {
+          this.makeList.push(item);
+        } else {
+          this.deliveryList.push(item);
+        }
+      }
+      this.diagnosisPhase++;
     }
   }
 
@@ -88,12 +101,12 @@ export class DiagnosisComponent implements OnInit {
   sentAnswer() {
     if (this.answerList.length === this.questionList.length) {
       Swal({
-        title: '确认提交？',
+        title: this.translate.instant('submitConfirm'),
         text: '',
         type: 'warning',
         showCancelButton: true,
-        confirmButtonText: '确定',
-        cancelButtonText: '取消'
+        confirmButtonText: this.translate.instant('sure'),
+        cancelButtonText: this.translate.instant('cancel')
       }).then((result) => {
         if (result.value) {
           this.answerObj = {'name': '', 'test': '', 'user': '', 'choices': ''};
@@ -113,7 +126,7 @@ export class DiagnosisComponent implements OnInit {
           });
         } else if (result.dismiss === Swal.DismissReason.cancel) {
           Swal(
-            '已取消',
+            this.translate.instant('canceled'),
             '',
             'error'
           );
@@ -121,7 +134,7 @@ export class DiagnosisComponent implements OnInit {
       });
     } else {
       Swal(
-        '请答完此阶段所有题目',
+        this.translate.instant('finishAlert'),
         '',
         'error'
       );
@@ -138,7 +151,7 @@ export class DiagnosisComponent implements OnInit {
       this.diagnosisPhase++;
     } else {
       Swal(
-        '请答完此阶段所有题目',
+        this.translate.instant('finishAlert'),
         '',
         'error'
       );
@@ -151,7 +164,7 @@ export class DiagnosisComponent implements OnInit {
       this.diagnosisPhase++;
     } else {
       Swal(
-        '请答完此阶段所有题目',
+        this.translate.instant('finishAlert'),
         '',
         'error'
       );

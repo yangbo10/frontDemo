@@ -1,6 +1,6 @@
 <section class="content-header">
   <h1>
-    试卷管理
+    {{'testTitle'|translate}}
   </h1>
   <ol class="breadcrumb">
 
@@ -13,7 +13,7 @@
   <div class="col-md-12">
     <button class="btn btn-block btn-success btn-sm"
             style="min-width: 80px; width: 6%; float: right; margin-bottom: 15px; margin-top: 0px; margin-left: 20px; margin-top: 5px;"
-            (click)="openCreateModal(template)">创建试卷</button>
+            (click)="openCreateModal(template)">{{'createTestBtn'|translate}}</button>
 
   </div>
 
@@ -29,7 +29,7 @@
 
 <ng-template #template>
   <div class="modal-header">
-    <span class="modal-title" style="font-size: 20px">创建试卷</span>
+    <span class="modal-title" style="font-size: 20px">{{'createTestTitle'|translate}}</span>
     <button type="button" class="close" aria-label="Close" (click)="modalRef.hide()">
       <span aria-hidden="true">×</span>
     </button>
@@ -37,16 +37,16 @@
   <div class="modal-body upload-modal-body">
     <div class="col-md-12">
       <div class="col-md-6">
-        <label> 试卷名称：</label>
-        <input type="text" class="form-inline" placeholder="试卷名称" name="testName" [(ngModel)]="testName">
+        <label> {{'testName'|translate}}：</label>
+        <input type="text" class="form-inline" placeholder="{{'testName'|translate}}" name="testName" [(ngModel)]="testName">
       </div>
       <div class="col-md-6">
-        <label> 试卷备注：</label>
-        <input type="text" class="form-inline" placeholder="试卷备注" name="testComment" [(ngModel)]="testComment">
+        <label> {{'testComment'|translate}}：</label>
+        <input type="text" class="form-inline" placeholder="{{'testComment'|translate}}" name="testComment" [(ngModel)]="testComment">
       </div>
     </div>
   </div>
   <div class="modal-footer" style="border-top: none !important">
-    <button class="btn btn-block btn-primary btn-sm" style="width: 100px; float: right;" (click)="createNewTest()">创建</button>
+    <button class="btn btn-block btn-primary btn-sm" style="width: 100px; float: right;" (click)="createNewTest()">{{'createBtn'|translate}}</button>
   </div>
 </ng-template>

@@ -8,6 +8,8 @@ import Swal from 'sweetalert2';
 import {User} from '../models/user';
 import {e} from '../../../node_modules/@angular/core/src/render3';
 import {toNumber} from '../../../node_modules/ngx-bootstrap/timepicker/timepicker.utils';
+import {Router} from '@angular/router';
+import {TranslateService} from 'ng2-translate';
 
 @Component({
   selector: 'app-questionnaire',
@@ -38,7 +40,9 @@ export class QuestionnaireComponent implements OnInit {
   questionCache: [any];
   nameCache: [any];
 
-  constructor(public user: User, private taskService: TaskService, private modalService: BsModalService) {
+  constructor(public user: User, private taskService: TaskService,
+              private modalService: BsModalService,
+              private translate: TranslateService) {
     this.options = { concurrency: 1, maxUploads: 3 };
     this.files = []; // local uploading files array
     this.uploadInput = new EventEmitter<UploadInput>();
@@ -46,7 +50,7 @@ export class QuestionnaireComponent implements OnInit {
     this.selectTestId = 0;
     this.resultMessage = '';
     this.user.mainShowing = false;
-    this.uploadButtonMsg = '开始上传';
+    this.uploadButtonMsg = this.translate.instant('startUpload');
   }
 
   public tagList = [
@@ -73,20 +77,20 @@ export class QuestionnaireComponent implements OnInit {
   public settings = {
     columns: {
       name: {
-        title: '试题名称',
+        title: this.translate.instant('questionName'),
         filter: false,
       },
       detail: {
-        title: '试题详情',
+        title: this.translate.instant('questionDetail'),
         filter: false,
         width: '50%',
       },
       tag1: {
-        title: '标签1',
+        title: this.translate.instant('tag1'),
         filter: {
           type: 'list',
           config: {
-            selectText: 'Select...',
+            selectText: this.translate.instant('selectText'),
             list: [
               { value: 'Enabler', title: 'Enabler' },
               { value: 'Lean', title: 'Lean' },
@@ -105,11 +109,11 @@ export class QuestionnaireComponent implements OnInit {
         }
       },
       tag2: {
-        title: '标签2',
+        title: this.translate.instant('tag2'),
         filter: {
           type: 'list',
           config: {
-            selectText: 'Select...',
+            selectText: this.translate.instant('selectText'),
             list: [
               { value: 'Source', title: 'Source' },
               { value: 'Make', title: 'Make' },
@@ -129,11 +133,11 @@ export class QuestionnaireComponent implements OnInit {
         }
       },
       tag3: {
-        title: '标签3',
+        title: this.translate.instant('tag3'),
         filter: {
           type: 'list',
           config: {
-            selectText: 'Select...',
+            selectText: this.translate.instant('selectText'),
             list: [
               { value: 'Standardization', title: 'Standardization' },
               { value: 'Transparent Processes', title: 'Transparent Processes' },
@@ -182,7 +186,7 @@ export class QuestionnaireComponent implements OnInit {
     // mode: "external",
     mode: 'inline',
     actions: {
-      columnTitle: '操作',
+      columnTitle: this.translate.instant('operation'),
       add: false,
       position: 'right'
     },
@@ -207,11 +211,11 @@ export class QuestionnaireComponent implements OnInit {
   public newSettings = {
     columns: {
       name: {
-        title: '试题名称',
+        title: this.translate.instant('questionName'),
         filter: false,
       },
       detail: {
-        title: '试题详情',
+        title: this.translate.instant('questionDetail'),
         filter: false,
       }
     },
@@ -291,19 +295,19 @@ export class QuestionnaireComponent implements OnInit {
 
   onDeleteConfirm(event) {
     Swal({
-      title: '确认删除？',
-      text: '将会总题库中删除试题',
+      title: this.translate.instant('deleteConfirm'),
+      text: this.translate.instant('deleteDescribe'),
       type: 'warning',
       showCancelButton: true,
-      confirmButtonText: '确定',
-      cancelButtonText: '取消'
+      confirmButtonText: this.translate.instant('sure'),
+      cancelButtonText: this.translate.instant('cancel')
     }).then((result) => {
       if (result.value) {
         this.taskService.deleteQuestion(event.data.id).subscribe(res => {
             console.log(res);
             if (res.status  >= 200) {
               Swal(
-                '删除成功',
+                this.translate.instant('deleteSuccess'),
                 '',
                 'success'
               );
@@ -312,7 +316,7 @@ export class QuestionnaireComponent implements OnInit {
           },
           error => {
               Swal(
-                '删除失败',
+                this.translate.instant('deleteFail'),
                 '',
                 'error'
               );
@@ -320,7 +324,7 @@ export class QuestionnaireComponent implements OnInit {
           });
       } else if (result.dismiss === Swal.DismissReason.cancel) {
         Swal(
-          '已取消',
+          this.translate.instant('canceled'),
           '',
           'error'
         );
@@ -330,17 +334,17 @@ export class QuestionnaireComponent implements OnInit {
 
   batchDelete() {
     Swal({
-      title: '确认删除？',
-      text: '将会总题库中删除试题',
+      title: this.translate.instant('deleteConfirm'),
+      text: this.translate.instant('deleteDescribe'),
       type: 'warning',
       showCancelButton: true,
-      confirmButtonText: '确定',
-      cancelButtonText: '取消'
+      confirmButtonText: this.translate.instant('sure'),
+      cancelButtonText: this.translate.instant('cancel')
     }).then((result) => {
       if (result.value) {
         if ( this.deleteList.length < 1 ) {
           Swal(
-            '请选择试题',
+            this.translate.instant('selectAlert'),
             '',
             'error'
           );
@@ -349,7 +353,7 @@ export class QuestionnaireComponent implements OnInit {
               console.log(res);
               if (res.status  >= 200) {
                 Swal(
-                  '删除成功',
+                  this.translate.instant('deleteSuccess'),
                   '',
                   'success'
                 );
@@ -359,7 +363,7 @@ export class QuestionnaireComponent implements OnInit {
             error => {
               if (error.status === 409) {
                 Swal(
-                  '删除失败',
+                  this.translate.instant('deleteFail'),
                   '',
                   'error'
                 );
@@ -368,7 +372,7 @@ export class QuestionnaireComponent implements OnInit {
         }
       } else if (result.dismiss === Swal.DismissReason.cancel) {
         Swal(
-          '已取消',
+          this.translate.instant('canceled'),
           '',
           'error'
         );
@@ -406,19 +410,19 @@ export class QuestionnaireComponent implements OnInit {
       questionObj.tags = null;
     }
     Swal({
-      title: '确认修改？',
+      title: this.translate.instant('updateConfirm'),
       text: '',
       type: 'warning',
       showCancelButton: true,
-      confirmButtonText: '确定',
-      cancelButtonText: '取消'
+      confirmButtonText: this.translate.instant('sure'),
+      cancelButtonText: this.translate.instant('cancel')
     }).then((result) => {
       if (result.value) {
         this.taskService.updateQuestion(questionObj).subscribe(res => {
             console.log(res);
             if (res.status  >= 200) {
               Swal(
-                '修改成功',
+                this.translate.instant('updateSuccess'),
                 '',
                 'success'
               );
@@ -427,14 +431,14 @@ export class QuestionnaireComponent implements OnInit {
           },
           error => {
             Swal(
-              '修改失败',
+              this.translate.instant('updateFail'),
               '',
               'error'
             );
           });
       } else if (result.dismiss === Swal.DismissReason.cancel) {
         Swal(
-          '已取消',
+          this.translate.instant('canceled'),
           '',
           'error'
         );
@@ -527,7 +531,7 @@ export class QuestionnaireComponent implements OnInit {
         this.newSource = new LocalDataSource(this.newTableData);
         this.uploadDone = true;
         this.ngOnInit();
-        this.uploadButtonMsg = '继续上传';
+        this.uploadButtonMsg = this.translate.instant('continueUpload');
         break;
     }
   }
@@ -547,7 +551,7 @@ export class QuestionnaireComponent implements OnInit {
   }
 
   openUpload() {
-    this.uploadButtonMsg = '开始上传';
+    this.uploadButtonMsg = this.translate.instant('startUpload');
   }
 
   openCreateModal(template: TemplateRef<any>) {
@@ -571,13 +575,13 @@ export class QuestionnaireComponent implements OnInit {
       this.modalRef.hide();
       if (res.status >= 200) {
         Swal(
-          '创建成功',
+          this.translate.instant('addSuccess'),
           '',
           'success'
         );
       } else {
         Swal(
-          '创建失败',
+          this.translate.instant('addFail'),
           '',
           'error'
         );

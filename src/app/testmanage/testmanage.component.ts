@@ -5,6 +5,7 @@ import {TaskService} from '../service/taskService';
 import {LocalDataSource} from 'ng2-smart-table';
 import Swal from 'sweetalert2';
 import {Router} from '@angular/router';
+import {TranslateService} from 'ng2-translate';
 
 @Component({
   selector: 'app-testmanage',
@@ -19,7 +20,10 @@ export class TestmanageComponent implements OnInit {
   testName: string;
   testComment: string;
 
-  constructor(public user: User, private taskService: TaskService, private modalService: BsModalService, private router: Router) {
+  constructor(public user: User, private taskService: TaskService,
+              private modalService: BsModalService,
+              private router: Router,
+              private translate: TranslateService) {
     this.testName = '';
     this.testComment = '';
   }
@@ -27,11 +31,11 @@ export class TestmanageComponent implements OnInit {
   public settings = {
     columns: {
       name: {
-        title: '试卷名称',
+        title: this.translate.instant('testName'),
         filter: false,
       },
       comment: {
-        title: '试卷详情',
+        title: this.translate.instant('testComment'),
         filter: false,
       }
     },
@@ -48,7 +52,7 @@ export class TestmanageComponent implements OnInit {
     // mode: "external",
     mode: 'inline',
     actions: {
-      columnTitle: '操作',
+      columnTitle: this.translate.instant('operation'),
       add: false,
       position: 'right'
     },
@@ -91,18 +95,18 @@ export class TestmanageComponent implements OnInit {
 
   onDeleteConfirm(event) {
     Swal({
-      title: '确认删除？',
+      title: this.translate.instant('deleteConfirm'),
       text: '',
       type: 'warning',
       showCancelButton: true,
-      confirmButtonText: '确定',
-      cancelButtonText: '取消'
+      confirmButtonText: this.translate.instant('sure'),
+      cancelButtonText: this.translate.instant('cancel')
     }).then((result) => {
       if (result.value) {
         this.taskService.deleteTest(event.data.id).subscribe(res => {
             if (res.status >= 200) {
               Swal(
-                '删除成功',
+                this.translate.instant('删除成功'),
                 '',
                 'success'
               );
@@ -111,7 +115,7 @@ export class TestmanageComponent implements OnInit {
           },
           error => {
               Swal(
-                '删除失败',
+                this.translate.instant('删除失败'),
                 '',
                 'error'
               );
@@ -119,7 +123,7 @@ export class TestmanageComponent implements OnInit {
           });
       } else if (result.dismiss === Swal.DismissReason.cancel) {
         Swal(
-          '已取消',
+          this.translate.instant('canceled'),
           '',
           'error'
         );
@@ -130,19 +134,19 @@ export class TestmanageComponent implements OnInit {
   onSaveConfirm(event) {
     const testObj = {'testId': event.newData.id, 'name': event.newData.name, 'comment': event.newData.comment};
     Swal({
-      title: '确认修改？',
+      title: this.translate.instant('updateConfirm'),
       text: '',
       type: 'warning',
       showCancelButton: true,
-      confirmButtonText: '确定',
-      cancelButtonText: '取消'
+      confirmButtonText: this.translate.instant('sure'),
+      cancelButtonText: this.translate.instant('cancel')
     }).then((result) => {
       if (result.value) {
         this.taskService.updateTest(testObj).subscribe(res => {
             console.log(res);
             if (res.status >= 200) {
               Swal(
-                '修改成功',
+                this.translate.instant('updateSuccess'),
                 '',
                 'success'
               );
@@ -151,14 +155,14 @@ export class TestmanageComponent implements OnInit {
           },
           error => {
             Swal(
-              '修改失败',
+              this.translate.instant('updateFail'),
               '',
               'error'
             );
           });
       } else if (result.dismiss === Swal.DismissReason.cancel) {
         Swal(
-          '已取消',
+          this.translate.instant('canceled'),
           '',
           'error'
         );
@@ -176,12 +180,12 @@ export class TestmanageComponent implements OnInit {
       this.modalRef.hide();
       if (res.status >= 200) {
         Swal({
-          title: '创建成功，是否立即添加试题？',
-          text: '将会跳转至题库管理',
+          title: this.translate.instant('createAlertTitle'),
+          text: this.translate.instant('createAlertDescribe'),
           type: 'success',
           showCancelButton: true,
-          confirmButtonText: '是',
-          cancelButtonText: '否'
+          confirmButtonText: this.translate.instant('yes'),
+          cancelButtonText: this.translate.instant('no')
         }).then((result) => {
           if (result.value) {
             console.log('aaa');
@@ -192,7 +196,7 @@ export class TestmanageComponent implements OnInit {
         });
       } else {
         Swal(
-          '创建失败',
+          this.translate.instant('createFail'),
           '',
           'error'
         );

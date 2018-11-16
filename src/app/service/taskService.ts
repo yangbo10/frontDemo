@@ -221,4 +221,9 @@ export class TaskService {
         headers: headers
       });
     }
+
+    registerUser(userObj) {
+      return this.http.put(this.TASK_URL + 'api/users', userObj, {
+      });
+    }
 }

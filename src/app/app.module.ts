@@ -9,9 +9,9 @@ import {DiagnosisComponent} from './diagnosis/diagnosis.component';
 import {QuestionnaireComponent} from './questionnaire/questionnaire.component';
 import {ReportComponent} from './report/report.component';
 import {FormsModule} from '@angular/forms';
-import {HttpClientModule} from '@angular/common/http';
+import {HttpClient, HttpClientModule} from '@angular/common/http';
 import {TaskService} from './service/taskService';
-import { HttpModule } from '@angular/http';
+import {Http, HttpModule} from '@angular/http';
 import { QuestionboxComponent } from './questionbox/questionbox.component';
 import {Ng2SmartTableModule} from 'ng2-smart-table';
 import { ChartModule } from 'angular2-highcharts';
@@ -22,6 +22,8 @@ import {User} from './models/user';
 import { ContactComponent } from './contact/contact.component';
 import { UsermanageComponent } from './usermanage/usermanage.component';
 import { TestmanageComponent } from './testmanage/testmanage.component';
+import { TranslateHttpLoader } from '@ngx-translate/http-loader';
+import { TranslateModule, TranslateLoader } from 'ng2-translate/ng2-translate';
 
 
 const appChildRoutes: Routes = [
@@ -63,6 +65,10 @@ export const appRoutes: Routes = [
   }
   ];
 
+export function HttpLoaderFactory(http: HttpClient) {
+  return new TranslateHttpLoader(http, './assets/i18n/', '.json');
+}
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -88,6 +94,11 @@ export const appRoutes: Routes = [
     NgxEchartsModule,
     ModalModule.forRoot(),
     AlertModule.forRoot(),
+    TranslateModule.forRoot({
+      provide: TranslateLoader,
+      useFactory: HttpLoaderFactory,
+      deps: [HttpClient]
+    }),
     RouterModule.forRoot(appRoutes)
   ],
   providers: [TaskService, User],

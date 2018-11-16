@@ -4,6 +4,8 @@ import {User} from '../models/user';
 import {LocalDataSource} from 'ng2-smart-table';
 import {TaskService} from '../service/taskService';
 import Swal from 'sweetalert2';
+import {Router} from '@angular/router';
+import {TranslateService} from 'ng2-translate';
 
 @Component({
   selector: 'app-usermanage',
@@ -23,18 +25,20 @@ export class UsermanageComponent implements OnInit {
     {'roleId': 3, 'roleName': 'USER'}
   ];
 
-  constructor(public user: User, private taskService: TaskService, private modalService: BsModalService) {
+  constructor(public user: User, private taskService: TaskService,
+              private modalService: BsModalService,
+              private translate: TranslateService) {
   }
 
   public settings = {
     columns: {
       name: {
-        title: '用户名称',
+        title: this.translate.instant('userName'),
         filter: false,
         editable: false
       },
       roles: {
-        title: '用户角色',
+        title: this.translate.instant('role'),
         filter: false,
         editor: {
           type: 'list',
@@ -48,7 +52,7 @@ export class UsermanageComponent implements OnInit {
         }
       },
       comment: {
-        title: '用户详情',
+        title: this.translate.instant('userDetail'),
         filter: false,
       }
     },
@@ -65,7 +69,7 @@ export class UsermanageComponent implements OnInit {
     // mode: "external",
     mode: 'inline',
     actions: {
-      columnTitle: '操作',
+      columnTitle: this.translate.instant('operation'),
       add: false,
       position: 'right'
     },
@@ -111,19 +115,19 @@ export class UsermanageComponent implements OnInit {
 
   onDeleteConfirm(event) {
     Swal({
-      title: '确认删除？',
+      title: this.translate.instant('deleteConfirm'),
       text: '',
       type: 'warning',
       showCancelButton: true,
-      confirmButtonText: '确定',
-      cancelButtonText: '取消'
+      confirmButtonText: this.translate.instant('sure'),
+      cancelButtonText: this.translate.instant('cancel')
     }).then((result) => {
       if (result.value) {
         this.taskService.deleteUser(event.data.id).subscribe(res => {
             console.log(res);
             if (res.status  >= 200) {
               Swal(
-                '删除成功',
+                this.translate.instant('deleteSuccess'),
                 '',
                 'success'
               );
@@ -132,7 +136,7 @@ export class UsermanageComponent implements OnInit {
           },
           error => {
               Swal(
-                '删除失败',
+                this.translate.instant('deleteFail'),
                 '',
                 'error'
               );
@@ -140,7 +144,7 @@ export class UsermanageComponent implements OnInit {
           });
       } else if (result.dismiss === Swal.DismissReason.cancel) {
         Swal(
-          '已取消',
+          this.translate.instant('canceled'),
           '',
           'error'
         );
@@ -167,19 +171,19 @@ export class UsermanageComponent implements OnInit {
       'roles': this.getRoleIdByName(event.newData.roles)
     };
     Swal({
-      title: '确认修改？',
+      title: this.translate.instant('updateConfirm'),
       text: '',
       type: 'warning',
       showCancelButton: true,
-      confirmButtonText: '确定',
-      cancelButtonText: '取消'
+      confirmButtonText: this.translate.instant('sure'),
+      cancelButtonText: this.translate.instant('cancel')
     }).then((result) => {
       if (result.value) {
         this.taskService.updateUser(userObj).subscribe(res => {
             console.log(res);
             if (res.status  >= 200) {
               Swal(
-                '修改成功',
+                this.translate.instant('updateSuccess'),
                 '',
                 'success'
               );
@@ -188,14 +192,14 @@ export class UsermanageComponent implements OnInit {
           },
           error => {
             Swal(
-              '修改失败',
+              this.translate.instant('updateFail'),
               '',
               'error'
             );
           });
       } else if (result.dismiss === Swal.DismissReason.cancel) {
         Swal(
-          '已取消',
+          this.translate.instant('canceled'),
           '',
           'error'
         );
@@ -214,19 +218,19 @@ export class UsermanageComponent implements OnInit {
     }
     console.log(this.newUser);
     Swal({
-      title: '确认创建？',
+      title:  this.translate.instant('createConfirm'),
       text: '',
       type: 'warning',
       showCancelButton: true,
-      confirmButtonText: '确定',
-      cancelButtonText: '取消'
+      confirmButtonText: this.translate.instant('sure'),
+      cancelButtonText: this.translate.instant('cancel')
     }).then((result) => {
       if (result.value) {
         this.taskService.createUser(this.newUser).subscribe(res => {
             console.log(res);
             if (res.status >= 200) {
               Swal(
-                '创建成功',
+                this.translate.instant('createSuccess'),
                 '',
                 'success'
               );
@@ -236,14 +240,14 @@ export class UsermanageComponent implements OnInit {
           },
           error => {
             Swal(
-              '创建失败',
+              this.translate.instant('createFail'),
               '',
               'error'
             );
           });
       } else if (result.dismiss === Swal.DismissReason.cancel) {
         Swal(
-          '已取消',
+          this.translate.instant('canceled'),
           '',
           'error'
         );

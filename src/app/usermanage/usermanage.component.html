@@ -1,6 +1,6 @@
 <section class="content-header">
   <h1>
-    用户管理
+    {{'userTitle'|translate}}
   </h1>
   <ol class="breadcrumb">
 
@@ -13,7 +13,7 @@
   <div class="col-md-12">
     <button class="btn btn-block btn-success btn-sm"
             style="min-width: 80px; width: 6%; float: right; margin-bottom: 15px; margin-top: 0px; margin-left: 20px; margin-top: 5px;"
-            (click)="openCreateModal(template)">创建用户</button>
+            (click)="openCreateModal(template)">{{'createUserBtn'|translate}}</button>
 
   </div>
 
@@ -29,7 +29,7 @@
 
 <ng-template #template>
   <div class="modal-header">
-    <span class="modal-title" style="font-size: 20px">创建试卷</span>
+    <span class="modal-title" style="font-size: 20px">{{'createUserTitle'|translate}}</span>
     <button type="button" class="close" aria-label="Close" (click)="modalRef.hide()">
       <span aria-hidden="true">×</span>
     </button>
@@ -37,15 +37,15 @@
   <div class="modal-body upload-modal-body">
     <div class="col-md-12">
       <div class="col-md-4">
-        <label> 用户名：</label>
-        <input type="text" class="form-inline" placeholder="用户名" name="testName" [(ngModel)]="newUser.username">
+        <label> {{'userName'|translate}}：</label>
+        <input type="text" class="form-inline" placeholder="{{'userName'|translate}}" name="testName" [(ngModel)]="newUser.username">
       </div>
       <div class="col-md-4">
-        <label> 密码：</label>
-        <input type="password" class="form-inline" placeholder="密码" name="testComment" [(ngModel)]="newUser.password">
+        <label> {{'password'|translate}}：</label>
+        <input type="password" class="form-inline" placeholder="{{'password'|translate}}" name="testComment" [(ngModel)]="newUser.password">
       </div>
       <div class="col-md-4">
-        <label> 角色：</label>
+        <label> {{'role'|translate}}：</label>
         <select [(ngModel)]="newUser.roles[0].roleId">
           <option *ngFor="let item of roleList" [value]="item.roleId">{{item.roleName}}</option>
         </select>
@@ -53,6 +53,6 @@
     </div>
   </div>
   <div class="modal-footer" style="border-top: none !important">
-    <button class="btn btn-block btn-primary btn-sm" style="width: 100px; float: right;" (click)="createNewUser()">创建</button>
+    <button class="btn btn-block btn-primary btn-sm" style="width: 100px; float: right;" (click)="createNewUser()">{{'createBtn'|translate}}</button>
   </div>
 </ng-template>

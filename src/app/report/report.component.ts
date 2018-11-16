@@ -5,6 +5,7 @@ import { BsModalRef } from 'ngx-bootstrap/modal/bs-modal-ref.service';
 import * as echarts from 'echarts';
 import Swal from 'sweetalert2';
 import {User} from '../models/user';
+import {TranslateService} from 'ng2-translate';
 
 declare var require: any;
 const myChart = require('ngx-echarts');
@@ -42,7 +43,9 @@ export class ReportComponent implements OnInit {
   @ViewChild('main') mainPage: ElementRef;
   @ViewChild('myChart1') myChart1: ElementRef;
 
-  constructor(public user: User, private taskService: TaskService, private modalService: BsModalService) {
+  constructor(public user: User, private taskService: TaskService,
+              private modalService: BsModalService,
+              private translate: TranslateService) {
     this.user.mainShowing = false;
     this.resultId = 1;
     this.showStaticImg = false;
@@ -181,24 +184,6 @@ export class ReportComponent implements OnInit {
         for ( let i = 1; i <= this.optionList.length; i ++ ) {
           this.indexList.push(i);
         }
-        this.options6 = {
-          title: {
-            text: 'Source Questions Status',
-            y: 0
-          },
-          xAxis: {
-            type: 'category',
-            data: this.indexList
-          },
-          yAxis: {
-            type: 'value'
-          },
-          series: [{
-            data: this.optionList,
-            type: 'line'
-          }]
-        };
-
         this.options1 = {
           title: {
             text: 'Enabler-STA Radar Graph',
@@ -224,7 +209,7 @@ export class ReportComponent implements OnInit {
             ]
           },
           series: [{
-            name: '得分',
+            name: this.translate.instant('score'),
             type: 'radar',
             // areaStyle: {normal: {}},
             data: [
@@ -266,7 +251,7 @@ export class ReportComponent implements OnInit {
             ]
           },
           series: [{
-            name: '得分',
+            name: this.translate.instant('score'),
             type: 'radar',
             // areaStyle: {normal: {}},
             data : [
@@ -308,7 +293,7 @@ export class ReportComponent implements OnInit {
             ]
           },
           series: [{
-            name: '得分',
+            name: this.translate.instant('score'),
             type: 'radar',
             // areaStyle: {normal: {}},
             data : [
@@ -348,7 +333,7 @@ export class ReportComponent implements OnInit {
             ]
           },
           series: [{
-            name: '得分',
+            name: this.translate.instant('score'),
             type: 'radar',
             // areaStyle: {normal: {}},
             data : [
@@ -395,7 +380,7 @@ export class ReportComponent implements OnInit {
             ]
           },
           series: [{
-            name: '得分',
+            name: this.translate.instant('score'),
             type: 'radar',
             // areaStyle: {normal: {}},
             data : [
@@ -412,6 +397,24 @@ export class ReportComponent implements OnInit {
             label: {
               show: true
             }
+          }]
+        };
+
+        this.options6 = {
+          title: {
+            text: 'Source Questions Status',
+            y: 0
+          },
+          xAxis: {
+            type: 'category',
+            data: this.indexList
+          },
+          yAxis: {
+            type: 'value'
+          },
+          series: [{
+            data: this.optionList,
+            type: 'line'
           }]
         };
 
@@ -458,12 +461,12 @@ export class ReportComponent implements OnInit {
   createPdf() {
     this.convertToImg();
     Swal({
-      title: '确认导出？',
-      text: '将会生成pdf文件并下载',
+      title: this.translate.instant('exportConfirm'),
+      text: this.translate.instant('exportDescribe'),
       type: 'warning',
       showCancelButton: true,
-      confirmButtonText: '确定',
-      cancelButtonText: '取消'
+      confirmButtonText: this.translate.instant('sure'),
+      cancelButtonText: this.translate.instant('cancel')
     }).then((result) => {
       if (result.value) {
         this.taskService.reportToPdf(this.mainPage.nativeElement.innerHTML).subscribe( res => {
@@ -478,33 +481,19 @@ export class ReportComponent implements OnInit {
           document.body.removeChild(link);
         });
         Swal(
-          '导出成功',
+          this.translate.instant('exportSuccess'),
           '',
           'success'
         );
       } else if (result.dismiss === Swal.DismissReason.cancel) {
         Swal(
-          '已取消',
+          this.translate.instant('canceled'),
           '',
           'error'
         );
         this.showStaticImg = false;
       }
     });
-  }
-
-  openModal(template: TemplateRef<any>) {
-    this.modalRef = this.modalService.show(template, {class: 'modal-sm'});
-  }
-
-  confirm(): void {
-    this.message = 'Confirmed!';
-    this.modalRef.hide();
-  }
-
-  decline(): void {
-    this.message = 'Declined!';
-    this.modalRef.hide();
   }
 
 }

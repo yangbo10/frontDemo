@@ -8,7 +8,7 @@
       <!-- mini logo for sidebar mini 50x50 pixels -->
       <span class="logo-mini"><img src="assets/dist/img/theme/visual-iot-sm.png"></span>
       <!-- logo for regular state and mobile devices -->
-      <span class="logo-lg"><img src="assets/dist/img/theme/visual-iot-sm.png"><b>  Zeno</b>在线诊断系统</span>
+      <span class="logo-lg"><img src="assets/dist/img/theme/visual-iot-sm.png"><b>  Zeno</b>{{'OnlineSystem'|translate}}</span>
     </a>
 
     <!-- Header Navbar -->
@@ -24,7 +24,8 @@
           <li>
             <img src="assets/dist/img/theme/bosch_logo_english.png" alt="Bosch" class="bosch-logo"/>
           </li>
-          <button class="btn btn-default" (click)="logOut()" style="margin-top: 8px">登出</button>
+          <button class="btn btn-default" (click)="logOut()" style="margin-top: 8px">{{'LogOut'|translate}}</button>
+          <button class="btn btn-default" (click)="changeLanguage()" style="margin-top: 8px">{{'switchLanguage'|translate}}</button>
         </ul>
       </div>
     </nav>
@@ -39,12 +40,12 @@
       <ul class="sidebar-menu">
         <li class="header"></li>
         <!-- Optionally, you can add icons to the links    class="active"-->
-        <li (click)="changePage()"><a routerLink="diagnosis"><i class='fa fa-link'></i> <span>诊断</span></a></li>
-        <li (click)="changePage()"><a routerLink="report"><i class='fa fa-link'></i> <span>结果报告</span></a></li>
-        <li (click)="changePage()" *ngIf="user.roles[0].roleId == 1 || user.roles[0].roleId == 2"><a routerLink="questionnaire"><i class='fa fa-link'></i> <span>题库管理</span></a></li>
-        <li (click)="changePage()" *ngIf="user.roles[0].roleId == 1 || user.roles[0].roleId == 2"><a routerLink="test"><i class='fa fa-link'></i> <span>试卷管理</span></a></li>
-        <li (click)="changePage()" *ngIf="user.roles[0].roleId == 1"><a routerLink="user"><i class='fa fa-link'></i> <span>用户管理</span></a></li>
-        <li (click)="changePage()"><a routerLink="contact"><i class='fa fa-link'></i> <span>联系我们</span></a></li>
+        <li (click)="changePage()"><a routerLink="diagnosis"><i class='fa fa-edit'></i> <span>{{'diagnosisMenu'|translate}}</span></a></li>
+        <li (click)="changePage()"><a routerLink="report"><i class='fa fa-bar-chart'></i> <span>{{'reportMenu'|translate}}</span></a></li>
+        <li (click)="changePage()" *ngIf="user.roles[0].roleId == 1 || user.roles[0].roleId == 2"><a routerLink="questionnaire"><i class='fa fa-database'></i> <span>{{'questionMenu'|translate}}</span></a></li>
+        <li (click)="changePage()" *ngIf="user.roles[0].roleId == 1 || user.roles[0].roleId == 2"><a routerLink="test"><i class='fa fa-th-list'></i> <span>{{'testMenu'|translate}}</span></a></li>
+        <li (click)="changePage()" *ngIf="user.roles[0].roleId == 1"><a routerLink="user"><i class='fa fa-user'></i> <span>{{'userMenu'|translate}}</span></a></li>
+        <li (click)="changePage()"><a routerLink="contact"><i class='fa fa-phone'></i> <span>{{'contactMenu'|translate}}</span></a></li>
       </ul><!-- /.sidebar-menu -->
     </section>
     <!-- /.sidebar -->
@@ -62,7 +63,7 @@
             <button class="btn btn-block btn-primary btn-lg"
                     style="width: 20%; margin: 0 auto"
                     (click)="changePage()" routerLink="diagnosis">
-              开始诊断</button>
+              {{'startDiagnosis'|translate}}</button>
           </div>
         </div>
       </div>

@@ -1,6 +1,6 @@
 <section class="content-header">
   <h1>
-    题库管理
+    {{'questionnaireTitle'|translate}}
   </h1>
   <ol class="breadcrumb">
 
@@ -14,12 +14,12 @@
     <input #search class="search form-inline" style="width: 200px" type="text" placeholder="Search..." (keydown.enter)="onSearch(search.value)">
     <button class="btn btn-block btn-danger btn-sm"
             style="min-width: 80px; width: 6%; float: right; margin-bottom: 15px; margin-left: 20px; margin-top: 5px;"
-            (click)="batchDelete()">批量删除</button>
+            (click)="batchDelete()">{{'batchDeleteBtn'|translate}}</button>
     <button class="btn btn-block btn-success btn-sm"
             style="min-width: 80px; width: 6%; float: right; margin-bottom: 15px; margin-top: 0px; margin-left: 20px; margin-top: 5px;"
-            (click)="openCreateModal(template)">添加到试卷</button>
+            (click)="openCreateModal(template)">{{'addToTestBtn'|translate}}</button>
     <button class="btn btn-block btn-primary btn-sm" style="min-width: 80px; width: 6%; float: right; margin-bottom: 15px"
-            data-toggle="modal" data-target="#import-modal" (click)="openUpload()">导入试题</button>
+            data-toggle="modal" data-target="#import-modal" (click)="openUpload()">{{'importQuestionBtn'|translate}}</button>
 
   </div>
 
@@ -38,7 +38,7 @@
   <div class="modal-dialog import-model" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <span class="modal-title" style="font-size: 20px">导入试题</span>
+        <span class="modal-title" style="font-size: 20px">{{'importQuestionTitle'|translate}}</span>
         <button type="button" class="close" aria-label="Close" data-dismiss="modal" data-dismiss="modal">
           <span aria-hidden="true">×</span>
         </button>
@@ -54,7 +54,7 @@
         </div>
         <div class="table-responsive col-md-12" *ngIf="uploadDone">
           <div class="col-md-12">
-            <label>结果预览</label>
+            <label>{{'importPreview'|translate}}</label>
           </div>
           <ng2-smart-table [settings]="newSettings" [source]="newSource"></ng2-smart-table>
         </div>
@@ -68,42 +68,37 @@
 
 <ng-template #template>
       <div class="modal-header">
-        <span class="modal-title" style="font-size: 20px">添加至试卷</span>
+        <span class="modal-title" style="font-size: 20px">{{'addToTestTitle'|translate}}</span>
         <button type="button" class="close" aria-label="Close" (click)="modalRef.hide()">
           <span aria-hidden="true">×</span>
         </button>
       </div>
       <div class="modal-body upload-modal-body">
         <div class="col-md-12">
-          <label>被选中试题：</label>
+          <label>{{'selectedQuestions'|translate}}：</label>
           <span *ngFor="let item of selectedQuestions">{{item}}   </span>
 
         </div>
         <div class="col-md-12" style="height: 20px">
         </div>
         <div class="col-md-12">
-          <label> 添加至试卷：</label>
+          <label> {{'addToTestTitle'|translate}}：</label>
           <select [(ngModel)]="selectTestId" (ngModelChange)="selectedNameChanged($event)">
             <option *ngFor="let item of testList" [value]="item.test.testId">{{item.test.name}}</option>
           </select>
-          <button class="btn btn-success btn-sm" style="width: 70px; margin-left: 20px; position: relative" (click)="addToCache()">添加</button>
-          <button class="btn btn-warning btn-sm" style="width: 70px; margin-left: 20px; position: relative" (click)="clearCache()">清空</button>
-          <!--<div class="col-md-6">
-            <input name='createType' type="radio" checked value="new" (click)="isNewCheck()">
-            <label> 新建试卷名：</label>
-            <input type="text" class="form-inline" placeholder="试卷名称" name="questionnaireName" [(ngModel)]="questionnaireName" [disabled]="!newTestOrNot">
-          </div>-->
+          <button class="btn btn-success btn-sm" style="width: 70px; margin-left: 20px; position: relative" (click)="addToCache()">{{'add'|translate}}</button>
+          <button class="btn btn-warning btn-sm" style="width: 70px; margin-left: 20px; position: relative" (click)="clearCache()">{{'clear'|translate}}</button>
         </div>
         <div class="col-md-12" style="height: 20px">
         </div>
         <div class="col-md-12">
-          <label>已添加试题：</label>
+          <label>{{'addedQuestions'|translate}}：</label>
           <span *ngFor="let item of nameCache">{{item}}   </span>
 
         </div>
       </div>
       <div class="modal-footer" style="border-top: none !important">
-        <button class="btn btn-block btn-primary btn-sm" style="width: 150px; float: right;" (click)="createQuestionnaire()">创建</button>
+        <button class="btn btn-block btn-primary btn-sm" style="width: 150px; float: right;" (click)="createQuestionnaire()">{{'save'|translate}}</button>
       </div>
 </ng-template>
 

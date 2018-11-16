@@ -1,7 +1,7 @@
 
 <section class="content-header">
   <h1>
-    结果报告
+    {{'reportTitle'|translate}}
   </h1>
   <ol class="breadcrumb">
 
@@ -21,19 +21,19 @@
 
       <tbody>
       <tr>
-        <td>Full Score</td>
+        <td>{{'fullScore'|translate}}</td>
         <td>{{simpleResultList.Enabler.total}}</td>
         <td>{{simpleResultList.Lean.total}}</td>
         <td>{{simpleResultList['I4.0'].total}}</td>
       </tr>
       <tr>
-        <td>Actual Score</td>
+        <td>{{'actualScore'|translate}}</td>
         <td>{{simpleResultList.Enabler.actual}}</td>
         <td>{{simpleResultList.Lean.actual}}</td>
         <td>{{simpleResultList['I4.0'].actual}}</td>
       </tr>
       <tr>
-        <td>Unified Score(Full 100)</td>
+        <td>{{'unifiedScore'|translate}}</td>
         <td>{{simpleResultList.Enabler.normalized}}</td>
         <td>{{simpleResultList.Lean.normalized}}</td>
         <td>{{simpleResultList['I4.0'].normalized}}</td>
@@ -45,10 +45,10 @@
       <thead>
       <tr style="border: 1px solid #f4f4f4;">
         <th>  </th>
-        <th>SubItem</th>
-        <th>Full Score</th>
-        <th>Actual Score</th>
-        <th>Unified Score(Full 100)</th>
+        <th>{{'subItem'|translate}}</th>
+        <th>{{'fullScore'|translate}}</th>
+        <th>{{'actualScore'|translate}}</th>
+        <th>{{'unifiedScore'|translate}}</th>
       </tr>
       </thead>
 
@@ -160,15 +160,8 @@
   </div>
 
   <div class="col-md-12">
-    <button class="btn btn-block btn-primary btn-lg" style="width: 10%; float: right; margin-bottom: 15px" (click)="createPdf()">导出报告</button>
+    <button class="btn btn-block btn-primary btn-lg" style="width: 10%; float: right; margin-bottom: 15px" (click)="createPdf()">{{'exportBtn'|translate}}</button>
   </div>
 
 </div>
 
-<ng-template #template>
-  <div class="modal-body text-center">
-    <p>导出到PDF？</p>
-    <button type="button" class="btn btn-primary" (click)="confirm()" style="margin-right: 10px">确定</button>
-    <button type="button" class="btn btn-default" (click)="decline()" style="margin-left: 10px">取消</button>
-  </div>
-</ng-template>

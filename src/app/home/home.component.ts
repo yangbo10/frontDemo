@@ -4,6 +4,8 @@ import {Router} from '@angular/router';
 import Swal from 'sweetalert2';
 import {User} from '../models/user';
 import {toNumber} from '../../../node_modules/ngx-bootstrap/timepicker/timepicker.utils';
+import {BsModalService} from 'ngx-bootstrap';
+import {TranslateService} from 'ng2-translate';
 
 @Component({
   selector: 'app-home',
@@ -12,11 +14,11 @@ import {toNumber} from '../../../node_modules/ngx-bootstrap/timepicker/timepicke
 })
 export class HomeComponent implements OnInit {
 
-  mainPageShowing: boolean;
-
-  constructor(public user: User, private taskService: TaskService, private router: Router) {
+  constructor(public user: User, private taskService: TaskService, private router: Router, private translate: TranslateService) {
     this.user.mainShowing = true;
     this.user.roles[0].roleId = toNumber(localStorage.getItem('user_role'));
+    this.translate.setDefaultLang('cn');
+    this.translate.use('cn');
 }
 
   ngOnInit() {
@@ -28,16 +30,16 @@ export class HomeComponent implements OnInit {
 
   logOut() {
     Swal({
-      title: '确认注销当前用户？',
-      text: '将会跳转至登录页',
+      title: this.translate.instant('logOutConfirm'),
+      text: this.translate.instant('logOutConfirmDescribe'),
       type: 'warning',
       showCancelButton: true,
-      confirmButtonText: '确定',
-      cancelButtonText: '取消'
+      confirmButtonText: this.translate.instant('sure'),
+      cancelButtonText: this.translate.instant('cancel')
     }).then((result) => {
       if (result.value) {
         Swal(
-          '注销成功',
+          this.translate.instant('logOutSuccess'),
           '',
           'success'
         );
@@ -47,7 +49,7 @@ export class HomeComponent implements OnInit {
         });
       } else if (result.dismiss === Swal.DismissReason.cancel) {
         Swal(
-          '已取消',
+          this.translate.instant('canceled'),
           '',
           'error'
         );
@@ -57,5 +59,15 @@ export class HomeComponent implements OnInit {
 
   changePage() {
     this.user.mainShowing = false;
+  }
+
+  changeLanguage() {
+    console.log(this.translate.currentLang);
+    if (this.translate.currentLang === 'cn') {
+      this.translate.use('en');
+    } else {
+      this.translate.use('cn');
+    }
+    this.ngOnInit();
   }
 }
