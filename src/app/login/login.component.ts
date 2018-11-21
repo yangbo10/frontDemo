@@ -18,14 +18,17 @@ export class LoginComponent implements OnInit {
   public modalRef: BsModalRef;
   newUser: User = new User();
   languages: any[];
+  passwordConfirm: string;
 
   constructor(
     private route: ActivatedRoute,
     private router: Router,
     private taskService: TaskService, private modalService: BsModalService, private translate: TranslateService) {
+    this.passwordConfirm = '';
   }
 
   ngOnInit() {
+    this.translate.use('cn');
     this.languages = [
       {label: '中文', value: 'cn'},
       {label: '英文', value: 'en'}
@@ -46,24 +49,35 @@ export class LoginComponent implements OnInit {
   }
 
   openCreateModal(template: TemplateRef<any>) {
+    this.newUser =  new User();
+    this.passwordConfirm = '';
     this.modalRef = this.modalService.show(template, {class: 'modal-lg create-modal'});
   }
 
   registerUser() {
-    this.taskService.registerUser(this.newUser).subscribe( res => {
+    const signUpUser = {'username': this.newUser.username, 'password': this.newUser.password}
+    if (this.newUser.password === this.passwordConfirm) {
+      this.taskService.registerUser(signUpUser).subscribe( res => {
+        Swal(
+          this.translate.instant('registerSuccess'),
+          '',
+          'success'
+        );
+        this.modalRef.hide();
+      }, error => {
+        Swal(
+          this.translate.instant('registerFail'),
+          '',
+          'error'
+        );
+      });
+    } else {
       Swal(
-        this.translate.instant('registerSuccess'),
-        '',
-        'success'
-      );
-      this.modalRef.hide();
-    }, error => {
-      Swal(
-        this.translate.instant('registerFail'),
+        this.translate.instant('passwordNotSame'),
         '',
         'error'
       );
-    });
+    }
   }
 }
 

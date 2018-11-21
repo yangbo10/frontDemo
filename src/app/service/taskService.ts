@@ -4,7 +4,7 @@ import {Router} from '@angular/router';
 import Swal from 'sweetalert2';
 @Injectable()
 export class TaskService {
-    TASK_URL = 'http://10.177.241.51:8000/service/';
+    TASK_URL = 'http://10.177.241.51:10000/service/';
     constructor(public http: Http, private router: Router) { }
 
     createAuthorizationHeader(headers: Headers) {
@@ -28,6 +28,7 @@ export class TaskService {
               const userRole = userList._embedded.users[0].user.roles[0].roleId;
               localStorage.setItem('user_id', userId);
               localStorage.setItem('user_role', userRole);
+              localStorage.setItem('language', 'cn');
               console.log(localStorage);
               this.router.navigate(['/home']);
             });
@@ -223,7 +224,7 @@ export class TaskService {
     }
 
     registerUser(userObj) {
-      return this.http.put(this.TASK_URL + 'api/users', userObj, {
+      return this.http.post(this.TASK_URL + 'api/users/signup', userObj, {
       });
     }
 }

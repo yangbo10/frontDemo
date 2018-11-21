@@ -31,39 +31,44 @@
 </div>
 
 <ng-template #template>
-  <div class="modal-header">
-    <span class="modal-title" style="font-size: 20px">{{'register'| translate}}</span>
-    <button type="button" class="close" aria-label="Close" (click)="modalRef.hide()">
-      <span aria-hidden="true">×</span>
-    </button>
-  </div>
-  <div class="modal-body upload-modal-body">
-    <div class="col-md-12 input-row">
-      <div class="col-md-6 ">
-        <label class="control-label"> {{'userName'| translate}}：</label>
+  <form class="form-horizontal" name="form" (ngSubmit)="f.form.valid && registerUser()" #f="ngForm" novalidate>
+    <div class="modal-header">
+      <span class="modal-title" style="font-size: 20px">{{'register'| translate}}</span>
+      <button type="button" class="close" aria-label="Close" (click)="modalRef.hide()">
+        <span aria-hidden="true">×</span>
+      </button>
+    </div>
+    <div class="modal-body upload-modal-body">
+      <div class="col-md-12 input-row">
+        <div class="col-md-3 ">
+          <label class="control-label" style="float: right"> {{'userName'| translate}}：</label>
+        </div>
+        <div class="col-md-6">
+          <input type="text" class="form-control" placeholder="{{'userName'| translate}}" name="username1" [(ngModel)]="newUser.username" #username1="ngModel"  required>
+          <div *ngIf="f.submitted && !username1.valid" class="help-block">{{'userNameValid'|translate}}</div>
+        </div>
       </div>
-      <div class="col-md-6">
-        <input type="text" class="form-control" placeholder="{{'userName'| translate}}" name="testName" [(ngModel)]="newUser.username">
+      <div class="col-md-12 input-row">
+        <div class="col-md-3">
+          <label class="control-label" style="float: right"> {{'password'| translate}}：</label>
+        </div>
+        <div class="col-md-6">
+          <input type="password" class="form-control" placeholder="{{'password'| translate}}" name="password1" [(ngModel)]="newUser.password" #password1="ngModel"  required>
+          <div *ngIf="f.submitted && !password1.valid" class="help-block">{{'passwordValid'|translate}}</div>
+        </div>
+      </div>
+      <div class="col-md-12 input-row">
+        <div class="col-md-3">
+          <label class="control-label" style="float: right"> {{'confirmPassword'| translate}}：</label>
+        </div>
+        <div class="col-md-6">
+          <input type="password" class="form-control" placeholder="{{'confirmPassword'| translate}}" name="password2" [(ngModel)]="passwordConfirm" #password2="ngModel"  required>
+          <div *ngIf="f.submitted && !password2.valid" class="help-block">{{'passwordValid'|translate}}</div>
+        </div>
       </div>
     </div>
-    <div class="col-md-12 input-row">
-      <div class="col-md-6">
-        <label class="control-label"> {{'password'| translate}}：</label>
-      </div>
-      <div class="col-md-6">
-        <input type="password" class="form-control" placeholder="{{'password'| translate}}" name="testComment" [(ngModel)]="newUser.password">
-      </div>
+    <div class="modal-footer" style="border-top: none !important">
+      <button type="submit" class="btn btn-block btn-primary btn-sm" style="width: 100px; float: right;">{{'register'|translate}}</button>
     </div>
-    <div class="col-md-12 input-row">
-      <div class="col-md-6">
-        <label class="control-label"> {{'confirmPassword'| translate}}：</label>
-      </div>
-      <div class="col-md-6">
-        <input type="password" class="form-control" placeholder="{{'confirmPassword'| translate}}" name="testComment" [(ngModel)]="newUser.password">
-      </div>
-    </div>
-  </div>
-  <div class="modal-footer" style="border-top: none !important">
-    <button class="btn btn-block btn-primary btn-sm" style="width: 100px; float: right;" (click)="registerUser()">{{'register'|translate}}</button>
-  </div>
+  </form>
 </ng-template>

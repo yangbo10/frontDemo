@@ -17,12 +17,17 @@ export class HomeComponent implements OnInit {
   constructor(public user: User, private taskService: TaskService, private router: Router, private translate: TranslateService) {
     this.user.mainShowing = true;
     this.user.roles[0].roleId = toNumber(localStorage.getItem('user_role'));
-    this.translate.setDefaultLang('cn');
-    this.translate.use('cn');
+    if (localStorage.getItem('language') === 'cn') {
+      this.translate.setDefaultLang('cn');
+      this.translate.use('cn');
+    } else {
+      localStorage.setItem('language', 'en');
+      this.translate.setDefaultLang('en');
+      this.translate.use('en');
+    }
 }
 
   ngOnInit() {
-    console.log(this.user.roles[0].roleId);
     if (localStorage.getItem('access_token') === null) {
       this.router.navigate(['']);
     }
@@ -57,16 +62,24 @@ export class HomeComponent implements OnInit {
     });
   }
 
+  goHome() {
+    this.user.mainShowing = true;
+    this.router.navigate(['home']);
+  }
+
   changePage() {
     this.user.mainShowing = false;
   }
 
   changeLanguage() {
-    console.log(this.translate.currentLang);
     if (this.translate.currentLang === 'cn') {
+      this.translate.setDefaultLang('en');
       this.translate.use('en');
+      localStorage.setItem('language', 'en');
     } else {
+      this.translate.setDefaultLang('cn');
       this.translate.use('cn');
+      localStorage.setItem('language', 'cn');
     }
     this.ngOnInit();
   }

@@ -179,7 +179,6 @@ export class QuestionnaireComponent implements OnInit {
     },
 
     isPaginationEnabled: true,
-    isGlobalSearchActivated: true,
     // itemsByPage: 10,
     selectMode: 'multi',
 
@@ -290,7 +289,7 @@ export class QuestionnaireComponent implements OnInit {
         field: 'detail',
         search: query,
       }
-    ], false);
+    ], true);
   }
 
   onDeleteConfirm(event) {

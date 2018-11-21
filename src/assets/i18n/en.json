@@ -5,6 +5,7 @@
   "password":"Password",
   "userNameValid":"Username cannot be empty",
   "passwordValid":"Password cannot be empty",
+  "passwordNotSame":"Inconsistent entry password",
   "confirmPassword":"Password Confirmation",
   "registerSuccess":"Registration success",
   "registerFail":"Registration failed",
@@ -14,6 +15,7 @@
   "sure":"Sure",
   "cancel":"Cancel",
   "canceled":"Cancelled",
+  "mainPage":"HomePage",
 
   "diagnosisMenu":"Diagnosis",
   "reportMenu":"Results Report",
@@ -41,6 +43,7 @@
   "chooseTest":"Choose Test",
   "diagnosis":"Diagnosis",
   "testZeroAlert":"This test is empty, please choose another one",
+  "searchHolder":"Search...",
 
   "questionnaireTitle":"Question management",
   "batchDeleteBtn":"Batch delete",

@@ -5,6 +5,7 @@
   "password":"密码",
   "userNameValid":"用户名不得为空",
   "passwordValid":"密码不得为空",
+  "passwordNotSame":"两次输入密码不一致",
   "confirmPassword":"密码确认",
   "registerSuccess":"注册成功",
   "registerFail":"注册失败",
@@ -14,6 +15,7 @@
   "sure":"确定",
   "cancel":"取消",
   "canceled":"已取消",
+  "mainPage":"主页",
 
   "diagnosisMenu":"诊断",
   "reportMenu":"结果报告",
@@ -41,6 +43,7 @@
   "chooseTest":"选择试题",
   "diagnosis":"诊断",
   "testZeroAlert":"试卷为空，请选择其他试卷",
+  "searchHolder":"输入关键字搜索",
 
   "questionnaireTitle":"题库管理",
   "batchDeleteBtn":"批量删除",

@@ -6,12 +6,12 @@
 
   </ol>
 </section>
-<div class="box col-md-12">
+<div class="box col-md-12" style="min-height: 850px">
   <div style="padding-top: 15px">
 
   </div>
   <div class="col-md-12">
-    <input #search class="search form-inline" style="width: 200px" type="text" placeholder="Search..." (keydown.enter)="onSearch(search.value)">
+    <input #search [hidden]="true" class="search form-inline" style="width: 200px" type="text" placeholder="{{'searchHolder'|translate}}" (keydown.enter)="onSearch(search.value)">
     <button class="btn btn-block btn-danger btn-sm"
             style="min-width: 80px; width: 6%; float: right; margin-bottom: 15px; margin-left: 20px; margin-top: 5px;"
             (click)="batchDelete()">{{'batchDeleteBtn'|translate}}</button>
@@ -82,11 +82,8 @@
         <div class="col-md-12" style="height: 20px">
         </div>
         <div class="col-md-12">
-          <label> {{'addToTestTitle'|translate}}：</label>
-          <select [(ngModel)]="selectTestId" (ngModelChange)="selectedNameChanged($event)">
-            <option *ngFor="let item of testList" [value]="item.test.testId">{{item.test.name}}</option>
-          </select>
-          <button class="btn btn-success btn-sm" style="width: 70px; margin-left: 20px; position: relative" (click)="addToCache()">{{'add'|translate}}</button>
+
+          <button class="btn btn-success btn-sm" style="width: 70px; margin-left: 0px; position: relative" (click)="addToCache()">{{'add'|translate}}</button>
           <button class="btn btn-warning btn-sm" style="width: 70px; margin-left: 20px; position: relative" (click)="clearCache()">{{'clear'|translate}}</button>
         </div>
         <div class="col-md-12" style="height: 20px">
@@ -96,9 +93,15 @@
           <span *ngFor="let item of nameCache">{{item}}   </span>
 
         </div>
+        <div class="col-md-12" style="height: 20px">
+        </div>
       </div>
       <div class="modal-footer" style="border-top: none !important">
-        <button class="btn btn-block btn-primary btn-sm" style="width: 150px; float: right;" (click)="createQuestionnaire()">{{'save'|translate}}</button>
+        <label style="margin-top: 4px"> {{'addToTestTitle'|translate}}：</label>
+        <select style="margin-top: 4px" [(ngModel)]="selectTestId" (ngModelChange)="selectedNameChanged($event)">
+          <option *ngFor="let item of testList" [value]="item.test.testId">{{item.test.name}}</option>
+        </select>
+        <button class="btn btn-block btn-primary btn-sm" style="width: 150px; float: right; margin-left: 10px" (click)="createQuestionnaire()">{{'save'|translate}}</button>
       </div>
 </ng-template>
 
