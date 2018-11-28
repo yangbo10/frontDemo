@@ -28,7 +28,6 @@ export class TaskService {
               const userRole = userList._embedded.users[0].user.roles[0].roleId;
               localStorage.setItem('user_id', userId);
               localStorage.setItem('user_role', userRole);
-              localStorage.setItem('language', 'cn');
               console.log(localStorage);
               this.router.navigate(['/home']);
             });
@@ -93,10 +92,14 @@ export class TaskService {
       });
     }
 
-    getAllQuestions() {
+    getAllQuestions(containStr) {
       const headers = new Headers();
       this.createAuthorizationHeader(headers);
-      return this.http.get(this.TASK_URL + 'api/questions?size=10000&search=locale==zh_CN',  {
+      let locale = 'zh_CN'
+      if (localStorage.getItem('language') === 'en') {
+        locale = 'en_US';
+      }
+      return this.http.get(this.TASK_URL + 'api/questions?size=10000&search=locale==' + locale + ';detail=co="' + containStr + '"',  {
         headers: headers
       });
     }

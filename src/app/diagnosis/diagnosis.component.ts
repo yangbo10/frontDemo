@@ -4,6 +4,7 @@ import {Router} from '@angular/router';
 import {User} from '../models/user';
 import Swal from 'sweetalert2';
 import {TranslateService} from 'ng2-translate';
+import * as echarts from 'echarts';
 
 @Component({
   selector: 'app-diagnosis',
@@ -24,6 +25,10 @@ export class DiagnosisComponent implements OnInit {
   answerObj: any;
   resultDemo: any;
   diagnosisPhase: number;
+  options1: object;
+  options2: object;
+  pieData1: [any];
+  pieData2: [any];
 
   constructor(public user: User, private taskService: TaskService, private router: Router, private translate: TranslateService) {
     this.user.mainShowing = false;
@@ -44,6 +49,12 @@ export class DiagnosisComponent implements OnInit {
     this.makeList = [];
     // @ts-ignore
     this.deliveryList = [];
+    // @ts-ignore
+    this.pieData1 = [
+    ];
+    // @ts-ignore
+    this.pieData2 = [
+    ];
     if (localStorage.getItem('access_token') === null) {
       this.router.navigate(['']);
     } else {
@@ -53,6 +64,73 @@ export class DiagnosisComponent implements OnInit {
         this.testList = this.testDemo._embedded.tests;
       });
     }
+
+    this.options1 = {
+      title : {
+        text: 'Result of Phase1',
+        subtext: '',
+        x: 'center'
+      },
+      tooltip : {
+        trigger: 'item',
+        formatter: '{a} <br/>{b} : {c} ({d}%)'
+      },
+      legend: {
+        orient: 'vertical',
+        left: 'left',
+        data: ['A', 'B', 'C', 'D', 'E']
+      },
+      series : [
+        {
+          name: 'Score',
+          type: 'pie',
+          radius : '55%',
+          center: ['50%', '60%'],
+          data: this.pieData1,
+          itemStyle: {
+            emphasis: {
+              shadowBlur: 10,
+              shadowOffsetX: 0,
+              shadowColor: 'rgba(0, 0, 0, 0.5)'
+            }
+          }
+        }
+      ]
+    };
+
+    this.options2 = {
+      title : {
+        text: 'Result of Phase1',
+        subtext: '',
+        x: 'center'
+      },
+      tooltip : {
+        trigger: 'item',
+        formatter: '{a} <br/>{b} : {c} ({d}%)'
+      },
+      legend: {
+        orient: 'vertical',
+        left: 'left',
+        data: ['A', 'B', 'C', 'D', 'E']
+      },
+      series : [
+        {
+          name: 'Score',
+          type: 'pie',
+          radius : '55%',
+          center: ['50%', '60%'],
+          data: this.pieData2,
+          itemStyle: {
+            emphasis: {
+              shadowBlur: 10,
+              shadowOffsetX: 0,
+              shadowColor: 'rgba(0, 0, 0, 0.5)'
+            }
+          }
+        }
+      ]
+    };
+
   }
 
   startDiagnosis(test) {
@@ -89,8 +167,6 @@ export class DiagnosisComponent implements OnInit {
     if ( this.reChoose === false) {
       this.answerList.push(val);
     }
-
-    console.log(this.answerList);
 
     if (/*this.answerList.length === this.questionList.length*/1) {
 
@@ -147,7 +223,46 @@ export class DiagnosisComponent implements OnInit {
 
   getPhaseOneResult() {
     if (this.answerList.length === this.sourceList.length) {
-
+      // @ts-ignore
+      this.pieData1 = [
+        {value: 335, name: 'A'},
+        {value: 310, name: 'B'},
+        {value: 234, name: 'C'},
+        {value: 135, name: 'D'},
+        {value: 1548, name: 'E'}
+      ];
+      this.options1 = {
+        title : {
+          text: 'Result of Phase1',
+          subtext: '',
+          x: 'center'
+        },
+        tooltip : {
+          trigger: 'item',
+          formatter: '{a} <br/>{b} : {c} ({d}%)'
+        },
+        legend: {
+          orient: 'vertical',
+          left: 'left',
+          data: ['A', 'B', 'C', 'D', 'E']
+        },
+        series : [
+          {
+            name: 'Score',
+            type: 'pie',
+            radius : '55%',
+            center: ['50%', '60%'],
+            data: this.pieData1,
+            itemStyle: {
+              emphasis: {
+                shadowBlur: 10,
+                shadowOffsetX: 0,
+                shadowColor: 'rgba(0, 0, 0, 0.5)'
+              }
+            }
+          }
+        ]
+      };
       this.diagnosisPhase++;
     } else {
       Swal(
@@ -160,7 +275,46 @@ export class DiagnosisComponent implements OnInit {
 
   getPhaseTwoResult() {
     if (this.answerList.length === this.sourceList.length + this.makeList.length) {
-
+      // @ts-ignore
+      this.pieData1 = [
+        {value: 5, name: 'A'},
+        {value: 13, name: 'B'},
+        {value: 1, name: 'C'},
+        {value: 2, name: 'D'},
+        {value: 35, name: 'E'}
+      ];
+      this.options2 = {
+        title : {
+          text: 'Result of Phase1',
+          subtext: '',
+          x: 'center'
+        },
+        tooltip : {
+          trigger: 'item',
+          formatter: '{a} <br/>{b} : {c} ({d}%)'
+        },
+        legend: {
+          orient: 'vertical',
+          left: 'left',
+          data: ['A', 'B', 'C', 'D', 'E']
+        },
+        series : [
+          {
+            name: 'Score',
+            type: 'pie',
+            radius : '55%',
+            center: ['50%', '60%'],
+            data: this.pieData2,
+            itemStyle: {
+              emphasis: {
+                shadowBlur: 10,
+                shadowOffsetX: 0,
+                shadowColor: 'rgba(0, 0, 0, 0.5)'
+              }
+            }
+          }
+        ]
+      };
       this.diagnosisPhase++;
     } else {
       Swal(

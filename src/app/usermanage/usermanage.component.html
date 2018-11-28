@@ -21,6 +21,7 @@
     <ng2-smart-table [settings]="settings" [source]="source"
                      (deleteConfirm)="onDeleteConfirm($event)"
                      (editConfirm)="onSaveConfirm($event)"></ng2-smart-table>
+    <label>Total: {{tableData.length}}</label>
   </div>
   <div class="col-md-12">
 

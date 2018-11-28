@@ -21,6 +21,7 @@ export class QuestionnaireComponent implements OnInit {
   questionList: [any];
   newQuestionList: [any];
   tableData: [any];
+  tableData2: [any];
   newTableData: [any];
   source: LocalDataSource;
   newSource: LocalDataSource;
@@ -39,6 +40,7 @@ export class QuestionnaireComponent implements OnInit {
   selectedQuestions: [any];
   questionCache: [any];
   nameCache: [any];
+  addBtnDisable: boolean;
 
   constructor(public user: User, private taskService: TaskService,
               private modalService: BsModalService,
@@ -51,6 +53,7 @@ export class QuestionnaireComponent implements OnInit {
     this.resultMessage = '';
     this.user.mainShowing = false;
     this.uploadButtonMsg = this.translate.instant('startUpload');
+    this.addBtnDisable = false;
   }
 
   public tagList = [
@@ -241,7 +244,7 @@ export class QuestionnaireComponent implements OnInit {
     // @ts-ignore
     this.nameCache = [];
 
-    this.taskService.getAllQuestions().subscribe(data => {
+    this.taskService.getAllQuestions('').subscribe(data => {
       // @ts-ignore
       this.testDemo = JSON.parse(data._body);
       this.questionList = this.testDemo._embedded.questions;
@@ -277,8 +280,8 @@ export class QuestionnaireComponent implements OnInit {
   }
 
 
-  onSearch(query: string = '') {
-    console.log(this.source);
+  onSearch(query) {
+    /*console.log(this.source);
     this.source.setFilter([
       // fields we want to inclue in the search
       {
@@ -289,7 +292,36 @@ export class QuestionnaireComponent implements OnInit {
         field: 'detail',
         search: query,
       }
-    ], true);
+    ], true);*/
+    if (query === '') {
+      this.source = new LocalDataSource(this.tableData);
+    } else {
+      this.taskService.getAllQuestions(query).subscribe(data => {
+        // @ts-ignore
+        this.testDemo = JSON.parse(data._body);
+        this.questionList = this.testDemo._embedded.questions;
+        // @ts-ignore
+        this.tableData2 = [];
+        for ( let i = 0; i < this.questionList.length; i++) {
+          const item = {'id': '', 'name': '', 'detail': '', 'tag1': '', 'tag2': '', 'tag3': ''};
+          item.id = this.questionList[i].question.questionId;
+          item.name = this.questionList[i].question.name;
+          item.detail = this.questionList[i].question.detail;
+          if (this.questionList[i].question.tags.length > 0) {
+            item.tag1 = this.questionList[i].question.tags[0].name;
+          }
+          if (this.questionList[i].question.tags.length > 1) {
+            item.tag2 = this.questionList[i].question.tags[1].name;
+          }
+          if (this.questionList[i].question.tags.length > 2) {
+            item.tag3 = this.questionList[i].question.tags[2].name;
+          }
+          this.tableData2.push(item);
+        }
+        console.log(this.source);
+        this.source = new LocalDataSource(this.tableData2);
+      });
+    }
   }
 
   onDeleteConfirm(event) {
@@ -480,6 +512,7 @@ export class QuestionnaireComponent implements OnInit {
   }
 
   addToCache() {
+    this.addBtnDisable = true;
     for (const item of this.deleteList) {
       this.questionCache.push(item);
     }
@@ -537,9 +570,13 @@ export class QuestionnaireComponent implements OnInit {
 
   startUpload(): void {
     this.uploadDone = false;
+    let locale = 'zh_CN';
+    if (localStorage.getItem('language') === 'en') {
+      locale = 'en_US';
+    }
     const event: UploadInput = {
       type: 'uploadAll',
-      url: this.taskService.TASK_URL + 'api/importer/questions' + '?locale=' + 'zh_CN',
+      url: this.taskService.TASK_URL + 'api/importer/questions' + '?locale=' + locale,
       method: 'POST',
       headers: { 'Authorization': 'Bearer ' +
         localStorage.getItem('access_token'),
@@ -554,6 +591,7 @@ export class QuestionnaireComponent implements OnInit {
   }
 
   openCreateModal(template: TemplateRef<any>) {
+    this.addBtnDisable = false;
     this.newTestOrNot = true;
     this.modalRef = this.modalService.show(template, {class: 'modal-lg create-model'});
   }
@@ -585,6 +623,13 @@ export class QuestionnaireComponent implements OnInit {
           'error'
         );
       }
+    }, error => {
+      console.log(error);
+      Swal(
+        this.translate.instant('addFail'),
+        this.translate.instant('addFailReason'),
+        'error'
+      );
     });
   }
 

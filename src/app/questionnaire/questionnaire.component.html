@@ -11,7 +11,7 @@
 
   </div>
   <div class="col-md-12">
-    <input #search [hidden]="true" class="search form-inline" style="width: 200px" type="text" placeholder="{{'searchHolder'|translate}}" (keydown.enter)="onSearch(search.value)">
+    <input #search [hidden]="false" class="search form-inline" style="width: 200px" type="text" placeholder="{{'searchHolder'|translate}}" (keydown.enter)="onSearch(search.value)">
     <button class="btn btn-block btn-danger btn-sm"
             style="min-width: 80px; width: 6%; float: right; margin-bottom: 15px; margin-left: 20px; margin-top: 5px;"
             (click)="batchDelete()">{{'batchDeleteBtn'|translate}}</button>
@@ -28,6 +28,7 @@
                      (deleteConfirm)="onDeleteConfirm($event)"
                      (editConfirm)="onSaveConfirm($event)"
                      (userRowSelect)="rowSelectEvent($event)"></ng2-smart-table>
+    <label>Total: {{tableData.length}}</label>
   </div>
   <div class="col-md-12">
 
@@ -57,6 +58,7 @@
             <label>{{'importPreview'|translate}}</label>
           </div>
           <ng2-smart-table [settings]="newSettings" [source]="newSource"></ng2-smart-table>
+          <label>Total: {{newTableData.length}}</label>
         </div>
       </div>
       <div class="modal-footer" style="border-top: none !important">
@@ -83,7 +85,7 @@
         </div>
         <div class="col-md-12">
 
-          <button class="btn btn-success btn-sm" style="width: 70px; margin-left: 0px; position: relative" (click)="addToCache()">{{'add'|translate}}</button>
+          <button class="btn btn-success btn-sm" style="width: 70px; margin-left: 0px; position: relative" (click)="addToCache()" [disabled]="addBtnDisable">{{'add'|translate}}</button>
           <button class="btn btn-warning btn-sm" style="width: 70px; margin-left: 20px; position: relative" (click)="clearCache()">{{'clear'|translate}}</button>
         </div>
         <div class="col-md-12" style="height: 20px">

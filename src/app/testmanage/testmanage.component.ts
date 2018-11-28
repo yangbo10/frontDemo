@@ -1,4 +1,4 @@
-import {Component, OnInit, TemplateRef} from '@angular/core';
+import {Component, ElementRef, OnInit, Renderer, TemplateRef, ViewChild} from '@angular/core';
 import {BsModalRef, BsModalService} from 'ngx-bootstrap';
 import {User} from '../models/user';
 import {TaskService} from '../service/taskService';
@@ -6,6 +6,9 @@ import {LocalDataSource} from 'ng2-smart-table';
 import Swal from 'sweetalert2';
 import {Router} from '@angular/router';
 import {TranslateService} from 'ng2-translate';
+
+const tr = document.createElement('tr');
+const aUpdate  =  tr.querySelector('a.bg-color-blue');
 
 @Component({
   selector: 'app-testmanage',
@@ -19,13 +22,18 @@ export class TestmanageComponent implements OnInit {
   public modalRef: BsModalRef;
   testName: string;
   testComment: string;
+  detailSource: LocalDataSource;
+  questionCount: number;
+  @ViewChild('detailTemplate') detailTemplate: TemplateRef<any>;
 
   constructor(public user: User, private taskService: TaskService,
               private modalService: BsModalService,
               private router: Router,
-              private translate: TranslateService) {
+              private translate: TranslateService,
+              private privaterenderer: Renderer) {
     this.testName = '';
     this.testComment = '';
+    this.questionCount = 0;
   }
 
   public settings = {
@@ -54,12 +62,18 @@ export class TestmanageComponent implements OnInit {
     actions: {
       columnTitle: this.translate.instant('operation'),
       add: false,
-      position: 'right'
+      position: 'right',
+      custom: [
+        {
+          name: 'view',
+          title: '<i class="fa fa-1x fa-eye" aria-hidden="true"></i><i>       </i>',
+        }
+      ]
     },
     edit: {
       position: 'right',
       editButtonContent: '<i class="fa fa-1x fa-pencil-square" aria-hidden="true"></i><i>       </i>',
-      saveButtonContent: '<i class="fa fa-1x fa-check"></i>',
+      saveButtonContent: '<i class="fa fa-1x fa-check"></i><i>       </i>',
       cancelButtonContent: '<i class="fa fa-1x fa-close"></i>',
       confirmSave: true
     },
@@ -74,6 +88,30 @@ export class TestmanageComponent implements OnInit {
     defaultStyle: true
   };
 
+  public detailSettings = {
+    columns: {
+      name: {
+        title: this.translate.instant('questionName'),
+        filter: false,
+      },
+      detail: {
+        title: this.translate.instant('questionDetail'),
+        filter: false,
+      }
+    },
+    pager: {
+      display: true,
+      perPage: 10
+    },
+
+    isPaginationEnabled: true,
+    actions: false,
+    attr: {
+      class: 'table table-striped table-bordered table-hover'
+    },
+    defaultStyle: true
+  };
+
   ngOnInit() {
     this.taskService.getAllTest().subscribe( res => {
       // @ts-ignore
@@ -82,15 +120,23 @@ export class TestmanageComponent implements OnInit {
       // @ts-ignore
       this.tableData = [];
       for ( let i = 0; i < this.testList.length; i++) {
-        const item = {'id': '', 'name': '', 'comment': ''};
+        const item = {'id': '', 'name': '', 'comment': '', 'detail': []};
         item.id = this.testList[i].test.testId;
         item.name = this.testList[i].test.name;
         item.comment = this.testList[i].test.comment;
+        item.detail = this.testList[i].test.questions;
         this.tableData.push(item);
       }
       this.source = new LocalDataSource(this.tableData);
     });
 
+  }
+
+  onCustom(event) {
+    this.detailSource = new LocalDataSource(event.data.detail);
+    console.log(this.detailSource);
+    this.questionCount = event.data.detail.length;
+    this.openDetailModal(this.detailTemplate);
   }
 
   onDeleteConfirm(event) {
@@ -171,6 +217,10 @@ export class TestmanageComponent implements OnInit {
   }
 
   openCreateModal(template: TemplateRef<any>) {
+    this.modalRef = this.modalService.show(template, {class: 'modal-lg create-model'});
+  }
+
+  openDetailModal(template: TemplateRef<any>) {
     this.modalRef = this.modalService.show(template, {class: 'modal-lg create-model'});
   }
 

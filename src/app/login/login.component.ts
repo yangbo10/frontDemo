@@ -17,7 +17,6 @@ export class LoginComponent implements OnInit {
   loading = false;
   public modalRef: BsModalRef;
   newUser: User = new User();
-  languages: any[];
   passwordConfirm: string;
 
   constructor(
@@ -28,11 +27,12 @@ export class LoginComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.translate.use('cn');
-    this.languages = [
-      {label: '中文', value: 'cn'},
-      {label: '英文', value: 'en'}
-    ];
+    if (localStorage.getItem('language') === 'en') {
+      this.translate.use('en');
+    } else {
+      localStorage.setItem('language', 'cn');
+      this.translate.use('cn');
+    }
     // reset login status
     this.taskService.logOut().subscribe( res => {
       console.log(res);
@@ -40,8 +40,17 @@ export class LoginComponent implements OnInit {
 
   }
 
-  changeLang(lang) {
-    console.log(lang);
+  changeLanguage() {
+    if (this.translate.currentLang === 'cn') {
+      this.translate.setDefaultLang('en');
+      this.translate.use('en');
+      localStorage.setItem('language', 'en');
+    } else {
+      this.translate.setDefaultLang('cn');
+      this.translate.use('cn');
+      localStorage.setItem('language', 'cn');
+    }
+    this.ngOnInit();
   }
 
   login() {
