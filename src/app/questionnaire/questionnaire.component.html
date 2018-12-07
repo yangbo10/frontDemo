@@ -95,7 +95,23 @@
           <span *ngFor="let item of nameCache">{{item}}   </span>
 
         </div>
-        <div class="col-md-12" style="height: 20px">
+        <div class="col-md-12" style="height: 30px">
+          <label>{{'dimensions'|translate}}：</label>
+        </div>
+        <div class="col-md-12" style="height: 30px">
+          <span class="label" [ngStyle]="changeBackground(7)" style="margin-right: 5px">Standardization</span>
+          <span class="label" [ngStyle]="changeBackground(9)" style="margin-right: 5px">Transparent Processes</span>
+          <span class="label" [ngStyle]="changeBackground(17)" style="margin-right: 5px">Associate Involvement</span>
+          <span class="label" [ngStyle]="changeBackground(13)" style="margin-right: 5px">Continuous Improvement</span>
+          <span class="label" [ngStyle]="changeBackground(10)" style="margin-right: 5px">Flexibility</span>
+        </div>
+        <div class="col-md-12" style="height: 30px">
+          <span class="label" [ngStyle]="changeBackground(8)" style="margin-right: 5px">Perfect Quality</span>
+          <span class="label" [ngStyle]="changeBackground(12)" style="margin-right: 5px">Process Orientation</span>
+          <span class="label" [ngStyle]="changeBackground(11)" style="margin-right: 5px">Pull System</span>
+          <span class="label" [ngStyle]="changeBackground(14)" style="margin-right: 5px">Resource</span>
+          <span class="label" [ngStyle]="changeBackground(15)" style="margin-right: 5px">Digitization</span>
+          <span class="label" [ngStyle]="changeBackground(16)" style="margin-right: 5px">Automation</span>
         </div>
       </div>
       <div class="modal-footer" style="border-top: none !important">

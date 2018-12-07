@@ -36,15 +36,28 @@ export class QuestionboxComponent implements OnInit {
 
   chooseItemChange(optionId: number) {
     this.chooseItem = optionId;
+    let value = 0;
+    for ( const item of this.questionItem.answer.options) {
+      if (item.optionId.toString() === optionId.toString()) {
+        value = item.value;
+        break;
+      }
+    }
     this.answerFromChild.emit(
-      {'options': [
+      {
+        'options': [
           {
             'optionId': this.chooseItem
           }
         ],
-      'question': {
-        'questionId': this.questionItem.questionId
-      }});
+        'question': {
+          'questionId': this.questionItem.questionId
+        },
+        'point': {
+          'score': this.questionItem.weight * value,
+          'totalScore': this.questionItem.weight * this.questionItem.answer.value,
+        }
+      });
   }
 
 }

@@ -4,7 +4,7 @@ import {Router} from '@angular/router';
 import {User} from '../models/user';
 import Swal from 'sweetalert2';
 import {TranslateService} from 'ng2-translate';
-import * as echarts from 'echarts';
+import 'rxjs/add/observable/fromEvent';
 
 @Component({
   selector: 'app-diagnosis',
@@ -22,6 +22,9 @@ export class DiagnosisComponent implements OnInit {
   reChoose: boolean;
   questionShowing: boolean;
   answerList: [any];
+  sourceAnswerList: [any];
+  makeAnswerList: [any];
+  deliveryAnswerList: [any];
   answerObj: any;
   resultDemo: any;
   diagnosisPhase: number;
@@ -43,6 +46,12 @@ export class DiagnosisComponent implements OnInit {
     this.testList = [];
     // @ts-ignore
     this.answerList = [];
+    // @ts-ignore
+    this.sourceAnswerList = [];
+    // @ts-ignore
+    this.makeAnswerList = [];
+    // @ts-ignore
+    this.deliveryAnswerList = [];
     // @ts-ignore
     this.sourceList = [];
     // @ts-ignore
@@ -162,12 +171,23 @@ export class DiagnosisComponent implements OnInit {
       if (this.answerList[i].question.questionId === val.question.questionId) {
         this.answerList[i] = val;
         this.reChoose = true;
+        switch (this.diagnosisPhase) {
+          case 1: this.sourceAnswerList[i] = val; break;
+          case 3: this.makeAnswerList[i] = val; break;
+          case 5: this.deliveryAnswerList[i] = val; break;
+        }
       }
     }
     if ( this.reChoose === false) {
       this.answerList.push(val);
+      switch (this.diagnosisPhase) {
+        case 1: this.sourceAnswerList.push(val); break;
+        case 3: this.makeAnswerList.push(val); break;
+        case 5: this.deliveryAnswerList.push(val); break;
+      }
     }
 
+    console.log(this.sourceAnswerList);
     if (/*this.answerList.length === this.questionList.length*/1) {
 
       this.unsubmitable = false;
@@ -222,14 +242,18 @@ export class DiagnosisComponent implements OnInit {
   }
 
   getPhaseOneResult() {
-    if (this.answerList.length === this.sourceList.length) {
+    if (this.sourceAnswerList.length === this.sourceList.length) {
+      // calculate score
+      let sourceTotal = 0;
+      let sourceActual = 0;
+      for (const item of this.sourceAnswerList) {
+        sourceTotal = sourceTotal + item.point.totalScore;
+        sourceActual = sourceActual + item.point.score;
+      }
       // @ts-ignore
       this.pieData1 = [
-        {value: 335, name: 'A'},
-        {value: 310, name: 'B'},
-        {value: 234, name: 'C'},
-        {value: 135, name: 'D'},
-        {value: 1548, name: 'E'}
+        {value: sourceActual, name: 'scored'},
+        {value: sourceTotal - sourceActual, name: 'not scored'}
       ];
       this.options1 = {
         title : {
@@ -244,7 +268,7 @@ export class DiagnosisComponent implements OnInit {
         legend: {
           orient: 'vertical',
           left: 'left',
-          data: ['A', 'B', 'C', 'D', 'E']
+          data: ['scored', 'not scored']
         },
         series : [
           {
@@ -274,18 +298,22 @@ export class DiagnosisComponent implements OnInit {
   }
 
   getPhaseTwoResult() {
-    if (this.answerList.length === this.sourceList.length + this.makeList.length) {
+    if (this.makeAnswerList.length === this.makeList.length) {
+      // calculate score
+      let makeTotal = 0;
+      let makeActual = 0;
+      for (const item of this.makeAnswerList) {
+        makeTotal = makeTotal + item.point.totalScore;
+        makeActual = makeActual + item.point.score;
+      }
       // @ts-ignore
-      this.pieData1 = [
-        {value: 5, name: 'A'},
-        {value: 13, name: 'B'},
-        {value: 1, name: 'C'},
-        {value: 2, name: 'D'},
-        {value: 35, name: 'E'}
+      this.pieData2 = [
+        {value: makeActual, name: 'A'},
+        {value: makeTotal - makeActual, name: 'B'}
       ];
       this.options2 = {
         title : {
-          text: 'Result of Phase1',
+          text: 'Result of Phase2',
           subtext: '',
           x: 'center'
         },
@@ -296,7 +324,7 @@ export class DiagnosisComponent implements OnInit {
         legend: {
           orient: 'vertical',
           left: 'left',
-          data: ['A', 'B', 'C', 'D', 'E']
+          data: ['A', 'B']
         },
         series : [
           {

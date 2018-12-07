@@ -2,10 +2,11 @@
 import {Http, Headers, ResponseContentType} from '@angular/http';
 import {Router} from '@angular/router';
 import Swal from 'sweetalert2';
+import {TranslateService} from 'ng2-translate';
 @Injectable()
 export class TaskService {
     TASK_URL = 'http://10.177.241.51:10000/service/';
-    constructor(public http: Http, private router: Router) { }
+    constructor(public http: Http, private router: Router, private translate: TranslateService) { }
 
     createAuthorizationHeader(headers: Headers) {
       headers.append('Authorization', 'Bearer ' +
@@ -31,15 +32,10 @@ export class TaskService {
               console.log(localStorage);
               this.router.navigate(['/home']);
             });
-            /*Swal(
-              '登录成功',
-              '',
-              'success'
-            );*/
           } else {
             Swal(
-              '登录失败',
-              '用户名或密码错误',
+              this.translate.instant('loginFail'),
+              this.translate.instant('passWordIncorrect'),
               'error'
             );
           }
@@ -47,8 +43,8 @@ export class TaskService {
       },
       error => {
         Swal(
-          '登录失败',
-          '用户名或密码错误',
+          this.translate.instant('loginFail'),
+          this.translate.instant('passWordIncorrect'),
           'error'
         );
       });

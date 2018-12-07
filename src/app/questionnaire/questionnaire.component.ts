@@ -30,7 +30,6 @@ export class QuestionnaireComponent implements OnInit {
   files: UploadFile[];
   uploadInput: EventEmitter<UploadInput>;
   uploadDone: boolean;
-  questionnaireName: string;
   testList: [any];
   selectTestId: number;
   newTestOrNot: boolean;
@@ -40,6 +39,8 @@ export class QuestionnaireComponent implements OnInit {
   selectedQuestions: [any];
   questionCache: [any];
   nameCache: [any];
+  dimensionList: [any];
+  dimensionCheckList: [any];
   addBtnDisable: boolean;
 
   constructor(public user: User, private taskService: TaskService,
@@ -195,7 +196,7 @@ export class QuestionnaireComponent implements OnInit {
     edit: {
       position: 'right',
       editButtonContent: '<i class="fa fa-1x fa-pencil-square" aria-hidden="true"></i><i>       </i>',
-      saveButtonContent: '<i class="fa fa-1x fa-check"></i>',
+      saveButtonContent: '<i class="fa fa-1x fa-check"></i><i>       </i>',
       cancelButtonContent: '<i class="fa fa-1x fa-close"></i>',
       confirmSave: true
     },
@@ -242,39 +243,56 @@ export class QuestionnaireComponent implements OnInit {
     // @ts-ignore
     this.questionCache = [];
     // @ts-ignore
+    this.dimensionList = [];
+    // @ts-ignore
+    this.dimensionCheckList = [];
+    // @ts-ignore
     this.nameCache = [];
+    // @ts-ignore
+    this.questionCache = [];
+    this.addBtnDisable = false;
 
     this.taskService.getAllQuestions('').subscribe(data => {
       // @ts-ignore
       this.testDemo = JSON.parse(data._body);
-      this.questionList = this.testDemo._embedded.questions;
       // @ts-ignore
       this.tableData = [];
-      for ( let i = 0; i < this.questionList.length; i++) {
-        const item = {'id': '', 'name': '', 'detail': '', 'tag1': '', 'tag2': '', 'tag3': ''};
-        item.id = this.questionList[i].question.questionId;
-        item.name = this.questionList[i].question.name;
-        item.detail = this.questionList[i].question.detail;
-        if (this.questionList[i].question.tags.length > 0) {
-          item.tag1 = this.questionList[i].question.tags[0].name;
+      if (this.testDemo.hasOwnProperty('_embedded')) {
+        this.questionList = this.testDemo._embedded.questions;
+        for ( let i = 0; i < this.questionList.length; i++) {
+          const item = {'id': '', 'name': '', 'detail': '', 'tag1': '', 'tag2': '', 'tag3': '', 'dimensionId': 0};
+          item.id = this.questionList[i].question.questionId;
+          item.name = this.questionList[i].question.name;
+          item.detail = this.questionList[i].question.detail;
+          if (this.questionList[i].question.tags.length > 0) {
+            item.tag1 = this.questionList[i].question.tags[0].name;
+          }
+          if (this.questionList[i].question.tags.length > 1) {
+            item.tag2 = this.questionList[i].question.tags[1].name;
+          }
+          if (this.questionList[i].question.tags.length > 2) {
+            item.tag3 = this.questionList[i].question.tags[2].name;
+            item.dimensionId = this.questionList[i].question.tags[2].tagId;
+          }
+          this.tableData.push(item);
         }
-        if (this.questionList[i].question.tags.length > 1) {
-          item.tag2 = this.questionList[i].question.tags[1].name;
-        }
-        if (this.questionList[i].question.tags.length > 2) {
-          item.tag3 = this.questionList[i].question.tags[2].name;
-        }
-        this.tableData.push(item);
+      } else {
+        console.log('data empty!');
       }
-      console.log(this.source);
+      console.log(this.tableData);
       this.source = new LocalDataSource(this.tableData);
     });
     this.taskService.getAllTest().subscribe( res => {
       // @ts-ignore
-      this.testDemo = JSON.parse(res._body);
-      // @ts-ignore
-      this.testList = this.testDemo._embedded.tests;
-      this.selectTestId = this.testList[0].test.testId;
+      const testJson = JSON.parse(res._body);
+      if (testJson.hasOwnProperty('_embedded')) {
+        // @ts-ignore
+        this.testList = testJson._embedded.tests;
+        this.selectTestId = this.testList[0].test.testId;
+      } else {
+        // @ts-ignore
+        this.testList = [];
+      }
     });
 
   }
@@ -303,7 +321,7 @@ export class QuestionnaireComponent implements OnInit {
         // @ts-ignore
         this.tableData2 = [];
         for ( let i = 0; i < this.questionList.length; i++) {
-          const item = {'id': '', 'name': '', 'detail': '', 'tag1': '', 'tag2': '', 'tag3': ''};
+          const item = {'id': '', 'name': '', 'detail': '', 'tag1': '', 'tag2': '', 'tag3': '', 'dimensionId': 0};
           item.id = this.questionList[i].question.questionId;
           item.name = this.questionList[i].question.name;
           item.detail = this.questionList[i].question.detail;
@@ -315,11 +333,12 @@ export class QuestionnaireComponent implements OnInit {
           }
           if (this.questionList[i].question.tags.length > 2) {
             item.tag3 = this.questionList[i].question.tags[2].name;
+            item.dimensionId = this.questionList[i].question.tags[2].id;
           }
           this.tableData2.push(item);
         }
-        console.log(this.source);
         this.source = new LocalDataSource(this.tableData2);
+        console.log(this.source);
       });
     }
   }
@@ -486,10 +505,13 @@ export class QuestionnaireComponent implements OnInit {
       this.deleteList = [];
       // @ts-ignore
       this.selectedQuestions = [];
+      // @ts-ignore
+      this.dimensionList = [];
       if ( event.selected.length > 0) {
         for (let i = 0; i < event.selected.length; i++) {
           this.deleteList.push(event.selected[i].id);
           this.selectedQuestions.push(event.selected[i].name);
+          this.dimensionList.push(event.selected[i].dimensionId);
         }
       }
     } else {
@@ -497,28 +519,50 @@ export class QuestionnaireComponent implements OnInit {
       if ( event.isSelected === true) {
           this.deleteList.push(event.data.id);
           this.selectedQuestions.push(event.data.name);
+          this.dimensionList.push(event.data.dimensionId);
       } else {
         // @ts-ignore
         this.deleteList = [];
         // @ts-ignore
         this.selectedQuestions = [];
+        // @ts-ignore
+        this.dimensionList = [];
         for (let i = 0; i < event.selected.length; i++) {
           this.deleteList.push(event.selected[i].id);
           this.selectedQuestions.push(event.selected[i].name);
+          this.dimensionList.push(event.selected[i].dimensionId);
         }
       }
     }
-    console.log(this.selectedQuestions);
   }
 
   addToCache() {
     this.addBtnDisable = true;
+    let duplicate = false;
     for (const item of this.deleteList) {
-      this.questionCache.push(item);
+      // check duplicate
+      if (this.questionCache.indexOf(item) > -1) {
+        duplicate = true;
+      }
     }
-    for (const item of this.selectedQuestions) {
-      this.nameCache.push(item);
+    if (!duplicate) {
+      for (const item of this.deleteList) {
+        this.questionCache.push(item);
+      }
+      for (const item of this.selectedQuestions) {
+        this.nameCache.push(item);
+      }
+      for (const item of this.dimensionList) {
+        this.dimensionCheckList.push(item);
+      }
+    } else {
+      Swal(
+        this.translate.instant('itemDuplicate'),
+        '',
+        'error'
+      );
     }
+    console.log('check dimension: ', this.dimensionCheckList);
   }
 
   clearCache() {
@@ -526,6 +570,9 @@ export class QuestionnaireComponent implements OnInit {
     this.questionCache = [];
     // @ts-ignore
     this.nameCache = [];
+    this.addBtnDisable = false;
+    // @ts-ignore
+    this.dimensionCheckList = [];
   }
 
   onUploadOutput(output: UploadOutput): void {
@@ -633,12 +680,11 @@ export class QuestionnaireComponent implements OnInit {
     });
   }
 
-  isExistCheck() {
-    this.newTestOrNot = false;
+  changeBackground(tagId: number): any {
+    if (this.dimensionCheckList.indexOf(tagId) >= 0) {
+      return { 'background-color': '#5cb85c' };
+    } else {
+      return { 'background-color': 'gray' };
+    }
   }
-
-  isNewCheck() {
-    this.newTestOrNot = true;
-  }
-
 }

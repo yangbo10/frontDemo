@@ -469,7 +469,15 @@ export class ReportComponent implements OnInit {
       cancelButtonText: this.translate.instant('cancel')
     }).then((result) => {
       if (result.value) {
-        this.taskService.reportToPdf(this.mainPage.nativeElement.innerHTML).subscribe( res => {
+        this.taskService.reportToPdf('<!DOCTYPE html>\n' +
+          '<html lang="en">\n' +
+          '<head>\n' +
+          '    <meta charset="UTF-8">\n' +
+          '</head>\n' +
+          '<body>' +
+          this.mainPage.nativeElement.innerHTML +
+          '</body>\n' +
+          '</html>').subscribe( res => {
           const file = new Blob([res.blob()], { type: 'application/pdf' });
           const fileURL = URL.createObjectURL(file);
           const link = document.createElement('a');

@@ -1,6 +1,5 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
-
 import { AppComponent } from './app.component';
 import {RouterModule, Routes} from '@angular/router';
 import { LoginComponent } from './login/login.component';
@@ -24,6 +23,7 @@ import { UsermanageComponent } from './usermanage/usermanage.component';
 import { TestmanageComponent } from './testmanage/testmanage.component';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 import { TranslateModule, TranslateLoader } from 'ng2-translate/ng2-translate';
+import { StickyNavModule } from 'ng2-sticky-nav';
 
 
 const appChildRoutes: Routes = [
@@ -92,6 +92,7 @@ export function HttpLoaderFactory(http: HttpClient) {
     NgxUploaderModule,
     ModalModule,
     NgxEchartsModule,
+    StickyNavModule,
     ModalModule.forRoot(),
     AlertModule.forRoot(),
     TranslateModule.forRoot({

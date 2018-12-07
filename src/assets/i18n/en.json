@@ -16,6 +16,8 @@
   "cancel":"Cancel",
   "canceled":"Cancelled",
   "mainPage":"HomePage",
+  "loginFail":"Login Failed",
+  "passWordIncorrect":"Username or password is incorrect",
 
   "diagnosisMenu":"Diagnosis",
   "reportMenu":"Results Report",
@@ -76,6 +78,9 @@
   "updateFail":"Update failed",
   "addSuccess":"Successfully added",
   "addFail":"Add failed",
+  "addFailReason":"Selected questions do not cover 11 dimensions",
+  "dimensions":"Covered dimensions",
+  "itemDuplicate":"The selected questions contain the added questions, please re-select.",
 
   "reportTitle":"Results report",
   "fullScore":"Total score",
@@ -95,7 +100,7 @@
   "exportSuccess":"Exported successfully",
   "exportFail":"Export failed",
 
-  "testTitle":"Test Paper Management",
+  "testTitle":"Test Management",
   "createTestBtn":"Create",
   "createTestTitle":"Create a test",
   "testName":"Test Name",
@@ -107,7 +112,7 @@
   "yes":"Yes",
   "no":"No",
   "createFail":"Create failed",
-  "addFailReason":"Selected questions do not cover 11 dimensions",
+
 
   "userTitle":"User Management",
   "createUserBtn":"Create",

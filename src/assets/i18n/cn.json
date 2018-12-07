@@ -16,6 +16,8 @@
   "cancel":"取消",
   "canceled":"已取消",
   "mainPage":"主页",
+  "loginFail":"登录失败",
+  "passWordIncorrect":"用户名或密码错误",
 
   "diagnosisMenu":"诊断",
   "reportMenu":"结果报告",
@@ -77,6 +79,8 @@
   "addSuccess":"添加成功",
   "addFail":"添加失败",
   "addFailReason":"所选试题未覆盖11个维度",
+  "dimensions":"已覆盖维度",
+  "itemDuplicate":"所选试题中包含已添加试题，请重新选择。",
 
   "reportTitle":"结果报告",
   "fullScore":"总分",

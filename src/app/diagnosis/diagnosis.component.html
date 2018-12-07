@@ -31,14 +31,13 @@
   </div>
 
   <div class="box col-md-12" *ngIf="diagnosisPhase == 1">
-    <div style="padding-top: 10px;">
-      <div class="info-box bg-gray" style="min-height: 80px">
-        <span class="info-box-icon" style="height: 80px; width: 80px; line-height: 85px"><i class="ion ion-ios-pricetag-outline"></i></span>
+    <div class="sticky-nav-wrapper">
+      <nav class="sticky-nav" ngStickyNav stickyClass="sticky-box-shadow">
+        <span class="info-box-icon" style="height: 50px; width: 50px; line-height: 38px"><i class="ion ion-ios-pricetag-outline" style="font-size: 40px !important;"></i></span>
         <div class="info-box-content">
-          <span class="info-box-number">Source</span>
-          <span class="info-box-text">{{sourceList.length}} {{'items'|translate}}</span>
-        </div><!-- /.info-box-content -->
-      </div>
+          <span class="diagnosis-info-box">Source: {{sourceAnswerList.length}}/{{sourceList.length}} {{'items'|translate}}</span>
+        </div>
+      </nav>
     </div>
     <ng-container *ngFor="let item of sourceList">
       <app-questionbox [questionFromFather] = item   (answerFromChild)="getFromChild($event)"></app-questionbox>
@@ -56,14 +55,13 @@
   </div>
 
   <div class="box col-md-12" *ngIf="diagnosisPhase == 3">
-    <div style="padding-top: 10px;">
-      <div class="info-box bg-gray" style="min-height: 80px">
-        <span class="info-box-icon" style="height: 80px; width: 80px; line-height: 85px"><i class="ion ion-ios-pricetag-outline"></i></span>
+    <div class="sticky-nav-wrapper">
+      <nav class="sticky-nav" ngStickyNav>
+        <span class="info-box-icon" style="height: 50px; width: 50px; line-height: 38px"><i class="ion ion-ios-pricetag-outline" style="font-size: 40px !important;"></i></span>
         <div class="info-box-content">
-          <span class="info-box-number">Make</span>
-          <span class="info-box-text">{{makeList.length}} {{'items'|translate}}</span>
-        </div><!-- /.info-box-content -->
-      </div>
+          <span class="diagnosis-info-box">Make: {{makeAnswerList.length}}/{{makeList.length}} {{'items'|translate}}</span>
+        </div>
+      </nav>
     </div>
     <ng-container *ngFor="let item of makeList">
       <app-questionbox [questionFromFather] = item   (answerFromChild)="getFromChild($event)"></app-questionbox>
@@ -81,14 +79,13 @@
   </div>
 
   <div class="box col-md-12" *ngIf="diagnosisPhase == 5">
-    <div style="padding-top: 10px;">
-      <div class="info-box bg-gray" style="min-height: 80px">
-        <span class="info-box-icon" style="height: 80px; width: 80px; line-height: 85px"><i class="ion ion-ios-pricetag-outline"></i></span>
+    <div class="sticky-nav-wrapper">
+      <nav class="sticky-nav" ngStickyNav>
+        <span class="info-box-icon" style="height: 50px; width: 50px; line-height: 38px"><i class="ion ion-ios-pricetag-outline" style="font-size: 40px !important;"></i></span>
         <div class="info-box-content">
-          <span class="info-box-number">Delivery</span>
-          <span class="info-box-text">{{deliveryList.length}} {{'items'|translate}}</span>
-        </div><!-- /.info-box-content -->
-      </div>
+          <span class="diagnosis-info-box">Delivery: {{deliveryAnswerList.length}}/{{deliveryList.length}} {{'items'|translate}}</span>
+        </div>
+      </nav>
     </div>
     <ng-container *ngFor="let item of deliveryList">
       <app-questionbox [questionFromFather] = item   (answerFromChild)="getFromChild($event)"></app-questionbox>

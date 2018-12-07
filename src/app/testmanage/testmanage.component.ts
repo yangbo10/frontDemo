@@ -29,8 +29,7 @@ export class TestmanageComponent implements OnInit {
   constructor(public user: User, private taskService: TaskService,
               private modalService: BsModalService,
               private router: Router,
-              private translate: TranslateService,
-              private privaterenderer: Renderer) {
+              private translate: TranslateService) {
     this.testName = '';
     this.testComment = '';
     this.questionCount = 0;
@@ -116,16 +115,21 @@ export class TestmanageComponent implements OnInit {
     this.taskService.getAllTest().subscribe( res => {
       // @ts-ignore
       const testJson = JSON.parse(res._body);
-      this.testList = testJson._embedded.tests;
       // @ts-ignore
       this.tableData = [];
-      for ( let i = 0; i < this.testList.length; i++) {
-        const item = {'id': '', 'name': '', 'comment': '', 'detail': []};
-        item.id = this.testList[i].test.testId;
-        item.name = this.testList[i].test.name;
-        item.comment = this.testList[i].test.comment;
-        item.detail = this.testList[i].test.questions;
-        this.tableData.push(item);
+      // check empty
+      if (testJson.hasOwnProperty('_embedded')) {
+        this.testList = testJson._embedded.tests;
+        for ( let i = 0; i < this.testList.length; i++) {
+          const item = {'id': '', 'name': '', 'comment': '', 'detail': []};
+          item.id = this.testList[i].test.testId;
+          item.name = this.testList[i].test.name;
+          item.comment = this.testList[i].test.comment;
+          item.detail = this.testList[i].test.questions;
+          this.tableData.push(item);
+        }
+      } else {
+        console.log('data empty!');
       }
       this.source = new LocalDataSource(this.tableData);
     });

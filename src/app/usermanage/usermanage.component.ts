@@ -76,7 +76,7 @@ export class UsermanageComponent implements OnInit {
     edit: {
       position: 'right',
       editButtonContent: '<i class="fa fa-1x fa-pencil-square" aria-hidden="true"></i><i>       </i>',
-      saveButtonContent: '<i class="fa fa-1x fa-check"></i>',
+      saveButtonContent: '<i class="fa fa-1x fa-check"></i><i>       </i>',
       cancelButtonContent: '<i class="fa fa-1x fa-close"></i>',
       confirmSave: true
     },
