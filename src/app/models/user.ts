@@ -6,10 +6,12 @@ export class User {
   public password: string;
   public roles: any;
   public mainShowing: boolean;
+  public overallScore: number;
   constructor() {
     this.username = '';
     this.password = '';
     this.roles = [{'roleId': 3, 'rolesName': ''}];
     this.mainShowing = false;
+    this.overallScore = 0;
   }
 }

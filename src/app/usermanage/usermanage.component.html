@@ -20,7 +20,8 @@
   <div class="table-responsive col-md-12">
     <ng2-smart-table [settings]="settings" [source]="source"
                      (deleteConfirm)="onDeleteConfirm($event)"
-                     (editConfirm)="onSaveConfirm($event)"></ng2-smart-table>
+                     (editConfirm)="onSaveConfirm($event)"
+                     (custom)="onCustom($event)"></ng2-smart-table>
     <label>Total: {{tableData.length}}</label>
   </div>
   <div class="col-md-12">
@@ -55,5 +56,27 @@
   </div>
   <div class="modal-footer" style="border-top: none !important">
     <button class="btn btn-block btn-primary btn-sm" style="width: 100px; float: right;" (click)="createNewUser()">{{'createBtn'|translate}}</button>
+  </div>
+</ng-template>
+
+<ng-template #assignTemplate>
+  <div class="modal-header">
+    <span class="modal-title" style="font-size: 20px">{{'generateCode'|translate}}</span>
+    <button type="button" class="close" aria-label="Close" (click)="modalRef.hide()">
+      <span aria-hidden="true">×</span>
+    </button>
+  </div>
+  <div class="modal-body upload-modal-body">
+    <div class="col-md-12">
+      <div class="col-md-4">
+        <label> {{'chooseTest'|translate}}：</label>
+        <select [(ngModel)]="selectTestId">
+          <option *ngFor="let item of testList" [value]="item.test.testId">{{item.test.name}}</option>
+        </select>
+      </div>
+    </div>
+  </div>
+  <div class="modal-footer" style="border-top: none !important">
+    <button class="btn btn-block btn-primary btn-sm" style="width: 100px; float: right;" (click)="generateCode()">{{'generateBtn'|translate}}</button>
   </div>
 </ng-template>

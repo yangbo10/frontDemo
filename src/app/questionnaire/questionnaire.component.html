@@ -115,6 +115,7 @@
         </div>
       </div>
       <div class="modal-footer" style="border-top: none !important">
+        <button class="btn btn-block btn-primary btn-sm" style="width: 120px; float: left; margin-left: 10px" (click)="closeAddModal()">{{'continueAdd'|translate}}</button>
         <label style="margin-top: 4px"> {{'addToTestTitle'|translate}}：</label>
         <select style="margin-top: 4px" [(ngModel)]="selectTestId" (ngModelChange)="selectedNameChanged($event)">
           <option *ngFor="let item of testList" [value]="item.test.testId">{{item.test.name}}</option>

@@ -46,6 +46,9 @@
   "diagnosis":"Diagnosis",
   "testZeroAlert":"This test is empty, please choose another one",
   "searchHolder":"Search...",
+  "activeCodeAlert": "Please input active code to start diagnosis.",
+  "verifyButton": "Verify",
+  "verifyFail": "Verify Fail",
 
   "questionnaireTitle":"Question management",
   "batchDeleteBtn":"Batch delete",
@@ -81,6 +84,7 @@
   "addFailReason":"Selected questions do not cover 11 dimensions",
   "dimensions":"Covered dimensions",
   "itemDuplicate":"The selected questions contain the added questions, please re-select.",
+  "continueAdd":"Back to continue",
 
   "reportTitle":"Results report",
   "fullScore":"Total score",
@@ -99,6 +103,7 @@
   "exportDescribe":"The PDF file will be generated and downloaded",
   "exportSuccess":"Exported successfully",
   "exportFail":"Export failed",
+  "noReport": "No report, please diagnosis first.",
 
   "testTitle":"Test Management",
   "createTestBtn":"Create",
@@ -121,9 +126,133 @@
   "userDetail":"User Details",
   "createConfirm":"Confirm creation?",
   "createSuccess":"Created successfully",
+  "generateCode":"Generate Activate code",
+  "generateBtn":"Generate",
+  "generateSuccess":"Generate Success",
+  "generateDetail":"Activate Code：",
+  "generateFail":"Generate Fail",
+  "generateExisted":"Code existed, regenerate?",
 
   "contactTitle":"Contact us",
   "tel":"Phone",
   "email":"E-mail",
-  "selectText":"Select..."
+  "selectText":"Select...",
+
+  "overallLevel1":"Considering the existing problems(no IT solutions to support production, less information or data, less skills, no connection between machines, etc.), your company starts to put emphasis on lean production and I4.0",
+  "overallLevel2":"Your company has control strategies to conduct the investment of I4.0, necessary skills are available for some fields, but communication exists only inside and isn’t complete, no IT safety consideration",
+  "overallLevel3":"Your company is experienced in lean production and I4.0 development, realize the importance of production data, information system and innovation management, you can provide some services based on data analysis, but data will not  be shared with customers",
+  "overallLevel4":"Your company become an expert in the field of I4.0, enterprise data and information are collected and is used for production management optimization. You have systematic information sharing internally and externally, information safety is considered, and some tests for autonomous optimization are started",
+  "overallLevel5":"Compared to other enterprises in the same field from aspects of lean production and I4.0 readiness, your company performs at the top",
+
+  "LeanLevel1":"",
+  "LeanLevel2":"",
+  "LeanLevel3":"",
+  "LeanLevel4":"",
+  "LeanLevel5":"",
+
+  "EnablerLevel1":"",
+  "EnablerLevel2":"",
+  "EnablerLevel3":"",
+  "EnablerLevel4":"",
+  "EnablerLevel5":"",
+
+  "IndustryLevel1":"Industry 4.0 isn’t being implemented or is already being implemented in departmental pilot initiatives, but the strategic relevance is lacking. Develop a viable Industry 4.0 strategy. Look into the potential of integrating your current systems into your IT infrastructure and take this factor into account when purchasing new systems. It may also be advisable to check whether your current systems can be upgraded. Develop concepts for pilot projects and draw up a cost–benefit analysis based on existing use cases from research or industry associations.",
+  "IndustryLevel2":"Look into how your company can profit from an evaluation of the data you collect. Options include research or partnership projects. Also check to see whether your company can gather additional data and what technology this requires. Examine what information can be obtained from the data already collected. Can patterns be identified? Are they the basis for simulations? Do they yield a consistent digital model of your value added and which gaps your company needs to close? Quantify the benefit of the data collection and run CIP activities.",
+  "IndustryLevel3":"You have a technology and innovation management system in some areas partly. To increase your Industry 4.0 readiness, you should gradually introduce it in other areas with the goal of integrating all areas. Your company already offers product-based services. To enhance your Industry 4.0 readiness, you should invest in integrating your customers in order to optimize the services you offer. This would make it possible for you to offer your customers better, more personalized services. The share of data used in your company provides an excellent foundation for successful implementation of Industry 4.0. To further enhance your Industry 4.0 readiness, you should make more use of the data available to you to develop services that will allow you to offer your customers better, more personalized service.",
+  "IndustryLevel4":"You have already implemented comprehensive IT security measures. Nevertheless, you should still conduct reviews at regular intervals to determine whether your security concept is still in keeping with current requirements. You are not currently using any cloud-based data analytics, cloud computing, or cloud-based software. Run an analysis to determine where you can leverage more potential by using cloud technologies.",
+  "IndustryLevel5":"Your products already feature extensive ICT add-on functionalities, Maintain them ready for Industry 4.0.",
+
+  "GeneralLevel1":"Define your company’s mission and vision, establish a suitable enterprise culture, and set up target (quality, cost, delivery, etc.) and rules (work instructions, employee behavior, etc.). A culture that recognizes the value of mistakes is characterized by open discussion of mistakes when they occur, systematic error documentation and a determination to find both the causes of the mistakes and their solutions",
+  "GeneralLevel2":"Your employees should participate in trainings (production planning, quality management, supply chain management, lean production) regularly. It is better that your employees have openness to innovation and new ways of doing things in order to initiate change and adopt the right measures. Try to make your employees understand that data-based decision-making produces faster and better results than relying on the experience of individuals",
+  "GeneralLevel3":"Your employees have the skills needed to successfully implement Industry 4.0 in some relevant areas. That’s why it’s important to expand and improve the skills in other areas (such as IT infrastructure, automation technology, data analytics, data and communications security, development and application of assistance systems, collaboration software)",
+  "GeneralLevel4":"There are Knowledge sharing regularly every week among employees and management layer. The skills of employees should be assessed when it comes to the future requirements under Industry 4.0(IT infrastructure, Automation technology, Data analytics, Data Security, Collaboration software, etc.)",
+  "GeneralLevel5":"Maintain the current status",
+
+  "SourceLevel1":"You should record and preserve the information of incoming materials, establish standards and rules for suppliers. The delivery quality of suppliers (Quality, Due Date, and Quantity) is continuously (min. quarterly) measured, visualized and results are fed back to the supplier. You can visualize the metrics for the procurement process (delivery service, raw material inventory, receiving errors, expedited transportation etc.) in the receiving area and up to date. The receiving cycles, routes, and time windows are clearly visualized and easy to understand. Deviations become visible immediately. Conduct onsite 5S management, especially for receiving area and raw material inventory",
+  "SourceLevel2":"Your company should have ABC-analysis for the incoming materials and suppliers. A supplier audit evaluates the processes of suppliers (A-components) in regular intervals. Root cause analysis occurs for supplier delivery interruptions, escalation levels are defined, and corrective action plans for correction of the cause are developed and followed up",
+  "SourceLevel3":"All data relevant for order management (e.g. amount of parts, delivery dates, logistics provider) is stored, accessible and can be transferred via IT solutions between companies in a standardized data format. Suppliers can ship A-components directly to the line (ship-to-line) without additional stock levels, B and C- components are shipped directly to decentralized supermarkets located close to point of use",
+  "SourceLevel4":"A structured supplier development program to improve Q, C, and D of the suppliers is in place and improvement of metrics is recognizable. Real-time transparency of supplier's production data (e.g. output, stock and planning) for all relevant areas at your company (lines, workshops…)",
+  "SourceLevel5":"Prediction of time, quantity and volume of orders based on all data available in order to balance and smoothen the receiving process. The order is automatically triggered based on the real-time data of your company and the corresponding partners. The raw materials are classified, and the purchase quantity prediction and inventory sharing are adopted for A-components",
+
+  "MakeLevel1":"Conduct onsite 5S and visualization management for the production workshops. Have onsite audit regularly then meeting to discuss the existing problems. Daily production data is recorded and preserved, data can be shown on Kanban (tables, simple charts), and there are responsible persons to update the Kanban regularly. Establish suitable and understandable work instructions for some special stations or processes",
+  "MakeLevel2":"Optimize production process, logistics routes, production planning (shift models, change-over, machine allocations, etc.). All production data are recorded and data analysis on daily performance is conducted so the root cause for deviation can be detected. Traceability (e.g. routes, stops, schedules) of parts between sub-value streams and within value stream. Use AGV to replace manpower ",
+  "MakeLevel3":"Structured and systematic application of Poke-Yoke solution can be used to prevent failures. Location of transportation equipment can be tracked in real time. Route, stop, schedules of WIP and raw material can be tracked automatically",
+  "MakeLevel4":"The collected data can be used for further analysis (e.g. trends and patterns) to improve the product specific inventory level for your company. Predictive methods and simulation can be used to predict the effects of adjustments in inventory planning according to trend analysis. A predictive maintenance plan can be established based on the real-time machine conditions and prognosis for the future",
+  "MakeLevel5":"Your company can try to realize the entire production area autonomous optimization",
+
+  "DeliverLevel1":"Your company should have classification for customers’ orders, establish standards for the delivery management process. Try to establish communication and information connection with the customers, so the real-time consumption data of customers can be available. All customers’ consumption data should be recorded and preserved",
+  "DeliverLevel2":"You can analyze the customer consumption, stock and planning in order to adjust the production planning at your company. You can analyze location data for an alignment of production planning, levelling and consumption control as well as for an improvement of transportation management (e.g. strategic decision for new transportation routes)",
+  "DeliverLevel3":"Optimization of the delivery management process (delivery frequency, number of expedited shipments, customer demand analysis) based on the analysis of data (e.g. in order to adjust the delivery time according to traffic volumes). You can analyze market information (e.g. market request, new standard, governmental guideline and etc.) in order to do trend analysis",
+  "DeliverLevel4":"Prediction of time, quantity and volume of deliveries based on all data available for an alignment of the delivery process. Deliveries can be triggered autonomously based on real-time data from your company and corresponding partners (e.g. by considering the time window your company can provide real ship-to-line to customer). Prediction of the market demand on all the available information and derivation for necessary adjustments at your company",
+  "DeliverLevel5":"You can use data to offer additional services (e.g. predictive maintenance). You can predict future product performance based on the analysis of the field data",
+
+  "ResourceLevel1":"Count and check the machines, tools, raw materials and finished products of the entire plant, record the quantity and status of machines and tools. Conduct 5S and visualization management in every workshop. By analyzing the order management, production capability, supplier chain, adjust your production planning to decrease the stock of raw materials and finished products. Conduct trainings about logistics, production planning, and quality management regularly.",
+  "ResourceLevel2":"You can try to ensure that your resources have an interface between the physical and digital worlds, this creates an information viewpoint in the digital world that facilitates the learning process required to increase the company’s agility. You should record and preserve all related data. Employees should therefore be able to identify data sources and potential processing techniques.",
+  "ResourceLevel3":"In order to generate and analyze data and implement the corresponding decisions, the existing resources-i.e. all personnel, machinery and equipment, tools, materials and products – must acquire certain competencies or be upgraded with the relevant technological components. Your company should promote an interdisciplinary approach in the way their employees think and act. Employees should be more closely involved in innovation processes so that these can benefit from the widest possible range of knowledge. ",
+  "ResourceLevel4":"As far as the technological resources of machinery and equipment, tools and products are concerned, the priority is their development to create cyber-physical system (sensors, actuators, information processing system, communication layer). Try to locate objects, record quality data with sensors, RFID, etc. technological resources should have had a data processing layer added to them in order to control the connected sensors and actuators and generate feedback data.",
+  "ResourceLevel5":"Human-human, machine-machine and human-machine communication should be configured so that data and information can be exchanged in real-time and so that all the stakeholder groups are included in the communication process.",
+
+  "DigitizationLevel1":"Improve the internal network configuration and network safety. Machinery and equipment should be retrofitted. You should start collecting and preserving production and quality data for future use. Some manually recorded data and information should be recorded digitally.",
+  "DigitizationLevel2":"Do data analysis after data collection then process data in a manner that supports decision making. In order for the data to be usable, the organization must meet the technical requirements for real-time access and process an infrastructure that enables the necessary data processing and seamless information delivery. ",
+  "DigitizationLevel3":"You can try to integrate ERP, MES, OA systems into your production. Make sure that all products can be traceable from customer to raw material. Try to build a company-wide communication, engineering-change-request integrated IT solution across the entire product life cycle, in which e.g. CAD, instructions etc. are stored in the same network.",
+  "DigitizationLevel4":"Machining center can have direct access to the internet, e.g. for location-independent remote maintenance or to install updates autonomously. Malfunction messages are automatically forwarded to the supplier and actions are triggered automatically; Delivery call-ups based on customer orders.",
+  "DigitizationLevel5":"Machining center can offer services (e.g. production capacity) via the internet or buys / sells production parameters via the web.",
+
+  "AutomationLevel1":"Try to retrofit machinery and equipment. Investigate new machines and equipment on market to verify the necessity to invest on it. Do real-time value stream analysis, material flow (route, stop…) analysis in order to find existing problems. Organize employees to participate in I4.0, data analysis trainings.",
+  "AutomationLevel2":"Develop concepts for pilot projects and draw up a cost–benefit analysis based on existing use cases from research or industry associations. Look into how you can profit from an evaluation of the data you collect. Options include research or partnership projects. Also check to see whether you can gather additional data and what technology this requires. Check whether more interfaces can optimize your production processing by linking systems. Also check which systems can accelerate your production processing.",
+  "AutomationLevel3":"Your employees have the skills needed to successfully implement Industry 4.0 in some relevant areas. That’s why it’s important to expand and improve the skills in other areas (such as IT infrastructure, automation technology, data analytics, data and communications security, development and application of assistance systems, collaboration software).",
+  "AutomationLevel4":"By linking several machining cells the FMC (Flexible manufacturing cells) can change work pieces and transport them automatically through connections",
+  "AutomationLevel5":"FMS (Flexible manufacturing cells) are able to automatically produce similar work pieces in terms of production technology and geometry in random order.",
+
+
+  "ProcessOrientationLevel1": "Cluster production mode, mass production, long transportation distance.",
+  "ProcessOrientationLevel2": "In the value stream, the adjacent processes are connected to each other, the production lot-size is large and the standard of material transportation is not clear.",
+  "ProcessOrientationLevel3": "In the value stream, the layout of production line is relatively reasonable, the standard of material transportation is relatively clear, the quantity of stock is general, and the processing of production information is slow.",
+  "ProcessOrientationLevel4": "In the value stream, the layout of production line is reasonable, the standard of material transportation is clear, the material flow speed is fast, the information flows quickly with the material, and has visual display. ",
+  "ProcessOrientationLevel5": "Throughout the value stream, both material flow and information processing are fast, and the entire business process from order to delivery is simple and fast.",
+
+  "PullSystemLevel1": "High inventory of raw materials and finished good, planned volume mode, production fluctuations, customer delivery can not be satisfied.",
+  "PullSystemLevel2": "Raw materials and finished goods are in a controlled state, but the inventory is high, the production fluctuates according to the customer order, the planned batch is large, and the delivery of the customer can be achieved barely, but the material may run out.",
+  "PullSystemLevel3": "Raw material and finished goods inventory use consumption pull system to control, inventory is general, the order of production is the customer take goods, the production fluctuation is small.",
+  "PullSystemLevel4": "Each process of the value stream is controlled by pull system, the production batch is small, the synchronism between production and logistic is high, and the stock of raw material and finished product is small.",
+  "PullSystemLevel5": "Each process of value stream is produced according to the demand of customer, the inventory of raw material and finished product is reduced to a very low level, the transparency of each process of value stream is very high, the production control is self-controlled in the whole system, and the process is very simplified.",
+
+  "PerfectQualityLevel1": "The quality stability of the product is poor, methods of testing is poor, and the urgent transportation caused by product quality problem is frequent.",
+  "PerfectQualityLevel2": "The product quality stability is general, the definition inspection personal is responsible for the product quality inspection, the quality problem reaction speed is slower, the solution problem time is long.",
+  "PerfectQualityLevel3": "According to the model of TPM, the factory has high production stability and quick reaction speed of quality problem.",
+  "PerfectQualityLevel4": "Full implementation of TPM, good production stability, quick response to quality problems, continuous improvement of problems, and some poke-yoke to avoid recurrence.",
+  "PerfectQualityLevel5": "Throughout the value stream, quality is considered in the design phase and has related preventive measures, a large number of poke-yoke measures, in the process to avoid the occurrence of problems customer satisfaction is high.",
+
+  "FlexibilityLevel1": "Unable to cope with the fluctuation of customers, the production lot-size and transportation lot-size are very large, the ability to meet the needs of customers is poor.",
+  "FlexibilityLevel2": "The influence of customer fluctuation is great, the lot-size of production and transportation is large, a few equipments are universal, and there is some ability to meet the new demand of customer.",
+  "FlexibilityLevel3": "The influence of customer has some influence on production, the lot-size of production and transportation is larger, some equipments have universality, and the ability to meet the new demands of customers is stronger.",
+  "FlexibilityLevel4": "The fluctuation of customer has little influence on production, the lot-size of production and transportation is smaller, and a large number of general equipments can quickly meet the new demands of some customers.",
+  "FlexibilityLevel5": "Can easily cope with customer demand fluctuations, flexible adjustment of the internal equipment or staffing to meet the customer’s different needs.",
+
+  "StandardizationLevel1": "All parts in the value stream (raw material, make, delivery) have no standard.",
+  "StandardizationLevel2": "There are some standards in the value stream, but the standards are not perfect and there are some unreasonable standards.",
+  "StandardizationLevel3": "There are corresponding standards in the value stream, the standards are relatively perfect, some of them is visualized, and the implementation effect of the standards may be lack of tracking.",
+  "StandardizationLevel4": "There are corresponding standards in the value stream, the standards are accurate and visualized, the standards are effectively implemented and updated, and there is a responsible person to track the effect of the implementation.",
+  "StandardizationLevel5": "There are corresponding standards in the value stream, the standards are accurate and visualized, the standards are effectively implemented and updated, and there is a responsible person to track the effect of the implementation, managing deviations and structing the process to eliminate deviation. ",
+
+  "VisualizationLevel1": "The information of raw material, inventory, delivery, production, logistic is relatively chaotic, need to find someone to sort out when need, 5S level is poor, on-site chaos.",
+  "VisualizationLevel2": "Raw material, inventory, delivery, production, logistic and other information defined responsible person to collect, query can be obtained through a simple method, 5S level general.",
+  "VisualizationLevel3": "Raw material, inventory, delivery, production, logistic and other information defined responsible person responsible for sorting out, the information has a special display area, information update time is longer, 5S level is better. ",
+  "VisualizationLevel4": "Raw material, inventory, delivery, production, logistic and other information defined responsible person responsible for sorting out, the information has a special display area, information can be updated in real time, 5S level is good.",
+  "VisualizationLevel5": "Raw material, inventory, delivery, production, logistic and other information defined responsible person responsible for sorting out, the information has a special display area, information can be updated in real time and everyone can easily view and understand, 5S level is very good.",
+
+  "ContinuousImprovementLevel1": "Don’t have any activities about continuous improvement, raw material, delivery, production, logistics and so on in the maintenance of the status quo or retrogression。",
+  "ContinuousImprovementLevel2": "There are some activities about continuous improvement, but it hasn’t been extended to all, and no results have been achieved.",
+  "ContinuousImprovementLevel3": "There are continuous improvement activities, all aspects of the factory have been carried out, and achieved some small results.",
+  "ContinuousImprovementLevel4": "Continuous improvement has been carried out in all aspects and is a systematic process of continuous improvement, and good results have been achieved in all aspects.",
+  "ContinuousImprovementLevel5": "Continuous improvement has been a kind of corporate culture and is a systematic process of continuous improvement, and good results have been achieved in all aspects.",
+
+  "AssociatesInvolvementLevel1": "The top team leader decides most of the management work in the company, and the rest of the managers are only the executors, the team consciousness is weak, and the work efficiency is low.",
+  "AssociatesInvolvementLevel2": "The division of each level of the team is fuzzy, the division of responsibilities and rights is confused, staff can’t play their own strengths, team members can’t participate in the improvement of the team.",
+  "AssociatesInvolvementLevel3": "The division of each level of the team is clear, but the division of responsibilities and rights is fuzzy, the space for employees to take advantage of their strengths is not free enough, and team members cannot participate well in the improvement of the team.",
+  "AssociatesInvolvementLevel4": "The division of each level of the team, responsibilities and rights are clear, the advantage of staff is brought into full play, and the enthusiasm of the team to participate in the improvement activities is high.",
+  "AssociatesInvolvementLevel5": "The responsibilities and rights of the team are clearly divided into the corresponding levels, and everyone is clear, the staff actively participate in the improvement activities, and play their indispensable role in the team, staff participation enthusiasm is high."
+
+
+
 }

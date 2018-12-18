@@ -32,10 +32,16 @@ export class DiagnosisComponent implements OnInit {
   options2: object;
   pieData1: [any];
   pieData2: [any];
+  activeCodeCorrect: boolean;
+  activeCode: string;
+  selectedTestId: number;
 
   constructor(public user: User, private taskService: TaskService, private router: Router, private translate: TranslateService) {
     this.user.mainShowing = false;
     this.diagnosisPhase = 0;
+    this.activeCodeCorrect = false;
+    this.activeCode = '';
+    this.selectedTestId = 0;
   }
 
   ngOnInit() {
@@ -76,7 +82,7 @@ export class DiagnosisComponent implements OnInit {
 
     this.options1 = {
       title : {
-        text: 'Result of Phase1',
+        text: '',
         subtext: '',
         x: 'center'
       },
@@ -87,7 +93,7 @@ export class DiagnosisComponent implements OnInit {
       legend: {
         orient: 'vertical',
         left: 'left',
-        data: ['A', 'B', 'C', 'D', 'E']
+        data: ['A', 'B']
       },
       series : [
         {
@@ -109,7 +115,7 @@ export class DiagnosisComponent implements OnInit {
 
     this.options2 = {
       title : {
-        text: 'Result of Phase1',
+        text: '',
         subtext: '',
         x: 'center'
       },
@@ -120,7 +126,7 @@ export class DiagnosisComponent implements OnInit {
       legend: {
         orient: 'vertical',
         left: 'left',
-        data: ['A', 'B', 'C', 'D', 'E']
+        data: ['A', 'B']
       },
       series : [
         {
@@ -151,6 +157,7 @@ export class DiagnosisComponent implements OnInit {
         'error'
       );
     } else {
+      this.selectedTestId = test.testId;
       this.questionList = test.questions;
       for ( const item of this.questionList) {
         if (item.tags[1].tagId === 4) {
@@ -167,15 +174,14 @@ export class DiagnosisComponent implements OnInit {
 
   getFromChild(val) {
     this.reChoose = false;
+    let index = 0;
     for (let i = 0; i < this.answerList.length; i ++) {
       if (this.answerList[i].question.questionId === val.question.questionId) {
         this.answerList[i] = val;
         this.reChoose = true;
-        switch (this.diagnosisPhase) {
-          case 1: this.sourceAnswerList[i] = val; break;
-          case 3: this.makeAnswerList[i] = val; break;
-          case 5: this.deliveryAnswerList[i] = val; break;
-        }
+        // find index
+        index = i;
+        break;
       }
     }
     if ( this.reChoose === false) {
@@ -185,9 +191,15 @@ export class DiagnosisComponent implements OnInit {
         case 3: this.makeAnswerList.push(val); break;
         case 5: this.deliveryAnswerList.push(val); break;
       }
+    } else {
+      switch (this.diagnosisPhase) {
+        case 1: this.sourceAnswerList[index] = val; break;
+        case 3: this.makeAnswerList[index - this.sourceAnswerList.length] = val; break;
+        case 5: this.deliveryAnswerList[index - this.sourceAnswerList.length - this.makeAnswerList.length] = val; break;
+      }
     }
 
-    console.log(this.sourceAnswerList);
+    console.log(this.makeAnswerList);
     if (/*this.answerList.length === this.questionList.length*/1) {
 
       this.unsubmitable = false;
@@ -218,6 +230,7 @@ export class DiagnosisComponent implements OnInit {
             this.resultDemo = JSON.parse(data._body);
             this.questionShowing = false;
             console.log(this.resultDemo);
+            localStorage.setItem('overallScore', this.resultDemo.result.score);
             this.diagnosisPhase++;
           });
         } else if (result.dismiss === Swal.DismissReason.cancel) {
@@ -257,7 +270,7 @@ export class DiagnosisComponent implements OnInit {
       ];
       this.options1 = {
         title : {
-          text: 'Result of Phase1',
+          text: '',
           subtext: '',
           x: 'center'
         },
@@ -268,7 +281,7 @@ export class DiagnosisComponent implements OnInit {
         legend: {
           orient: 'vertical',
           left: 'left',
-          data: ['scored', 'not scored']
+          data: ['scored', 'unscored']
         },
         series : [
           {
@@ -313,7 +326,7 @@ export class DiagnosisComponent implements OnInit {
       ];
       this.options2 = {
         title : {
-          text: 'Result of Phase2',
+          text: '',
           subtext: '',
           x: 'center'
         },
@@ -355,6 +368,24 @@ export class DiagnosisComponent implements OnInit {
 
   gotoResultDetail() {
     this.router.navigate(['home/report']);
+  }
+
+  verifyCode() {
+    this.taskService.verifyActiveCode(this.activeCode, this.selectedTestId ).subscribe( res => {
+      /*Swal(
+        this.translate.instant('verifySuccess'),
+        '',
+        'success'
+      );*/
+      this.activeCodeCorrect = true;
+    }, error => {
+      Swal(
+        this.translate.instant('verifyFail'),
+        '',
+        'error'
+      );
+    });
+
   }
 
 }

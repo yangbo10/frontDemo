@@ -1,4 +1,4 @@
-import {Component, OnInit, TemplateRef} from '@angular/core';
+import {Component, OnInit, TemplateRef, ViewChild} from '@angular/core';
 import {BsModalRef, BsModalService} from 'ngx-bootstrap';
 import {User} from '../models/user';
 import {LocalDataSource} from 'ng2-smart-table';
@@ -6,6 +6,7 @@ import {TaskService} from '../service/taskService';
 import Swal from 'sweetalert2';
 import {Router} from '@angular/router';
 import {TranslateService} from 'ng2-translate';
+import {toNumber} from '../../../node_modules/ngx-bootstrap/timepicker/timepicker.utils';
 
 @Component({
   selector: 'app-usermanage',
@@ -16,18 +17,40 @@ export class UsermanageComponent implements OnInit {
 
   userList: [any];
   tableData: [any];
+  testList: [any];
   source: LocalDataSource;
   newUser: User = new User();
+  selectTestId: number;
+  selectUserId: number;
+  currentCode: string;
   public modalRef: BsModalRef;
   public roleList = [
     {'roleId': 1, 'roleName': 'ADMIN'},
     {'roleId': 2, 'roleName': 'MANAGER'},
     {'roleId': 3, 'roleName': 'USER'}
   ];
+  public param = {
+    'modules': [
+      {
+        'type': 'TEST'
+      }
+    ],
+    'testIds': [
+      0
+    ],
+    'userIds': [
+      0
+    ]
+  };
+  @ViewChild('assignTemplate') assignTemplate: TemplateRef<any>;
 
   constructor(public user: User, private taskService: TaskService,
               private modalService: BsModalService,
               private translate: TranslateService) {
+    this.selectTestId = 0;
+    this.selectUserId = 0;
+    this.currentCode = '';
+    this.user.mainShowing = false;
   }
 
   public settings = {
@@ -71,7 +94,13 @@ export class UsermanageComponent implements OnInit {
     actions: {
       columnTitle: this.translate.instant('operation'),
       add: false,
-      position: 'right'
+      position: 'right',
+      custom: [
+        {
+          name: 'assign',
+          title: '<i class="fa fa-1x fa-legal" aria-hidden="true"></i><i>       </i>',
+        }
+      ]
     },
     edit: {
       position: 'right',
@@ -111,8 +140,25 @@ export class UsermanageComponent implements OnInit {
       this.source = new LocalDataSource(this.tableData);
     });
 
+    this.taskService.getAllTest().subscribe( res => {
+      // @ts-ignore
+      const testJson = JSON.parse(res._body);
+      if (testJson.hasOwnProperty('_embedded')) {
+        // @ts-ignore
+        this.testList = testJson._embedded.tests;
+        this.selectTestId = this.testList[0].test.testId;
+      } else {
+        // @ts-ignore
+        this.testList = [];
+      }
+    });
+
   }
 
+  onCustom(event) {
+    this.selectUserId = event.data.id;
+    this.openAssignModal(this.assignTemplate);
+  }
   onDeleteConfirm(event) {
     Swal({
       title: this.translate.instant('deleteConfirm'),
@@ -151,6 +197,7 @@ export class UsermanageComponent implements OnInit {
       }
     });
   }
+
 
   getRoleIdByName(roleName) {
     const roleIdSet = [];
@@ -211,6 +258,12 @@ export class UsermanageComponent implements OnInit {
     this.modalRef = this.modalService.show(template, {class: 'modal-lg create-model'});
   }
 
+  openAssignModal(template: TemplateRef<any>) {
+    this.modalRef = this.modalService.show(template, {class: 'modal-lg create-model'});
+    this.param.testIds[0] = this.selectTestId;
+    this.param.userIds[0] = this.selectUserId;
+  }
+
   createNewUser() {
     const maxRoleId = this.newUser.roles[0].roleId;
     for ( let i = 1; i <= maxRoleId; i++ ) {
@@ -254,4 +307,35 @@ export class UsermanageComponent implements OnInit {
       }
     });
   }
+
+  generateCode() {
+    this.taskService.generateActiveCode(this.param).subscribe( res => {
+      // @ts-ignore
+      const codeJson = JSON.parse(res._body);
+      console.log(codeJson);
+      if (codeJson.hasOwnProperty('license')) {
+        // @ts-ignore
+        this.currentCode = codeJson.license.licenceKey;
+        Swal(
+          this.translate.instant('createSuccess'),
+          this.translate.instant('generateDetail') + this.currentCode,
+          'success'
+        );
+      } else {
+        Swal(
+          this.translate.instant('generateFail'),
+          '',
+          'error'
+        );
+      }
+    }, error => {
+      Swal(
+        this.translate.instant('generateFail'),
+        '',
+        'error'
+      );
+    });
+
+  }
+
 }

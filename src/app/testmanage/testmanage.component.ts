@@ -33,6 +33,7 @@ export class TestmanageComponent implements OnInit {
     this.testName = '';
     this.testComment = '';
     this.questionCount = 0;
+    this.user.mainShowing = false;
   }
 
   public settings = {

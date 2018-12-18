@@ -171,8 +171,7 @@ export class TaskService {
       return this.http.post(this.TASK_URL + 'api/exporter/pdf', htmlString,  {
         headers: headers,
         responseType: ResponseContentType.Blob
-
-    });
+      });
     }
 
     deleteTest(testId) {
@@ -224,6 +223,24 @@ export class TaskService {
 
     registerUser(userObj) {
       return this.http.post(this.TASK_URL + 'api/users/signup', userObj, {
+      });
+    }
+
+    verifyActiveCode(code, testId) {
+      const headers = new Headers();
+      this.createAuthorizationHeader(headers);
+      return this.http.post(this.TASK_URL + 'api/licenses/validate' +
+        '?moduleType=TEST&testId=' + testId, code,
+        {
+        headers: headers
+      });
+    }
+
+    generateActiveCode(param) {
+      const headers = new Headers();
+      this.createAuthorizationHeader(headers);
+      return this.http.post(this.TASK_URL + 'api/licenses/generate', param,  {
+        headers: headers
       });
     }
 }

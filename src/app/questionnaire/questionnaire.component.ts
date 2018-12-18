@@ -687,4 +687,15 @@ export class QuestionnaireComponent implements OnInit {
       return { 'background-color': 'gray' };
     }
   }
+
+  closeAddModal() {
+    // @ts-ignore
+    this.selectedQuestions = [];
+    // @ts-ignore
+    this.deleteList = [];
+    // @ts-ignore
+    this.dimensionList = [];
+    this.modalRef.hide();
+    this.onSearch('');
+  }
 }

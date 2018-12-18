@@ -20,7 +20,7 @@
       </thead>
 
       <tbody>
-      <tr>
+      <!--<tr>
         <td>{{'fullScore'|translate}}</td>
         <td>{{simpleResultList.Enabler.total}}</td>
         <td>{{simpleResultList.Lean.total}}</td>
@@ -31,12 +31,12 @@
         <td>{{simpleResultList.Enabler.actual}}</td>
         <td>{{simpleResultList.Lean.actual}}</td>
         <td>{{simpleResultList['I4.0'].actual}}</td>
-      </tr>
+      </tr>-->
       <tr>
         <td>{{'unifiedScore'|translate}}</td>
-        <td>{{simpleResultList.Enabler.normalized}}</td>
-        <td>{{simpleResultList.Lean.normalized}}</td>
-        <td>{{simpleResultList['I4.0'].normalized}}</td>
+        <td>{{simpleResultList.Enabler.level}}</td>
+        <td>{{simpleResultList.Lean.level}}</td>
+        <td>{{simpleResultList['I4.0'].level}}</td>
       </tr>
       </tbody>
     </table>
@@ -46,8 +46,8 @@
       <tr style="border: 1px solid #f4f4f4;">
         <th>  </th>
         <th>{{'subItem'|translate}}</th>
-        <th>{{'fullScore'|translate}}</th>
-        <th>{{'actualScore'|translate}}</th>
+        <!--<th>{{'fullScore'|translate}}</th>
+        <th>{{'actualScore'|translate}}</th>-->
         <th>{{'unifiedScore'|translate}}</th>
       </tr>
       </thead>
@@ -56,79 +56,57 @@
       <tr style="border: 1px solid #f4f4f4;">
         <td>Enabler</td>
         <td>Standardization</td>
-        <td>{{fullResultList.Enabler.Standardization.total}}</td>
-        <td>{{fullResultList.Enabler.Standardization.actual}}</td>
-        <td>{{fullResultList.Enabler.Standardization.normalized}}</td>
+        <td>{{fullResultList.Enabler.Standardization.level}}</td>
       </tr>
       <tr style="border: 1px solid #f4f4f4;">
         <td></td>
         <td>Transparent Processes</td>
-        <td>{{fullResultList.Enabler['Transparent Processes'].total}}</td>
-        <td>{{fullResultList.Enabler['Transparent Processes'].actual}}</td>
-        <td>{{fullResultList.Enabler["Transparent Processes"].normalized}}</td>
+        <td>{{fullResultList.Enabler["Transparent Processes"].level}}</td>
       </tr>
       <tr style="border: 1px solid #f4f4f4;">
         <td></td>
         <td>Associate Involvement</td>
-        <td>{{fullResultList.Enabler['Associate Involvement'].total}}</td>
-        <td>{{fullResultList.Enabler['Associate Involvement'].actual}}</td>
-        <td>{{fullResultList.Enabler['Associate Involvement'].normalized}}</td>
+        <td>{{fullResultList.Enabler['Associate Involvement'].level}}</td>
       </tr>
       <tr style="border: 1px solid #f4f4f4;">
         <td>Lean</td>
         <td>Continuous Improvement</td>
-        <td>{{fullResultList.Lean["Continuous Improvement"].total}}</td>
-        <td>{{fullResultList.Lean["Continuous Improvement"].actual}}</td>
-        <td>{{fullResultList.Lean["Continuous Improvement"].normalized}}</td>
+        <td>{{fullResultList.Lean["Continuous Improvement"].level}}</td>
       </tr>
       <tr style="border: 1px solid #f4f4f4;">
         <td></td>
         <td>Flexibility</td>
-        <td>{{fullResultList.Lean.Flexibility.total}}</td>
-        <td>{{fullResultList.Lean.Flexibility.actual}}</td>
-        <td>{{fullResultList.Lean.Flexibility.normalized}}</td>
+        <td>{{fullResultList.Lean.Flexibility.level}}</td>
       </tr>
       <tr  style="border: 1px solid #f4f4f4;">
         <td></td>
         <td>Perfect Quality</td>
-        <td>{{fullResultList.Lean["Perfect Quality"].total}}</td>
-        <td>{{fullResultList.Lean["Perfect Quality"].actual}}</td>
-        <td>{{fullResultList.Lean["Perfect Quality"].normalized}}</td>
+        <td>{{fullResultList.Lean["Perfect Quality"].level}}</td>
       </tr>
       <tr  style="border: 1px solid #f4f4f4;">
         <td></td>
         <td>Process Orientation</td>
-        <td>{{fullResultList.Lean["Process Orientation"].total}}</td>
-        <td>{{fullResultList.Lean["Process Orientation"].actual}}</td>
-        <td>{{fullResultList.Lean["Process Orientation"].normalized}}</td>
+        <td>{{fullResultList.Lean["Process Orientation"].level}}</td>
       </tr>
       <tr  style="border: 1px solid #f4f4f4;">
         <td></td>
         <td>Pull System</td>
-        <td>{{fullResultList.Lean["Pull System"].total}}</td>
-        <td>{{fullResultList.Lean["Pull System"].actual}}</td>
-        <td>{{fullResultList.Lean["Pull System"].normalized}}</td>
+        <td>{{fullResultList.Lean["Pull System"].level}}</td>
       </tr>
       <tr style="border: 1px solid #f4f4f4;">
         <td>I4.0</td>
         <td>Resource</td>
-        <td>{{fullResultList['I4.0'].Resource.total}}</td>
-        <td>{{fullResultList['I4.0'].Resource.actual}}</td>
-        <td>{{fullResultList['I4.0'].Resource.normalized}}</td>
+        <td>{{fullResultList['I4.0'].Resource.level}}</td>
       </tr>
       <tr style="border: 1px solid #f4f4f4;">
         <td></td>
         <td>Digitization</td>
-        <td>{{fullResultList['I4.0'].Digitization.total}}</td>
-        <td>{{fullResultList['I4.0'].Digitization.actual}}</td>
-        <td>{{fullResultList['I4.0'].Digitization.normalized}}</td>
+        <td>{{fullResultList['I4.0'].Digitization.level}}</td>
       </tr>
       <tr style="border: 1px solid #f4f4f4;">
         <td></td>
         <td>Automation</td>
-        <td>{{fullResultList['I4.0'].Automation.total}}</td>
-        <td>{{fullResultList['I4.0'].Automation.actual}}</td>
-        <td>{{fullResultList['I4.0'].Automation.normalized}}</td>
+        <td>{{fullResultList['I4.0'].Automation.level}}</td>
       </tr>
       </tbody>
     </table>
@@ -137,29 +115,240 @@
     <div *ngIf="showStaticImg" class="col-md-12">
       <img src="{{imgSrc6}}" width="100%"/>
     </div>
-    <div *ngIf="!showStaticImg" id="myChart1" class="col-md-6" echarts [options]="options1" style="min-width: 400px; max-width: 800px; height: 400px; margin: 0 auto"></div>
-    <div *ngIf="showStaticImg" class="col-md-6">
-      <img src="{{imgSrc1}}" width="100%"/>
+    <div class="col-md-12" style="margin:10px 30px 20px 30px; min-height: 20px;">
+      <div *ngIf="overAllLevel === 'Level 1'">{{'overallLevel1'|translate}}</div>
+      <div *ngIf="overAllLevel === 'Level 2'">{{'overallLevel2'|translate}}</div>
+      <div *ngIf="overAllLevel === 'Level 3'">{{'overallLevel3'|translate}}</div>
+      <div *ngIf="overAllLevel === 'Level 4'">{{'overallLevel4'|translate}}</div>
+      <div *ngIf="overAllLevel === 'Level 5'">{{'overallLevel5'|translate}}</div>
     </div>
-    <div *ngIf="!showStaticImg" id="myChart2" class="col-md-6" echarts [options]="options2" style="min-width: 400px; max-width: 800px; height: 400px; margin: 0 auto"></div>
-    <div *ngIf="showStaticImg" class="col-md-6">
-      <img src="{{imgSrc2}}" width="100%"/>
-    </div>
-    <div *ngIf="!showStaticImg" id="myChart3" class="col-md-6" echarts [options]="options3" style="min-width: 400px; max-width: 800px; height: 400px; margin: 0 auto"></div>
-    <div *ngIf="showStaticImg" class="col-md-6">
-      <img src="{{imgSrc3}}" width="100%"/>
-    </div>
-    <div *ngIf="!showStaticImg" id="myChart4" class="col-md-6" echarts [options]="options4" style="min-width: 400px; max-width: 800px; height: 400px; margin: 0 auto"></div>
-    <div *ngIf="showStaticImg" class="col-md-6">
-      <img src="{{imgSrc4}}" width="100%"/>
-    </div>
-    <div *ngIf="!showStaticImg" id="myChart5" class="col-md-6" echarts [options]="options5" style="min-width: 400px; max-width: 800px; height: 400px; margin: 0 auto"></div>
-    <div *ngIf="showStaticImg" class="col-md-6">
-      <img src="{{imgSrc5}}" width="100%"/>
+
+    <div *ngIf="!activeCodeCorrect">
+      <div class="row">
+        <div *ngIf="!showStaticImg" id="myChart1" class="col-md-6" echarts [options]="options1" style="min-width: 400px; max-width: 800px; height: 400px; margin: 0 auto"></div>
+        <div *ngIf="showStaticImg" class="col-md-6">
+          <img src="{{imgSrc1}}" width="100%"/>
+        </div>
+        <div class="col-md-6" style="margin-top: 10px">
+          <div *ngIf="fullResultList.Enabler.Standardization.level === 'Level 1'">{{'StandardizationLevel1'|translate}}</div>
+          <div *ngIf="fullResultList.Enabler.Standardization.level === 'Level 2'">{{'StandardizationLevel2'|translate}}</div>
+          <div *ngIf="fullResultList.Enabler.Standardization.level === 'Level 3'">{{'StandardizationLevel3'|translate}}</div>
+          <div *ngIf="fullResultList.Enabler.Standardization.level === 'Level 4'">{{'StandardizationLevel4'|translate}}</div>
+          <div *ngIf="fullResultList.Enabler.Standardization.level === 'Level 5'">{{'StandardizationLevel5'|translate}}</div>
+
+          <div *ngIf="fullResultList.Enabler['Transparent Processes'].level === 'Level 1'">{{'VisualizationLevel1'|translate}}</div>
+          <div *ngIf="fullResultList.Enabler['Transparent Processes'].level === 'Level 2'">{{'VisualizationLevel2'|translate}}</div>
+          <div *ngIf="fullResultList.Enabler['Transparent Processes'].level === 'Level 3'">{{'VisualizationLevel3'|translate}}</div>
+          <div *ngIf="fullResultList.Enabler['Transparent Processes'].level === 'Level 4'">{{'VisualizationLevel4'|translate}}</div>
+          <div *ngIf="fullResultList.Enabler['Transparent Processes'].level === 'Level 5'">{{'VisualizationLevel5'|translate}}</div>
+
+          <div *ngIf="fullResultList.Enabler['Associate Involvement'].level === 'Level 1'">{{'AssociatesInvolvementLevel1'|translate}}</div>
+          <div *ngIf="fullResultList.Enabler['Associate Involvement'].level === 'Level 2'">{{'AssociatesInvolvementLevel2'|translate}}</div>
+          <div *ngIf="fullResultList.Enabler['Associate Involvement'].level === 'Level 3'">{{'AssociatesInvolvementLevel3'|translate}}</div>
+          <div *ngIf="fullResultList.Enabler['Associate Involvement'].level === 'Level 4'">{{'AssociatesInvolvementLevel4'|translate}}</div>
+          <div *ngIf="fullResultList.Enabler['Associate Involvement'].level === 'Level 5'">{{'AssociatesInvolvementLevel5'|translate}}</div>
+        </div>
+      </div>
+
+      <div class="row">
+        <div *ngIf="!showStaticImg" id="myChart2" class="col-md-6" echarts [options]="options2" style="min-width: 400px; max-width: 800px; height: 400px; margin: 0 auto"></div>
+        <div *ngIf="showStaticImg" class="col-md-6">
+          <img src="{{imgSrc2}}" width="100%"/>
+        </div>
+        <div class="col-md-6" style="margin-top: 10px">
+          <div *ngIf="fullResultList.Lean['Continuous Improvement'].level === 'Level 1'">{{'ContinuousImprovementLevel1'|translate}}</div>
+          <div *ngIf="fullResultList.Lean['Continuous Improvement'].level === 'Level 2'">{{'ContinuousImprovementLevel2'|translate}}</div>
+          <div *ngIf="fullResultList.Lean['Continuous Improvement'].level === 'Level 3'">{{'ContinuousImprovementLevel3'|translate}}</div>
+          <div *ngIf="fullResultList.Lean['Continuous Improvement'].level === 'Level 4'">{{'ContinuousImprovementLevel4'|translate}}</div>
+          <div *ngIf="fullResultList.Lean['Continuous Improvement'].level === 'Level 5'">{{'ContinuousImprovementLevel5'|translate}}</div>
+
+          <div *ngIf="fullResultList.Lean['Perfect Quality'].level === 'Level 1'">{{'PerfectQualityLevel1'|translate}}</div>
+          <div *ngIf="fullResultList.Lean['Perfect Quality'].level === 'Level 2'">{{'PerfectQualityLevel2'|translate}}</div>
+          <div *ngIf="fullResultList.Lean['Perfect Quality'].level === 'Level 3'">{{'PerfectQualityLevel3'|translate}}</div>
+          <div *ngIf="fullResultList.Lean['Perfect Quality'].level === 'Level 4'">{{'PerfectQualityLevel4'|translate}}</div>
+          <div *ngIf="fullResultList.Lean['Perfect Quality'].level === 'Level 5'">{{'PerfectQualityLevel5'|translate}}</div>
+
+          <div *ngIf="fullResultList.Enabler['Associate Involvement'].level === 'Level 1'">{{'AssociatesInvolvementLevel1'|translate}}</div>
+          <div *ngIf="fullResultList.Enabler['Associate Involvement'].level === 'Level 2'">{{'AssociatesInvolvementLevel2'|translate}}</div>
+          <div *ngIf="fullResultList.Enabler['Associate Involvement'].level === 'Level 3'">{{'AssociatesInvolvementLevel3'|translate}}</div>
+          <div *ngIf="fullResultList.Enabler['Associate Involvement'].level === 'Level 4'">{{'AssociatesInvolvementLevel4'|translate}}</div>
+          <div *ngIf="fullResultList.Enabler['Associate Involvement'].level === 'Level 5'">{{'AssociatesInvolvementLevel5'|translate}}</div>
+
+          <div *ngIf="fullResultList.Lean['Pull System'].level === 'Level 1'">{{'PullSystemLevel1'|translate}}</div>
+          <div *ngIf="fullResultList.Lean['Pull System'].level === 'Level 2'">{{'PullSystemLevel2'|translate}}</div>
+          <div *ngIf="fullResultList.Lean['Pull System'].level === 'Level 3'">{{'PullSystemLevel3'|translate}}</div>
+          <div *ngIf="fullResultList.Lean['Pull System'].level === 'Level 4'">{{'PullSystemLevel4'|translate}}</div>
+          <div *ngIf="fullResultList.Lean['Pull System'].level === 'Level 5'">{{'PullSystemLevel5'|translate}}</div>
+
+          <div *ngIf="fullResultList.Lean['Process Orientation'].level === 'Level 1'">{{'ProcessOrientationLevel1'|translate}}</div>
+          <div *ngIf="fullResultList.Lean['Process Orientation'].level === 'Level 2'">{{'ProcessOrientationLevel2'|translate}}</div>
+          <div *ngIf="fullResultList.Lean['Process Orientation'].level === 'Level 3'">{{'ProcessOrientationLevel3'|translate}}</div>
+          <div *ngIf="fullResultList.Lean['Process Orientation'].level === 'Level 4'">{{'ProcessOrientationLevel4'|translate}}</div>
+          <div *ngIf="fullResultList.Lean['Process Orientation'].level === 'Level 5'">{{'ProcessOrientationLevel5'|translate}}</div>
+        </div>
+      </div>
+
+      <div class="row">
+        <div *ngIf="!showStaticImg" id="myChart3" class="col-md-6" echarts [options]="options3" style="min-width: 400px; max-width: 800px; height: 400px; margin: 0 auto"></div>
+        <div *ngIf="showStaticImg" class="col-md-6">
+          <img src="{{imgSrc3}}" width="100%"/>
+        </div>
+        <div class="col-md-6" style="margin-top: 10px">
+          <div *ngIf="fullResultList.Lean['Continuous Improvement'].level === 'Level 1'">{{'ContinuousImprovementLevel1'|translate}}</div>
+          <div *ngIf="fullResultList.Lean['Continuous Improvement'].level === 'Level 2'">{{'ContinuousImprovementLevel2'|translate}}</div>
+          <div *ngIf="fullResultList.Lean['Continuous Improvement'].level === 'Level 3'">{{'ContinuousImprovementLevel3'|translate}}</div>
+          <div *ngIf="fullResultList.Lean['Continuous Improvement'].level === 'Level 4'">{{'ContinuousImprovementLevel4'|translate}}</div>
+          <div *ngIf="fullResultList.Lean['Continuous Improvement'].level === 'Level 5'">{{'ContinuousImprovementLevel5'|translate}}</div>
+
+          <div *ngIf="fullResultList.Lean['Perfect Quality'].level === 'Level 1'">{{'PerfectQualityLevel1'|translate}}</div>
+          <div *ngIf="fullResultList.Lean['Perfect Quality'].level === 'Level 2'">{{'PerfectQualityLevel2'|translate}}</div>
+          <div *ngIf="fullResultList.Lean['Perfect Quality'].level === 'Level 3'">{{'PerfectQualityLevel3'|translate}}</div>
+          <div *ngIf="fullResultList.Lean['Perfect Quality'].level === 'Level 4'">{{'PerfectQualityLevel4'|translate}}</div>
+          <div *ngIf="fullResultList.Lean['Perfect Quality'].level === 'Level 5'">{{'PerfectQualityLevel5'|translate}}</div>
+
+          <div *ngIf="fullResultList.Lean['Process Orientation'].level === 'Level 1'">{{'ProcessOrientationLevel1'|translate}}</div>
+          <div *ngIf="fullResultList.Lean['Process Orientation'].level === 'Level 2'">{{'ProcessOrientationLevel2'|translate}}</div>
+          <div *ngIf="fullResultList.Lean['Process Orientation'].level === 'Level 3'">{{'ProcessOrientationLevel3'|translate}}</div>
+          <div *ngIf="fullResultList.Lean['Process Orientation'].level === 'Level 4'">{{'ProcessOrientationLevel4'|translate}}</div>
+          <div *ngIf="fullResultList.Lean['Process Orientation'].level === 'Level 5'">{{'ProcessOrientationLevel5'|translate}}</div>
+        </div>
+      </div>
+
+      <div class="row">
+        <div *ngIf="!showStaticImg" id="myChart4" class="col-md-6" echarts [options]="options4" style="min-width: 400px; max-width: 800px; height: 400px; margin: 0 auto"></div>
+        <div *ngIf="showStaticImg" class="col-md-6">
+          <img src="{{imgSrc4}}" width="100%"/>
+        </div>
+        <div class="col-md-6" style="margin-top: 10px">
+          <div *ngIf="simpleResultList.Lean.level === 'Level 1'">{{'LeanLevel1'|translate}}</div>
+          <div *ngIf="simpleResultList.Lean.level === 'Level 2'">{{'LeanLevel2'|translate}}</div>
+          <div *ngIf="simpleResultList.Lean.level === 'Level 3'">{{'LeanLevel3'|translate}}</div>
+          <div *ngIf="simpleResultList.Lean.level === 'Level 4'">{{'LeanLevel4'|translate}}</div>
+          <div *ngIf="simpleResultList.Lean.level === 'Level 5'">{{'LeanLevel5'|translate}}</div>
+
+          <div *ngIf="simpleResultList.Enabler.level === 'Level 1'">{{'EnablerLevel1'|translate}}</div>
+          <div *ngIf="simpleResultList.Enabler.level === 'Level 2'">{{'EnablerLevel2'|translate}}</div>
+          <div *ngIf="simpleResultList.Enabler.level === 'Level 3'">{{'EnablerLevel3'|translate}}</div>
+          <div *ngIf="simpleResultList.Enabler.level === 'Level 4'">{{'EnablerLevel4'|translate}}</div>
+          <div *ngIf="simpleResultList.Enabler.level === 'Level 5'">{{'EnablerLevel5'|translate}}</div>
+
+          <div *ngIf="simpleResultList['I4.0'].level === 'Level 1'">{{'IndustryLevel1'|translate}}</div>
+          <div *ngIf="simpleResultList['I4.0'].level === 'Level 2'">{{'IndustryLevel2'|translate}}</div>
+          <div *ngIf="simpleResultList['I4.0'].level === 'Level 3'">{{'IndustryLevel3'|translate}}</div>
+          <div *ngIf="simpleResultList['I4.0'].level === 'Level 4'">{{'IndustryLevel4'|translate}}</div>
+          <div *ngIf="simpleResultList['I4.0'].level === 'Level 5'">{{'IndustryLevel5'|translate}}</div>
+        </div>
+      </div>
+
+      <div class="row">
+        <div *ngIf="!showStaticImg" id="myChart7" class="col-md-6" echarts [options]="options7" style="min-width: 400px; max-width: 800px; height: 400px; margin: 0 auto"></div>
+        <div *ngIf="showStaticImg" class="col-md-6">
+          <img src="{{imgSrc7}}" width="100%"/>
+        </div>
+        <div class="col-md-6" style="margin-top: 10px">
+          <div *ngIf="simpleResultList.Lean.level === 'Level 1'">{{'GeneralLevel1'|translate}}</div>
+          <div *ngIf="simpleResultList.Lean.level === 'Level 2'">{{'GeneralLevel2'|translate}}</div>
+          <div *ngIf="simpleResultList.Lean.level === 'Level 3'">{{'GeneralLevel3'|translate}}</div>
+          <div *ngIf="simpleResultList.Lean.level === 'Level 4'">{{'GeneralLevel4'|translate}}</div>
+          <div *ngIf="simpleResultList.Lean.level === 'Level 5'">{{'GeneralLevel5'|translate}}</div>
+
+          <div *ngIf="simpleResultList.Lean.level === 'Level 1'">{{'SourceLevel1'|translate}}</div>
+          <div *ngIf="simpleResultList.Lean.level === 'Level 2'">{{'SourceLevel2'|translate}}</div>
+          <div *ngIf="simpleResultList.Lean.level === 'Level 3'">{{'SourceLevel3'|translate}}</div>
+          <div *ngIf="simpleResultList.Lean.level === 'Level 4'">{{'SourceLevel4'|translate}}</div>
+          <div *ngIf="simpleResultList.Lean.level === 'Level 5'">{{'SourceLevel5'|translate}}</div>
+
+          <div *ngIf="simpleResultList.Enabler.level === 'Level 1'">{{'MakeLevel1'|translate}}</div>
+          <div *ngIf="simpleResultList.Enabler.level === 'Level 2'">{{'MakeLevel2'|translate}}</div>
+          <div *ngIf="simpleResultList.Enabler.level === 'Level 3'">{{'MakeLevel3'|translate}}</div>
+          <div *ngIf="simpleResultList.Enabler.level === 'Level 4'">{{'MakeLevel4'|translate}}</div>
+          <div *ngIf="simpleResultList.Enabler.level === 'Level 5'">{{'MakeLevel5'|translate}}</div>
+
+          <div *ngIf="simpleResultList['I4.0'].level === 'Level 1'">{{'DeliverLevel1'|translate}}</div>
+          <div *ngIf="simpleResultList['I4.0'].level === 'Level 2'">{{'DeliverLevel2'|translate}}</div>
+          <div *ngIf="simpleResultList['I4.0'].level === 'Level 3'">{{'DeliverLevel3'|translate}}</div>
+          <div *ngIf="simpleResultList['I4.0'].level === 'Level 4'">{{'DeliverLevel4'|translate}}</div>
+          <div *ngIf="simpleResultList['I4.0'].level === 'Level 5'">{{'DeliverLevel5'|translate}}</div>
+        </div>
+      </div>
+
+      <div class="row">
+        <div *ngIf="!showStaticImg" id="myChart5" class="col-md-6" echarts [options]="options5" style="min-width: 400px; max-width: 800px; height: 400px; margin: 0 auto"></div>
+        <div *ngIf="showStaticImg" class="col-md-6">
+          <img src="{{imgSrc5}}" width="100%"/>
+        </div>
+        <div class="col-md-6" style="margin-top: 10px">
+          <div *ngIf="fullResultList.Enabler.Standardization.level === 'Level 1'">{{'StandardizationLevel1'|translate}}</div>
+          <div *ngIf="fullResultList.Enabler.Standardization.level === 'Level 2'">{{'StandardizationLevel2'|translate}}</div>
+          <div *ngIf="fullResultList.Enabler.Standardization.level === 'Level 3'">{{'StandardizationLevel3'|translate}}</div>
+          <div *ngIf="fullResultList.Enabler.Standardization.level === 'Level 4'">{{'StandardizationLevel4'|translate}}</div>
+          <div *ngIf="fullResultList.Enabler.Standardization.level === 'Level 5'">{{'StandardizationLevel5'|translate}}</div>
+
+          <div *ngIf="fullResultList.Enabler['Transparent Processes'].level === 'Level 1'">{{'VisualizationLevel1'|translate}}</div>
+          <div *ngIf="fullResultList.Enabler['Transparent Processes'].level === 'Level 2'">{{'VisualizationLevel2'|translate}}</div>
+          <div *ngIf="fullResultList.Enabler['Transparent Processes'].level === 'Level 3'">{{'VisualizationLevel3'|translate}}</div>
+          <div *ngIf="fullResultList.Enabler['Transparent Processes'].level === 'Level 4'">{{'VisualizationLevel4'|translate}}</div>
+          <div *ngIf="fullResultList.Enabler['Transparent Processes'].level === 'Level 5'">{{'VisualizationLevel5'|translate}}</div>
+
+          <div *ngIf="fullResultList.Enabler['Associate Involvement'].level === 'Level 1'">{{'AssociatesInvolvementLevel1'|translate}}</div>
+          <div *ngIf="fullResultList.Enabler['Associate Involvement'].level === 'Level 2'">{{'AssociatesInvolvementLevel2'|translate}}</div>
+          <div *ngIf="fullResultList.Enabler['Associate Involvement'].level === 'Level 3'">{{'AssociatesInvolvementLevel3'|translate}}</div>
+          <div *ngIf="fullResultList.Enabler['Associate Involvement'].level === 'Level 4'">{{'AssociatesInvolvementLevel4'|translate}}</div>
+          <div *ngIf="fullResultList.Enabler['Associate Involvement'].level === 'Level 5'">{{'AssociatesInvolvementLevel5'|translate}}</div>
+
+          <div *ngIf="fullResultList.Lean['Continuous Improvement'].level === 'Level 1'">{{'ContinuousImprovementLevel1'|translate}}</div>
+          <div *ngIf="fullResultList.Lean['Continuous Improvement'].level === 'Level 2'">{{'ContinuousImprovementLevel2'|translate}}</div>
+          <div *ngIf="fullResultList.Lean['Continuous Improvement'].level === 'Level 3'">{{'ContinuousImprovementLevel3'|translate}}</div>
+          <div *ngIf="fullResultList.Lean['Continuous Improvement'].level === 'Level 4'">{{'ContinuousImprovementLevel4'|translate}}</div>
+          <div *ngIf="fullResultList.Lean['Continuous Improvement'].level === 'Level 5'">{{'ContinuousImprovementLevel5'|translate}}</div>
+
+          <div *ngIf="fullResultList.Lean['Perfect Quality'].level === 'Level 1'">{{'PerfectQualityLevel1'|translate}}</div>
+          <div *ngIf="fullResultList.Lean['Perfect Quality'].level === 'Level 2'">{{'PerfectQualityLevel2'|translate}}</div>
+          <div *ngIf="fullResultList.Lean['Perfect Quality'].level === 'Level 3'">{{'PerfectQualityLevel3'|translate}}</div>
+          <div *ngIf="fullResultList.Lean['Perfect Quality'].level === 'Level 4'">{{'PerfectQualityLevel4'|translate}}</div>
+          <div *ngIf="fullResultList.Lean['Perfect Quality'].level === 'Level 5'">{{'PerfectQualityLevel5'|translate}}</div>
+
+          <div *ngIf="fullResultList.Lean.Flexibility.level === 'Level 1'">{{'FlexibilityLevel1'|translate}}</div>
+          <div *ngIf="fullResultList.Lean.Flexibility.level === 'Level 2'">{{'FlexibilityLevel2'|translate}}</div>
+          <div *ngIf="fullResultList.Lean.Flexibility.level === 'Level 3'">{{'FlexibilityLevel3'|translate}}</div>
+          <div *ngIf="fullResultList.Lean.Flexibility.level === 'Level 4'">{{'FlexibilityLevel4'|translate}}</div>
+          <div *ngIf="fullResultList.Lean.Flexibility.level === 'Level 5'">{{'FlexibilityLevel5'|translate}}</div>
+
+          <div *ngIf="fullResultList.Lean['Pull System'].level === 'Level 1'">{{'PullSystemLevel1'|translate}}</div>
+          <div *ngIf="fullResultList.Lean['Pull System'].level === 'Level 2'">{{'PullSystemLevel2'|translate}}</div>
+          <div *ngIf="fullResultList.Lean['Pull System'].level === 'Level 3'">{{'PullSystemLevel3'|translate}}</div>
+          <div *ngIf="fullResultList.Lean['Pull System'].level === 'Level 4'">{{'PullSystemLevel4'|translate}}</div>
+          <div *ngIf="fullResultList.Lean['Pull System'].level === 'Level 5'">{{'PullSystemLevel5'|translate}}</div>
+
+          <div *ngIf="fullResultList.Lean['Process Orientation'].level === 'Level 1'">{{'ProcessOrientationLevel1'|translate}}</div>
+          <div *ngIf="fullResultList.Lean['Process Orientation'].level === 'Level 2'">{{'ProcessOrientationLevel2'|translate}}</div>
+          <div *ngIf="fullResultList.Lean['Process Orientation'].level === 'Level 3'">{{'ProcessOrientationLevel3'|translate}}</div>
+          <div *ngIf="fullResultList.Lean['Process Orientation'].level === 'Level 4'">{{'ProcessOrientationLevel4'|translate}}</div>
+          <div *ngIf="fullResultList.Lean['Process Orientation'].level === 'Level 5'">{{'ProcessOrientationLevel5'|translate}}</div>
+
+          <div *ngIf="fullResultList['I4.0'].Resource.level === 'Level 1'">{{'ResourceLevel1'|translate}}</div>
+          <div *ngIf="fullResultList['I4.0'].Resource.level === 'Level 2'">{{'ResourceLevel2'|translate}}</div>
+          <div *ngIf="fullResultList['I4.0'].Resource.level === 'Level 3'">{{'ResourceLevel3'|translate}}</div>
+          <div *ngIf="fullResultList['I4.0'].Resource.level === 'Level 4'">{{'ResourceLevel4'|translate}}</div>
+          <div *ngIf="fullResultList['I4.0'].Resource.level === 'Level 5'">{{'ResourceLevel5'|translate}}</div>
+
+          <div *ngIf="fullResultList['I4.0'].Digitization.level === 'Level 1'">{{'DigitizationLevel1'|translate}}</div>
+          <div *ngIf="fullResultList['I4.0'].Digitization.level === 'Level 2'">{{'DigitizationLevel2'|translate}}</div>
+          <div *ngIf="fullResultList['I4.0'].Digitization.level === 'Level 3'">{{'DigitizationLevel3'|translate}}</div>
+          <div *ngIf="fullResultList['I4.0'].Digitization.level === 'Level 4'">{{'DigitizationLevel4'|translate}}</div>
+          <div *ngIf="fullResultList['I4.0'].Digitization.level === 'Level 5'">{{'DigitizationLevel5'|translate}}</div>
+
+          <div *ngIf="fullResultList['I4.0'].Automation.level === 'Level 1'">{{'AutomationLevel1'|translate}}</div>
+          <div *ngIf="fullResultList['I4.0'].Automation.level === 'Level 2'">{{'AutomationLevel2'|translate}}</div>
+          <div *ngIf="fullResultList['I4.0'].Automation.level === 'Level 3'">{{'AutomationLevel3'|translate}}</div>
+          <div *ngIf="fullResultList['I4.0'].Automation.level === 'Level 4'">{{'AutomationLevel4'|translate}}</div>
+          <div *ngIf="fullResultList['I4.0'].Automation.level === 'Level 5'">{{'AutomationLevel5'|translate}}</div>
+        </div>
+      </div>
     </div>
   </div>
 
-  <div class="col-md-12">
+  <div class="col-md-12" *ngIf="!activeCodeCorrect">
     <button class="btn btn-block btn-primary btn-lg" style="width: 10%; float: right; margin-bottom: 15px" (click)="createPdf()">{{'exportBtn'|translate}}</button>
   </div>
 
