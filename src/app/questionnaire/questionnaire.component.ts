@@ -55,6 +55,13 @@ export class QuestionnaireComponent implements OnInit {
     this.user.mainShowing = false;
     this.uploadButtonMsg = this.translate.instant('startUpload');
     this.addBtnDisable = false;
+    // @ts-ignore
+    this.tableData = [];
+    this.source = new LocalDataSource(this.tableData);
+    // @ts-ignore
+    this.tableData2 = [];
+    // @ts-ignore
+    this.newTableData = [];
   }
 
   public tagList = [
@@ -80,7 +87,7 @@ export class QuestionnaireComponent implements OnInit {
 
   public settings = {
     columns: {
-      name: {
+      id: {
         title: this.translate.instant('questionName'),
         filter: false,
       },
@@ -208,12 +215,13 @@ export class QuestionnaireComponent implements OnInit {
     attr: {
       class: 'table table-striped table-bordered table-hover'
     },
-    defaultStyle: true
+    defaultStyle: true,
+    noDataMessage: this.translate.instant('noDataMessage')
   };
 
   public newSettings = {
     columns: {
-      name: {
+      id: {
         title: this.translate.instant('questionName'),
         filter: false,
       },
@@ -232,7 +240,8 @@ export class QuestionnaireComponent implements OnInit {
     attr: {
       class: 'table table-striped table-bordered table-hover'
     },
-    defaultStyle: true
+    defaultStyle: true,
+    noDataMessage: this.translate.instant('noDataMessage')
   };
 
   ngOnInit() {
@@ -251,12 +260,13 @@ export class QuestionnaireComponent implements OnInit {
     // @ts-ignore
     this.questionCache = [];
     this.addBtnDisable = false;
-
+    // @ts-ignore
+    this.tableData = [];
+    this.source = new LocalDataSource(this.tableData);
     this.taskService.getAllQuestions('').subscribe(data => {
       // @ts-ignore
       this.testDemo = JSON.parse(data._body);
-      // @ts-ignore
-      this.tableData = [];
+
       if (this.testDemo.hasOwnProperty('_embedded')) {
         this.questionList = this.testDemo._embedded.questions;
         for ( let i = 0; i < this.questionList.length; i++) {
@@ -299,43 +309,33 @@ export class QuestionnaireComponent implements OnInit {
 
 
   onSearch(query) {
-    /*console.log(this.source);
-    this.source.setFilter([
-      // fields we want to inclue in the search
-      {
-        field: 'name',
-        search: query,
-      },
-      {
-        field: 'detail',
-        search: query,
-      }
-    ], true);*/
     if (query === '') {
       this.source = new LocalDataSource(this.tableData);
     } else {
       this.taskService.getAllQuestions(query).subscribe(data => {
         // @ts-ignore
         this.testDemo = JSON.parse(data._body);
-        this.questionList = this.testDemo._embedded.questions;
         // @ts-ignore
         this.tableData2 = [];
-        for ( let i = 0; i < this.questionList.length; i++) {
-          const item = {'id': '', 'name': '', 'detail': '', 'tag1': '', 'tag2': '', 'tag3': '', 'dimensionId': 0};
-          item.id = this.questionList[i].question.questionId;
-          item.name = this.questionList[i].question.name;
-          item.detail = this.questionList[i].question.detail;
-          if (this.questionList[i].question.tags.length > 0) {
-            item.tag1 = this.questionList[i].question.tags[0].name;
+        if (this.testDemo.hasOwnProperty('_embedded')) {
+          this.questionList = this.testDemo._embedded.questions;
+          for ( let i = 0; i < this.questionList.length; i++) {
+            const item = {'id': '', 'name': '', 'detail': '', 'tag1': '', 'tag2': '', 'tag3': '', 'dimensionId': 0};
+            item.id = this.questionList[i].question.questionId;
+            item.name = this.questionList[i].question.name;
+            item.detail = this.questionList[i].question.detail;
+            if (this.questionList[i].question.tags.length > 0) {
+              item.tag1 = this.questionList[i].question.tags[0].name;
+            }
+            if (this.questionList[i].question.tags.length > 1) {
+              item.tag2 = this.questionList[i].question.tags[1].name;
+            }
+            if (this.questionList[i].question.tags.length > 2) {
+              item.tag3 = this.questionList[i].question.tags[2].name;
+              item.dimensionId = this.questionList[i].question.tags[2].id;
+            }
+            this.tableData2.push(item);
           }
-          if (this.questionList[i].question.tags.length > 1) {
-            item.tag2 = this.questionList[i].question.tags[1].name;
-          }
-          if (this.questionList[i].question.tags.length > 2) {
-            item.tag3 = this.questionList[i].question.tags[2].name;
-            item.dimensionId = this.questionList[i].question.tags[2].id;
-          }
-          this.tableData2.push(item);
         }
         this.source = new LocalDataSource(this.tableData2);
         console.log(this.source);
@@ -635,6 +635,7 @@ export class QuestionnaireComponent implements OnInit {
 
   openUpload() {
     this.uploadButtonMsg = this.translate.instant('startUpload');
+    this.uploadDone = false;
   }
 
   openCreateModal(template: TemplateRef<any>) {

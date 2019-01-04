@@ -11,6 +11,8 @@
 
   </div>
   <div class="col-md-12">
+    <input #search [hidden]="false" class="search form-inline" style="width: 200px" type="text"
+           placeholder="{{'searchHolder'|translate}}" (keydown.enter)="onSearch(search.value)">
     <button class="btn btn-block btn-success btn-sm"
             style="min-width: 80px; width: 6%; float: right; margin-bottom: 15px; margin-top: 0px; margin-left: 20px; margin-top: 5px;"
             (click)="openCreateModal(template)">{{'createUserBtn'|translate}}</button>
@@ -22,7 +24,7 @@
                      (deleteConfirm)="onDeleteConfirm($event)"
                      (editConfirm)="onSaveConfirm($event)"
                      (custom)="onCustom($event)"></ng2-smart-table>
-    <label>Total: {{tableData.length}}</label>
+    <label>{{'totalLabel'|translate}}: {{tableData.length}}</label>
   </div>
   <div class="col-md-12">
 
@@ -70,7 +72,7 @@
     <div class="col-md-12">
       <div class="col-md-4">
         <label> {{'chooseTest'|translate}}：</label>
-        <select [(ngModel)]="selectTestId">
+        <select [(ngModel)]="selectTestId"  (ngModelChange)="selectedTestChanged($event)">
           <option *ngFor="let item of testList" [value]="item.test.testId">{{item.test.name}}</option>
         </select>
       </div>

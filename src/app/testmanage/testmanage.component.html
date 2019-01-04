@@ -22,7 +22,7 @@
                      (deleteConfirm)="onDeleteConfirm($event)"
                      (editConfirm)="onSaveConfirm($event)"
                      (custom)="onCustom($event)"></ng2-smart-table>
-    <label>Total: {{tableData.length}}</label>
+    <label>{{'totalLabel'|translate}}: {{tableData.length}}</label>
   </div>
   <div class="col-md-12">
 
@@ -62,10 +62,34 @@
   </div>
   <div class="modal-body upload-modal-body">
     <div class="table-responsive col-md-12">
-      <ng2-smart-table [settings]="detailSettings" [source]="detailSource"></ng2-smart-table>
-      <label>Total: {{questionCount}}</label>
+      <ng2-smart-table [settings]="detailSettings" [source]="detailSource"
+                       (editConfirm)="onDetailSave($event)"
+                       (deleteConfirm)="onDetailDelete($event)"></ng2-smart-table>
+      <label>{{'totalLabel'|translate}}: {{questionCount}}</label>
     </div>
   </div>
   <div class="modal-footer" style="border-top: none !important">
   </div>
 </ng-template>
+
+<!--<div class="modal fade" id="detail-modal" tabindex="-1" role="dialog" aria-labelledby="modalLabel">
+  <div class="modal-dialog import-model" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <span class="modal-title" style="font-size: 20px">{{'testDetail'|translate}}</span>
+        <button type="button" class="close" aria-label="Close" data-dismiss="modal" data-dismiss="modal">
+          <span aria-hidden="true">×</span>
+        </button>
+      </div>
+      <div class="modal-body upload-modal-body">
+        <div class="table-responsive col-md-12">
+          <ng2-smart-table [settings]="detailSettings" [source]="detailSource"></ng2-smart-table>
+          <label>Total: {{questionCount}}</label>
+        </div>
+      </div>
+      <div class="modal-footer" style="border-top: none !important">
+
+      </div>
+    </div>
+  </div>
+</div>-->

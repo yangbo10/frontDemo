@@ -17,6 +17,7 @@ export class UsermanageComponent implements OnInit {
 
   userList: [any];
   tableData: [any];
+  tableData2: [any];
   testList: [any];
   source: LocalDataSource;
   newUser: User = new User();
@@ -51,6 +52,9 @@ export class UsermanageComponent implements OnInit {
     this.selectUserId = 0;
     this.currentCode = '';
     this.user.mainShowing = false;
+    // @ts-ignore
+    this.tableData = [];
+    this.source = new LocalDataSource(this.tableData);
   }
 
   public settings = {
@@ -117,25 +121,29 @@ export class UsermanageComponent implements OnInit {
     attr: {
       class: 'table table-striped table-bordered table-hover'
     },
-    defaultStyle: true
+    defaultStyle: true,
+    noDataMessage: this.translate.instant('noDataMessage')
   };
 
   ngOnInit() {
+    // @ts-ignore
+    this.tableData = [];
+    this.source = new LocalDataSource(this.tableData);
     this.taskService.getAllUser().subscribe( res => {
       // @ts-ignore
       const userJson = JSON.parse(res._body);
-      this.userList = userJson._embedded.users;
-      // @ts-ignore
-      this.tableData = [];
-      for ( let i = 0; i < this.userList.length; i++) {
-        const item = {'id': '', 'name': '', 'comment': '', 'roles': ''};
-        item.id = this.userList[i].user.userId;
-        item.name = this.userList[i].user.username;
-        item.comment = this.userList[i].user.comment;
-        if (this.userList[i].user.roles.length > 0) {
-          item.roles = this.userList[i].user.roles[0].name;
+      if (userJson.hasOwnProperty('_embedded')) {
+        this.userList = userJson._embedded.users;
+        for ( let i = 0; i < this.userList.length; i++) {
+          const item = {'id': '', 'name': '', 'comment': '', 'roles': ''};
+          item.id = this.userList[i].user.userId;
+          item.name = this.userList[i].user.username;
+          item.comment = this.userList[i].user.comment;
+          if (this.userList[i].user.roles.length > 0) {
+            item.roles = this.userList[i].user.roles[0].name;
+          }
+          this.tableData.push(item);
         }
-        this.tableData.push(item);
       }
       this.source = new LocalDataSource(this.tableData);
     });
@@ -153,6 +161,38 @@ export class UsermanageComponent implements OnInit {
       }
     });
 
+  }
+
+  onSearch(query) {
+    if (query === '') {
+      this.source = new LocalDataSource(this.tableData);
+    } else {
+      this.taskService.queryUsers(query).subscribe(data => {
+        // @ts-ignore
+        const userJson = JSON.parse(data._body);
+        // @ts-ignore
+        this.tableData2 = [];
+        if (userJson.hasOwnProperty('_embedded')) {
+          this.userList = userJson._embedded.users;
+          console.log(this.userList);
+          for ( let i = 0; i < this.userList.length; i++) {
+            const item = {'id': '', 'name': '', 'comment': '', 'roles': ''};
+            item.id = this.userList[i].user.userId;
+            item.name = this.userList[i].user.username;
+            item.comment = this.userList[i].user.comment;
+            if (this.userList[i].user.roles.length > 0) {
+              item.roles = this.userList[i].user.roles[0].name;
+            }
+            this.tableData2.push(item);
+          }
+        }
+        this.source = new LocalDataSource(this.tableData2);
+      });
+    }
+  }
+
+  selectedTestChanged(event) {
+    this.param.testIds[0] = this.selectTestId;
   }
 
   onCustom(event) {
@@ -256,6 +296,7 @@ export class UsermanageComponent implements OnInit {
 
   openCreateModal(template: TemplateRef<any>) {
     this.modalRef = this.modalService.show(template, {class: 'modal-lg create-model'});
+    this.newUser = new User();
   }
 
   openAssignModal(template: TemplateRef<any>) {
@@ -321,6 +362,7 @@ export class UsermanageComponent implements OnInit {
           this.translate.instant('generateDetail') + this.currentCode,
           'success'
         );
+        this.modalRef.hide();
       } else {
         Swal(
           this.translate.instant('generateFail'),

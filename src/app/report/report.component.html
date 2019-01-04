@@ -9,6 +9,10 @@
 </section>
 <div class="box col-md-12" style="background-color: white !important;">
   <div #main class="row" style="padding-top: 20px">
+    <div class="col-md-12" style="margin:10px 30px 20px 10px; min-height: 20px;">
+      <div>{{'reportThankYou'|translate}}</div>
+    </div>
+
     <table class="table table-striped table-bordered" style="font-size: 14px;max-width: 1000px; margin-left: 20px;border: 1px solid #f4f4f4;">
       <thead>
       <tr>
@@ -115,7 +119,7 @@
     <div *ngIf="showStaticImg" class="col-md-12">
       <img src="{{imgSrc6}}" width="100%"/>
     </div>
-    <div class="col-md-12" style="margin:10px 30px 20px 30px; min-height: 20px;">
+    <div class="col-md-12" style="margin:10px 30px 20px 10px; min-height: 20px;">
       <div *ngIf="overAllLevel === 'Level 1'">{{'overallLevel1'|translate}}</div>
       <div *ngIf="overAllLevel === 'Level 2'">{{'overallLevel2'|translate}}</div>
       <div *ngIf="overAllLevel === 'Level 3'">{{'overallLevel3'|translate}}</div>
@@ -124,225 +128,225 @@
     </div>
 
     <div *ngIf="!activeCodeCorrect">
-      <div class="row">
+      <div class="row" style="margin-top: 10px">
         <div *ngIf="!showStaticImg" id="myChart1" class="col-md-6" echarts [options]="options1" style="min-width: 400px; max-width: 800px; height: 400px; margin: 0 auto"></div>
         <div *ngIf="showStaticImg" class="col-md-6">
           <img src="{{imgSrc1}}" width="100%"/>
         </div>
         <div class="col-md-6" style="margin-top: 10px">
-          <div *ngIf="fullResultList.Enabler.Standardization.level === 'Level 1'">{{'StandardizationLevel1'|translate}}</div>
-          <div *ngIf="fullResultList.Enabler.Standardization.level === 'Level 2'">{{'StandardizationLevel2'|translate}}</div>
-          <div *ngIf="fullResultList.Enabler.Standardization.level === 'Level 3'">{{'StandardizationLevel3'|translate}}</div>
-          <div *ngIf="fullResultList.Enabler.Standardization.level === 'Level 4'">{{'StandardizationLevel4'|translate}}</div>
-          <div *ngIf="fullResultList.Enabler.Standardization.level === 'Level 5'">{{'StandardizationLevel5'|translate}}</div>
+          <div *ngIf="fullResultList.Enabler.Standardization.level === 'Level 1'">Standardization: {{fullResultList.Enabler.Standardization.level}}.<br>{{'StandardizationLevel1'|translate}}</div>
+          <div *ngIf="fullResultList.Enabler.Standardization.level === 'Level 2'">Standardization: {{fullResultList.Enabler.Standardization.level}}.<br>{{'StandardizationLevel2'|translate}}</div>
+          <div *ngIf="fullResultList.Enabler.Standardization.level === 'Level 3'">Standardization: {{fullResultList.Enabler.Standardization.level}}.<br>{{'StandardizationLevel3'|translate}}</div>
+          <div *ngIf="fullResultList.Enabler.Standardization.level === 'Level 4'">Standardization: {{fullResultList.Enabler.Standardization.level}}.<br>{{'StandardizationLevel4'|translate}}</div>
+          <div *ngIf="fullResultList.Enabler.Standardization.level === 'Level 5'">Standardization: {{fullResultList.Enabler.Standardization.level}}.<br>{{'StandardizationLevel5'|translate}}</div>
 
-          <div *ngIf="fullResultList.Enabler['Transparent Processes'].level === 'Level 1'">{{'VisualizationLevel1'|translate}}</div>
-          <div *ngIf="fullResultList.Enabler['Transparent Processes'].level === 'Level 2'">{{'VisualizationLevel2'|translate}}</div>
-          <div *ngIf="fullResultList.Enabler['Transparent Processes'].level === 'Level 3'">{{'VisualizationLevel3'|translate}}</div>
-          <div *ngIf="fullResultList.Enabler['Transparent Processes'].level === 'Level 4'">{{'VisualizationLevel4'|translate}}</div>
-          <div *ngIf="fullResultList.Enabler['Transparent Processes'].level === 'Level 5'">{{'VisualizationLevel5'|translate}}</div>
+          <div *ngIf="fullResultList.Enabler['Transparent Processes'].level === 'Level 1'">Transparent Processes: {{fullResultList.Enabler['Transparent Processes'].level}}.<br>{{'VisualizationLevel1'|translate}}</div>
+          <div *ngIf="fullResultList.Enabler['Transparent Processes'].level === 'Level 2'">Transparent Processes: {{fullResultList.Enabler['Transparent Processes'].level}}.<br>{{'VisualizationLevel2'|translate}}</div>
+          <div *ngIf="fullResultList.Enabler['Transparent Processes'].level === 'Level 3'">Transparent Processes: {{fullResultList.Enabler['Transparent Processes'].level}}.<br>{{'VisualizationLevel3'|translate}}</div>
+          <div *ngIf="fullResultList.Enabler['Transparent Processes'].level === 'Level 4'">Transparent Processes: {{fullResultList.Enabler['Transparent Processes'].level}}.<br>{{'VisualizationLevel4'|translate}}</div>
+          <div *ngIf="fullResultList.Enabler['Transparent Processes'].level === 'Level 5'">Transparent Processes: {{fullResultList.Enabler['Transparent Processes'].level}}.<br>{{'VisualizationLevel5'|translate}}</div>
 
-          <div *ngIf="fullResultList.Enabler['Associate Involvement'].level === 'Level 1'">{{'AssociatesInvolvementLevel1'|translate}}</div>
-          <div *ngIf="fullResultList.Enabler['Associate Involvement'].level === 'Level 2'">{{'AssociatesInvolvementLevel2'|translate}}</div>
-          <div *ngIf="fullResultList.Enabler['Associate Involvement'].level === 'Level 3'">{{'AssociatesInvolvementLevel3'|translate}}</div>
-          <div *ngIf="fullResultList.Enabler['Associate Involvement'].level === 'Level 4'">{{'AssociatesInvolvementLevel4'|translate}}</div>
-          <div *ngIf="fullResultList.Enabler['Associate Involvement'].level === 'Level 5'">{{'AssociatesInvolvementLevel5'|translate}}</div>
+          <div *ngIf="fullResultList.Enabler['Associate Involvement'].level === 'Level 1'">Associate Involvement: {{fullResultList.Enabler['Associate Involvement'].level}}.<br>{{'AssociatesInvolvementLevel1'|translate}}</div>
+          <div *ngIf="fullResultList.Enabler['Associate Involvement'].level === 'Level 2'">Associate Involvement: {{fullResultList.Enabler['Associate Involvement'].level}}.<br>{{'AssociatesInvolvementLevel2'|translate}}</div>
+          <div *ngIf="fullResultList.Enabler['Associate Involvement'].level === 'Level 3'">Associate Involvement: {{fullResultList.Enabler['Associate Involvement'].level}}.<br>{{'AssociatesInvolvementLevel3'|translate}}</div>
+          <div *ngIf="fullResultList.Enabler['Associate Involvement'].level === 'Level 4'">Associate Involvement: {{fullResultList.Enabler['Associate Involvement'].level}}.<br>{{'AssociatesInvolvementLevel4'|translate}}</div>
+          <div *ngIf="fullResultList.Enabler['Associate Involvement'].level === 'Level 5'">Associate Involvement: {{fullResultList.Enabler['Associate Involvement'].level}}.<br>{{'AssociatesInvolvementLevel5'|translate}}</div>
         </div>
       </div>
 
-      <div class="row">
+      <div class="row" style="margin-top: 10px">
         <div *ngIf="!showStaticImg" id="myChart2" class="col-md-6" echarts [options]="options2" style="min-width: 400px; max-width: 800px; height: 400px; margin: 0 auto"></div>
         <div *ngIf="showStaticImg" class="col-md-6">
           <img src="{{imgSrc2}}" width="100%"/>
         </div>
         <div class="col-md-6" style="margin-top: 10px">
-          <div *ngIf="fullResultList.Lean['Continuous Improvement'].level === 'Level 1'">{{'ContinuousImprovementLevel1'|translate}}</div>
-          <div *ngIf="fullResultList.Lean['Continuous Improvement'].level === 'Level 2'">{{'ContinuousImprovementLevel2'|translate}}</div>
-          <div *ngIf="fullResultList.Lean['Continuous Improvement'].level === 'Level 3'">{{'ContinuousImprovementLevel3'|translate}}</div>
-          <div *ngIf="fullResultList.Lean['Continuous Improvement'].level === 'Level 4'">{{'ContinuousImprovementLevel4'|translate}}</div>
-          <div *ngIf="fullResultList.Lean['Continuous Improvement'].level === 'Level 5'">{{'ContinuousImprovementLevel5'|translate}}</div>
+          <div *ngIf="fullResultList.Lean['Continuous Improvement'].level === 'Level 1'">Continuous Improvement: {{fullResultList.Lean['Continuous Improvement'].level}}.<br>{{'ContinuousImprovementLevel1'|translate}}</div>
+          <div *ngIf="fullResultList.Lean['Continuous Improvement'].level === 'Level 2'">Continuous Improvement: {{fullResultList.Lean['Continuous Improvement'].level}}.<br>{{'ContinuousImprovementLevel2'|translate}}</div>
+          <div *ngIf="fullResultList.Lean['Continuous Improvement'].level === 'Level 3'">Continuous Improvement: {{fullResultList.Lean['Continuous Improvement'].level}}.<br>{{'ContinuousImprovementLevel3'|translate}}</div>
+          <div *ngIf="fullResultList.Lean['Continuous Improvement'].level === 'Level 4'">Continuous Improvement: {{fullResultList.Lean['Continuous Improvement'].level}}.<br>{{'ContinuousImprovementLevel4'|translate}}</div>
+          <div *ngIf="fullResultList.Lean['Continuous Improvement'].level === 'Level 5'">Continuous Improvement: {{fullResultList.Lean['Continuous Improvement'].level}}.<br>{{'ContinuousImprovementLevel5'|translate}}</div>
 
-          <div *ngIf="fullResultList.Lean['Perfect Quality'].level === 'Level 1'">{{'PerfectQualityLevel1'|translate}}</div>
-          <div *ngIf="fullResultList.Lean['Perfect Quality'].level === 'Level 2'">{{'PerfectQualityLevel2'|translate}}</div>
-          <div *ngIf="fullResultList.Lean['Perfect Quality'].level === 'Level 3'">{{'PerfectQualityLevel3'|translate}}</div>
-          <div *ngIf="fullResultList.Lean['Perfect Quality'].level === 'Level 4'">{{'PerfectQualityLevel4'|translate}}</div>
-          <div *ngIf="fullResultList.Lean['Perfect Quality'].level === 'Level 5'">{{'PerfectQualityLevel5'|translate}}</div>
+          <div *ngIf="fullResultList.Lean['Perfect Quality'].level === 'Level 1'">Perfect Quality: {{fullResultList.Lean['Perfect Quality'].level}}.<br>{{'PerfectQualityLevel1'|translate}}</div>
+          <div *ngIf="fullResultList.Lean['Perfect Quality'].level === 'Level 2'">Perfect Quality: {{fullResultList.Lean['Perfect Quality'].level}}.<br>{{'PerfectQualityLevel2'|translate}}</div>
+          <div *ngIf="fullResultList.Lean['Perfect Quality'].level === 'Level 3'">Perfect Quality: {{fullResultList.Lean['Perfect Quality'].level}}.<br>{{'PerfectQualityLevel3'|translate}}</div>
+          <div *ngIf="fullResultList.Lean['Perfect Quality'].level === 'Level 4'">Perfect Quality: {{fullResultList.Lean['Perfect Quality'].level}}.<br>{{'PerfectQualityLevel4'|translate}}</div>
+          <div *ngIf="fullResultList.Lean['Perfect Quality'].level === 'Level 5'">Perfect Quality: {{fullResultList.Lean['Perfect Quality'].level}}.<br>{{'PerfectQualityLevel5'|translate}}</div>
 
-          <div *ngIf="fullResultList.Enabler['Associate Involvement'].level === 'Level 1'">{{'AssociatesInvolvementLevel1'|translate}}</div>
-          <div *ngIf="fullResultList.Enabler['Associate Involvement'].level === 'Level 2'">{{'AssociatesInvolvementLevel2'|translate}}</div>
-          <div *ngIf="fullResultList.Enabler['Associate Involvement'].level === 'Level 3'">{{'AssociatesInvolvementLevel3'|translate}}</div>
-          <div *ngIf="fullResultList.Enabler['Associate Involvement'].level === 'Level 4'">{{'AssociatesInvolvementLevel4'|translate}}</div>
-          <div *ngIf="fullResultList.Enabler['Associate Involvement'].level === 'Level 5'">{{'AssociatesInvolvementLevel5'|translate}}</div>
+          <div *ngIf="fullResultList.Lean['Process Orientation'].level === 'Level 1'">Process Orientation: {{fullResultList.Lean['Process Orientation'].level}}.<br>{{'ProcessOrientationLevel1'|translate}}</div>
+          <div *ngIf="fullResultList.Lean['Process Orientation'].level === 'Level 2'">Process Orientation: {{fullResultList.Lean['Process Orientation'].level}}.<br>{{'ProcessOrientationLevel2'|translate}}</div>
+          <div *ngIf="fullResultList.Lean['Process Orientation'].level === 'Level 3'">Process Orientation: {{fullResultList.Lean['Process Orientation'].level}}.<br>{{'ProcessOrientationLevel3'|translate}}</div>
+          <div *ngIf="fullResultList.Lean['Process Orientation'].level === 'Level 4'">Process Orientation: {{fullResultList.Lean['Process Orientation'].level}}.<br>{{'ProcessOrientationLevel4'|translate}}</div>
+          <div *ngIf="fullResultList.Lean['Process Orientation'].level === 'Level 5'">Process Orientation: {{fullResultList.Lean['Process Orientation'].level}}.<br>{{'ProcessOrientationLevel5'|translate}}</div>
 
-          <div *ngIf="fullResultList.Lean['Pull System'].level === 'Level 1'">{{'PullSystemLevel1'|translate}}</div>
-          <div *ngIf="fullResultList.Lean['Pull System'].level === 'Level 2'">{{'PullSystemLevel2'|translate}}</div>
-          <div *ngIf="fullResultList.Lean['Pull System'].level === 'Level 3'">{{'PullSystemLevel3'|translate}}</div>
-          <div *ngIf="fullResultList.Lean['Pull System'].level === 'Level 4'">{{'PullSystemLevel4'|translate}}</div>
-          <div *ngIf="fullResultList.Lean['Pull System'].level === 'Level 5'">{{'PullSystemLevel5'|translate}}</div>
+          <div *ngIf="fullResultList.Lean['Pull System'].level === 'Level 1'">Pull System: {{fullResultList.Lean['Pull System'].level}}.<br>{{'PullSystemLevel1'|translate}}</div>
+          <div *ngIf="fullResultList.Lean['Pull System'].level === 'Level 2'">Pull System: {{fullResultList.Lean['Pull System'].level}}.<br>{{'PullSystemLevel2'|translate}}</div>
+          <div *ngIf="fullResultList.Lean['Pull System'].level === 'Level 3'">Pull System: {{fullResultList.Lean['Pull System'].level}}.<br>{{'PullSystemLevel3'|translate}}</div>
+          <div *ngIf="fullResultList.Lean['Pull System'].level === 'Level 4'">Pull System: {{fullResultList.Lean['Pull System'].level}}.<br>{{'PullSystemLevel4'|translate}}</div>
+          <div *ngIf="fullResultList.Lean['Pull System'].level === 'Level 5'">Pull System: {{fullResultList.Lean['Pull System'].level}}.<br>{{'PullSystemLevel5'|translate}}</div>
 
-          <div *ngIf="fullResultList.Lean['Process Orientation'].level === 'Level 1'">{{'ProcessOrientationLevel1'|translate}}</div>
-          <div *ngIf="fullResultList.Lean['Process Orientation'].level === 'Level 2'">{{'ProcessOrientationLevel2'|translate}}</div>
-          <div *ngIf="fullResultList.Lean['Process Orientation'].level === 'Level 3'">{{'ProcessOrientationLevel3'|translate}}</div>
-          <div *ngIf="fullResultList.Lean['Process Orientation'].level === 'Level 4'">{{'ProcessOrientationLevel4'|translate}}</div>
-          <div *ngIf="fullResultList.Lean['Process Orientation'].level === 'Level 5'">{{'ProcessOrientationLevel5'|translate}}</div>
+          <div *ngIf="fullResultList.Enabler['Associate Involvement'].level === 'Level 1'">Associate Involvement: {{fullResultList.Enabler['Associate Involvement'].level}}.<br>{{'AssociatesInvolvementLevel1'|translate}}</div>
+          <div *ngIf="fullResultList.Enabler['Associate Involvement'].level === 'Level 2'">Associate Involvement: {{fullResultList.Enabler['Associate Involvement'].level}}.<br>{{'AssociatesInvolvementLevel2'|translate}}</div>
+          <div *ngIf="fullResultList.Enabler['Associate Involvement'].level === 'Level 3'">Associate Involvement: {{fullResultList.Enabler['Associate Involvement'].level}}.<br>{{'AssociatesInvolvementLevel3'|translate}}</div>
+          <div *ngIf="fullResultList.Enabler['Associate Involvement'].level === 'Level 4'">Associate Involvement: {{fullResultList.Enabler['Associate Involvement'].level}}.<br>{{'AssociatesInvolvementLevel4'|translate}}</div>
+          <div *ngIf="fullResultList.Enabler['Associate Involvement'].level === 'Level 5'">Associate Involvement: {{fullResultList.Enabler['Associate Involvement'].level}}.<br>{{'AssociatesInvolvementLevel5'|translate}}</div>
         </div>
       </div>
 
-      <div class="row">
+      <div class="row" style="margin-top: 10px">
         <div *ngIf="!showStaticImg" id="myChart3" class="col-md-6" echarts [options]="options3" style="min-width: 400px; max-width: 800px; height: 400px; margin: 0 auto"></div>
         <div *ngIf="showStaticImg" class="col-md-6">
           <img src="{{imgSrc3}}" width="100%"/>
         </div>
         <div class="col-md-6" style="margin-top: 10px">
-          <div *ngIf="fullResultList.Lean['Continuous Improvement'].level === 'Level 1'">{{'ContinuousImprovementLevel1'|translate}}</div>
-          <div *ngIf="fullResultList.Lean['Continuous Improvement'].level === 'Level 2'">{{'ContinuousImprovementLevel2'|translate}}</div>
-          <div *ngIf="fullResultList.Lean['Continuous Improvement'].level === 'Level 3'">{{'ContinuousImprovementLevel3'|translate}}</div>
-          <div *ngIf="fullResultList.Lean['Continuous Improvement'].level === 'Level 4'">{{'ContinuousImprovementLevel4'|translate}}</div>
-          <div *ngIf="fullResultList.Lean['Continuous Improvement'].level === 'Level 5'">{{'ContinuousImprovementLevel5'|translate}}</div>
+          <div *ngIf="fullResultList.Lean['Continuous Improvement'].level === 'Level 1'">Continuous Improvement: {{fullResultList.Lean['Continuous Improvement'].level}}.<br>{{'ContinuousImprovementLevel1'|translate}}</div>
+          <div *ngIf="fullResultList.Lean['Continuous Improvement'].level === 'Level 2'">Continuous Improvement: {{fullResultList.Lean['Continuous Improvement'].level}}.<br>{{'ContinuousImprovementLevel2'|translate}}</div>
+          <div *ngIf="fullResultList.Lean['Continuous Improvement'].level === 'Level 3'">Continuous Improvement: {{fullResultList.Lean['Continuous Improvement'].level}}.<br>{{'ContinuousImprovementLevel3'|translate}}</div>
+          <div *ngIf="fullResultList.Lean['Continuous Improvement'].level === 'Level 4'">Continuous Improvement: {{fullResultList.Lean['Continuous Improvement'].level}}.<br>{{'ContinuousImprovementLevel4'|translate}}</div>
+          <div *ngIf="fullResultList.Lean['Continuous Improvement'].level === 'Level 5'">Continuous Improvement: {{fullResultList.Lean['Continuous Improvement'].level}}.<br>{{'ContinuousImprovementLevel5'|translate}}</div>
 
-          <div *ngIf="fullResultList.Lean['Perfect Quality'].level === 'Level 1'">{{'PerfectQualityLevel1'|translate}}</div>
-          <div *ngIf="fullResultList.Lean['Perfect Quality'].level === 'Level 2'">{{'PerfectQualityLevel2'|translate}}</div>
-          <div *ngIf="fullResultList.Lean['Perfect Quality'].level === 'Level 3'">{{'PerfectQualityLevel3'|translate}}</div>
-          <div *ngIf="fullResultList.Lean['Perfect Quality'].level === 'Level 4'">{{'PerfectQualityLevel4'|translate}}</div>
-          <div *ngIf="fullResultList.Lean['Perfect Quality'].level === 'Level 5'">{{'PerfectQualityLevel5'|translate}}</div>
+          <div *ngIf="fullResultList.Lean['Perfect Quality'].level === 'Level 1'">Perfect Quality: {{fullResultList.Lean['Perfect Quality'].level}}.<br>{{'PerfectQualityLevel1'|translate}}</div>
+          <div *ngIf="fullResultList.Lean['Perfect Quality'].level === 'Level 2'">Perfect Quality: {{fullResultList.Lean['Perfect Quality'].level}}.<br>{{'PerfectQualityLevel2'|translate}}</div>
+          <div *ngIf="fullResultList.Lean['Perfect Quality'].level === 'Level 3'">Perfect Quality: {{fullResultList.Lean['Perfect Quality'].level}}.<br>{{'PerfectQualityLevel3'|translate}}</div>
+          <div *ngIf="fullResultList.Lean['Perfect Quality'].level === 'Level 4'">Perfect Quality: {{fullResultList.Lean['Perfect Quality'].level}}.<br>{{'PerfectQualityLevel4'|translate}}</div>
+          <div *ngIf="fullResultList.Lean['Perfect Quality'].level === 'Level 5'">Perfect Quality: {{fullResultList.Lean['Perfect Quality'].level}}.<br>{{'PerfectQualityLevel5'|translate}}</div>
 
-          <div *ngIf="fullResultList.Lean['Process Orientation'].level === 'Level 1'">{{'ProcessOrientationLevel1'|translate}}</div>
-          <div *ngIf="fullResultList.Lean['Process Orientation'].level === 'Level 2'">{{'ProcessOrientationLevel2'|translate}}</div>
-          <div *ngIf="fullResultList.Lean['Process Orientation'].level === 'Level 3'">{{'ProcessOrientationLevel3'|translate}}</div>
-          <div *ngIf="fullResultList.Lean['Process Orientation'].level === 'Level 4'">{{'ProcessOrientationLevel4'|translate}}</div>
-          <div *ngIf="fullResultList.Lean['Process Orientation'].level === 'Level 5'">{{'ProcessOrientationLevel5'|translate}}</div>
+          <div *ngIf="fullResultList.Lean['Process Orientation'].level === 'Level 1'">Process Orientation: {{fullResultList.Lean['Process Orientation'].level}}.<br>{{'ProcessOrientationLevel1'|translate}}</div>
+          <div *ngIf="fullResultList.Lean['Process Orientation'].level === 'Level 2'">Process Orientation: {{fullResultList.Lean['Process Orientation'].level}}.<br>{{'ProcessOrientationLevel2'|translate}}</div>
+          <div *ngIf="fullResultList.Lean['Process Orientation'].level === 'Level 3'">Process Orientation: {{fullResultList.Lean['Process Orientation'].level}}.<br>{{'ProcessOrientationLevel3'|translate}}</div>
+          <div *ngIf="fullResultList.Lean['Process Orientation'].level === 'Level 4'">Process Orientation: {{fullResultList.Lean['Process Orientation'].level}}.<br>{{'ProcessOrientationLevel4'|translate}}</div>
+          <div *ngIf="fullResultList.Lean['Process Orientation'].level === 'Level 5'">Process Orientation: {{fullResultList.Lean['Process Orientation'].level}}.<br>{{'ProcessOrientationLevel5'|translate}}</div>
         </div>
       </div>
 
-      <div class="row">
+      <div class="row" style="margin-top: 10px">
         <div *ngIf="!showStaticImg" id="myChart4" class="col-md-6" echarts [options]="options4" style="min-width: 400px; max-width: 800px; height: 400px; margin: 0 auto"></div>
         <div *ngIf="showStaticImg" class="col-md-6">
           <img src="{{imgSrc4}}" width="100%"/>
         </div>
         <div class="col-md-6" style="margin-top: 10px">
-          <div *ngIf="simpleResultList.Lean.level === 'Level 1'">{{'LeanLevel1'|translate}}</div>
-          <div *ngIf="simpleResultList.Lean.level === 'Level 2'">{{'LeanLevel2'|translate}}</div>
-          <div *ngIf="simpleResultList.Lean.level === 'Level 3'">{{'LeanLevel3'|translate}}</div>
-          <div *ngIf="simpleResultList.Lean.level === 'Level 4'">{{'LeanLevel4'|translate}}</div>
-          <div *ngIf="simpleResultList.Lean.level === 'Level 5'">{{'LeanLevel5'|translate}}</div>
+          <div *ngIf="simpleResultList.Lean.level === 'Level 1'">Lean: {{simpleResultList.Lean.level}}.<br>{{'LeanLevel1'|translate}}</div>
+          <div *ngIf="simpleResultList.Lean.level === 'Level 2'">Lean: {{simpleResultList.Lean.level}}.<br>{{'LeanLevel2'|translate}}</div>
+          <div *ngIf="simpleResultList.Lean.level === 'Level 3'">Lean: {{simpleResultList.Lean.level}}.<br>{{'LeanLevel3'|translate}}</div>
+          <div *ngIf="simpleResultList.Lean.level === 'Level 4'">Lean: {{simpleResultList.Lean.level}}.<br>{{'LeanLevel4'|translate}}</div>
+          <div *ngIf="simpleResultList.Lean.level === 'Level 5'">Lean: {{simpleResultList.Lean.level}}.<br>{{'LeanLevel5'|translate}}</div>
 
-          <div *ngIf="simpleResultList.Enabler.level === 'Level 1'">{{'EnablerLevel1'|translate}}</div>
-          <div *ngIf="simpleResultList.Enabler.level === 'Level 2'">{{'EnablerLevel2'|translate}}</div>
-          <div *ngIf="simpleResultList.Enabler.level === 'Level 3'">{{'EnablerLevel3'|translate}}</div>
-          <div *ngIf="simpleResultList.Enabler.level === 'Level 4'">{{'EnablerLevel4'|translate}}</div>
-          <div *ngIf="simpleResultList.Enabler.level === 'Level 5'">{{'EnablerLevel5'|translate}}</div>
+          <div *ngIf="simpleResultList.Enabler.level === 'Level 1'">Enabler: {{simpleResultList.Enabler.level}}.<br>{{'EnablerLevel1'|translate}}</div>
+          <div *ngIf="simpleResultList.Enabler.level === 'Level 2'">Enabler: {{simpleResultList.Enabler.level}}.<br>{{'EnablerLevel2'|translate}}</div>
+          <div *ngIf="simpleResultList.Enabler.level === 'Level 3'">Enabler: {{simpleResultList.Enabler.level}}.<br>{{'EnablerLevel3'|translate}}</div>
+          <div *ngIf="simpleResultList.Enabler.level === 'Level 4'">Enabler: {{simpleResultList.Enabler.level}}.<br>{{'EnablerLevel4'|translate}}</div>
+          <div *ngIf="simpleResultList.Enabler.level === 'Level 5'">Enabler: {{simpleResultList.Enabler.level}}.<br>{{'EnablerLevel5'|translate}}</div>
 
-          <div *ngIf="simpleResultList['I4.0'].level === 'Level 1'">{{'IndustryLevel1'|translate}}</div>
-          <div *ngIf="simpleResultList['I4.0'].level === 'Level 2'">{{'IndustryLevel2'|translate}}</div>
-          <div *ngIf="simpleResultList['I4.0'].level === 'Level 3'">{{'IndustryLevel3'|translate}}</div>
-          <div *ngIf="simpleResultList['I4.0'].level === 'Level 4'">{{'IndustryLevel4'|translate}}</div>
-          <div *ngIf="simpleResultList['I4.0'].level === 'Level 5'">{{'IndustryLevel5'|translate}}</div>
+          <div *ngIf="simpleResultList['I4.0'].level === 'Level 1'">I4.0: {{simpleResultList['I4.0'].level}}.<br>{{'IndustryLevel1'|translate}}</div>
+          <div *ngIf="simpleResultList['I4.0'].level === 'Level 2'">I4.0: {{simpleResultList['I4.0'].level}}.<br>{{'IndustryLevel2'|translate}}</div>
+          <div *ngIf="simpleResultList['I4.0'].level === 'Level 3'">I4.0: {{simpleResultList['I4.0'].level}}.<br>{{'IndustryLevel3'|translate}}</div>
+          <div *ngIf="simpleResultList['I4.0'].level === 'Level 4'">I4.0: {{simpleResultList['I4.0'].level}}.<br>{{'IndustryLevel4'|translate}}</div>
+          <div *ngIf="simpleResultList['I4.0'].level === 'Level 5'">I4.0: {{simpleResultList['I4.0'].level}}.<br>{{'IndustryLevel5'|translate}}</div>
         </div>
       </div>
 
-      <div class="row">
+      <div class="row" style="margin-top: 10px">
         <div *ngIf="!showStaticImg" id="myChart7" class="col-md-6" echarts [options]="options7" style="min-width: 400px; max-width: 800px; height: 400px; margin: 0 auto"></div>
         <div *ngIf="showStaticImg" class="col-md-6">
           <img src="{{imgSrc7}}" width="100%"/>
         </div>
         <div class="col-md-6" style="margin-top: 10px">
-          <div *ngIf="simpleResultList.Lean.level === 'Level 1'">{{'GeneralLevel1'|translate}}</div>
-          <div *ngIf="simpleResultList.Lean.level === 'Level 2'">{{'GeneralLevel2'|translate}}</div>
-          <div *ngIf="simpleResultList.Lean.level === 'Level 3'">{{'GeneralLevel3'|translate}}</div>
-          <div *ngIf="simpleResultList.Lean.level === 'Level 4'">{{'GeneralLevel4'|translate}}</div>
-          <div *ngIf="simpleResultList.Lean.level === 'Level 5'">{{'GeneralLevel5'|translate}}</div>
+          <div *ngIf="overAllLevel === 'Level 1'">General: {{overAllLevel}}.<br>{{'GeneralLevel1'|translate}}</div>
+          <div *ngIf="overAllLevel === 'Level 2'">General: {{overAllLevel}}.<br>{{'GeneralLevel2'|translate}}</div>
+          <div *ngIf="overAllLevel === 'Level 3'">General: {{overAllLevel}}.<br>{{'GeneralLevel3'|translate}}</div>
+          <div *ngIf="overAllLevel === 'Level 4'">General: {{overAllLevel}}.<br>{{'GeneralLevel4'|translate}}</div>
+          <div *ngIf="overAllLevel === 'Level 5'">General: {{overAllLevel}}.<br>{{'GeneralLevel5'|translate}}</div>
 
-          <div *ngIf="simpleResultList.Lean.level === 'Level 1'">{{'SourceLevel1'|translate}}</div>
-          <div *ngIf="simpleResultList.Lean.level === 'Level 2'">{{'SourceLevel2'|translate}}</div>
-          <div *ngIf="simpleResultList.Lean.level === 'Level 3'">{{'SourceLevel3'|translate}}</div>
-          <div *ngIf="simpleResultList.Lean.level === 'Level 4'">{{'SourceLevel4'|translate}}</div>
-          <div *ngIf="simpleResultList.Lean.level === 'Level 5'">{{'SourceLevel5'|translate}}</div>
+          <div *ngIf="tagResultList.Source.level === 'Level 1'">Source: {{tagResultList.Source.level}}.<br>{{'SourceLevel1'|translate}}</div>
+          <div *ngIf="tagResultList.Source.level === 'Level 2'">Source: {{tagResultList.Source.level}}.<br>{{'SourceLevel2'|translate}}</div>
+          <div *ngIf="tagResultList.Source.level === 'Level 3'">Source: {{tagResultList.Source.level}}.<br>{{'SourceLevel3'|translate}}</div>
+          <div *ngIf="tagResultList.Source.level === 'Level 4'">Source: {{tagResultList.Source.level}}.<br>{{'SourceLevel4'|translate}}</div>
+          <div *ngIf="tagResultList.Source.level === 'Level 5'">Source: {{tagResultList.Source.level}}.<br>{{'SourceLevel5'|translate}}</div>
 
-          <div *ngIf="simpleResultList.Enabler.level === 'Level 1'">{{'MakeLevel1'|translate}}</div>
-          <div *ngIf="simpleResultList.Enabler.level === 'Level 2'">{{'MakeLevel2'|translate}}</div>
-          <div *ngIf="simpleResultList.Enabler.level === 'Level 3'">{{'MakeLevel3'|translate}}</div>
-          <div *ngIf="simpleResultList.Enabler.level === 'Level 4'">{{'MakeLevel4'|translate}}</div>
-          <div *ngIf="simpleResultList.Enabler.level === 'Level 5'">{{'MakeLevel5'|translate}}</div>
+          <div *ngIf="tagResultList.Make.level === 'Level 1'">Make: {{tagResultList.Make.level}}.<br>{{'MakeLevel1'|translate}}</div>
+          <div *ngIf="tagResultList.Make.level === 'Level 2'">Make: {{tagResultList.Make.level}}.<br>{{'MakeLevel2'|translate}}</div>
+          <div *ngIf="tagResultList.Make.level === 'Level 3'">Make: {{tagResultList.Make.level}}.<br>{{'MakeLevel3'|translate}}</div>
+          <div *ngIf="tagResultList.Make.level === 'Level 4'">Make: {{tagResultList.Make.level}}.<br>{{'MakeLevel4'|translate}}</div>
+          <div *ngIf="tagResultList.Make.level === 'Level 5'">Make: {{tagResultList.Make.level}}.<br>{{'MakeLevel5'|translate}}</div>
 
-          <div *ngIf="simpleResultList['I4.0'].level === 'Level 1'">{{'DeliverLevel1'|translate}}</div>
-          <div *ngIf="simpleResultList['I4.0'].level === 'Level 2'">{{'DeliverLevel2'|translate}}</div>
-          <div *ngIf="simpleResultList['I4.0'].level === 'Level 3'">{{'DeliverLevel3'|translate}}</div>
-          <div *ngIf="simpleResultList['I4.0'].level === 'Level 4'">{{'DeliverLevel4'|translate}}</div>
-          <div *ngIf="simpleResultList['I4.0'].level === 'Level 5'">{{'DeliverLevel5'|translate}}</div>
+          <div *ngIf="tagResultList.Delivery.level === 'Level 1'">Deliver: {{tagResultList.Delivery.level}}.<br>{{'DeliverLevel1'|translate}}</div>
+          <div *ngIf="tagResultList.Delivery.level === 'Level 2'">Deliver: {{tagResultList.Delivery.level}}.<br>{{'DeliverLevel2'|translate}}</div>
+          <div *ngIf="tagResultList.Delivery.level === 'Level 3'">Deliver: {{tagResultList.Delivery.level}}.<br>{{'DeliverLevel3'|translate}}</div>
+          <div *ngIf="tagResultList.Delivery.level === 'Level 4'">Deliver: {{tagResultList.Delivery.level}}.<br>{{'DeliverLevel4'|translate}}</div>
+          <div *ngIf="tagResultList.Delivery.level === 'Level 5'">Deliver: {{tagResultList.Delivery.level}}.<br>{{'DeliverLevel5'|translate}}</div>
         </div>
       </div>
 
-      <div class="row">
+      <div class="row" style="margin-top: 10px">
         <div *ngIf="!showStaticImg" id="myChart5" class="col-md-6" echarts [options]="options5" style="min-width: 400px; max-width: 800px; height: 400px; margin: 0 auto"></div>
         <div *ngIf="showStaticImg" class="col-md-6">
           <img src="{{imgSrc5}}" width="100%"/>
         </div>
         <div class="col-md-6" style="margin-top: 10px">
-          <div *ngIf="fullResultList.Enabler.Standardization.level === 'Level 1'">{{'StandardizationLevel1'|translate}}</div>
-          <div *ngIf="fullResultList.Enabler.Standardization.level === 'Level 2'">{{'StandardizationLevel2'|translate}}</div>
-          <div *ngIf="fullResultList.Enabler.Standardization.level === 'Level 3'">{{'StandardizationLevel3'|translate}}</div>
-          <div *ngIf="fullResultList.Enabler.Standardization.level === 'Level 4'">{{'StandardizationLevel4'|translate}}</div>
-          <div *ngIf="fullResultList.Enabler.Standardization.level === 'Level 5'">{{'StandardizationLevel5'|translate}}</div>
+          <div *ngIf="fullResultList.Enabler.Standardization.level === 'Level 1'">Standardization: {{fullResultList.Enabler.Standardization.level}}.<br>{{'StandardizationLevel1'|translate}}</div>
+          <div *ngIf="fullResultList.Enabler.Standardization.level === 'Level 2'">Standardization: {{fullResultList.Enabler.Standardization.level}}.<br>{{'StandardizationLevel2'|translate}}</div>
+          <div *ngIf="fullResultList.Enabler.Standardization.level === 'Level 3'">Standardization: {{fullResultList.Enabler.Standardization.level}}.<br>{{'StandardizationLevel3'|translate}}</div>
+          <div *ngIf="fullResultList.Enabler.Standardization.level === 'Level 4'">Standardization: {{fullResultList.Enabler.Standardization.level}}.<br>{{'StandardizationLevel4'|translate}}</div>
+          <div *ngIf="fullResultList.Enabler.Standardization.level === 'Level 5'">Standardization: {{fullResultList.Enabler.Standardization.level}}.<br>{{'StandardizationLevel5'|translate}}</div>
 
-          <div *ngIf="fullResultList.Enabler['Transparent Processes'].level === 'Level 1'">{{'VisualizationLevel1'|translate}}</div>
-          <div *ngIf="fullResultList.Enabler['Transparent Processes'].level === 'Level 2'">{{'VisualizationLevel2'|translate}}</div>
-          <div *ngIf="fullResultList.Enabler['Transparent Processes'].level === 'Level 3'">{{'VisualizationLevel3'|translate}}</div>
-          <div *ngIf="fullResultList.Enabler['Transparent Processes'].level === 'Level 4'">{{'VisualizationLevel4'|translate}}</div>
-          <div *ngIf="fullResultList.Enabler['Transparent Processes'].level === 'Level 5'">{{'VisualizationLevel5'|translate}}</div>
+          <div *ngIf="fullResultList.Enabler['Transparent Processes'].level === 'Level 1'">Transparent Processes: {{fullResultList.Enabler['Transparent Processes'].level}}.<br>{{'VisualizationLevel1'|translate}}</div>
+          <div *ngIf="fullResultList.Enabler['Transparent Processes'].level === 'Level 2'">Transparent Processes: {{fullResultList.Enabler['Transparent Processes'].level}}.<br>{{'VisualizationLevel2'|translate}}</div>
+          <div *ngIf="fullResultList.Enabler['Transparent Processes'].level === 'Level 3'">Transparent Processes: {{fullResultList.Enabler['Transparent Processes'].level}}.<br>{{'VisualizationLevel3'|translate}}</div>
+          <div *ngIf="fullResultList.Enabler['Transparent Processes'].level === 'Level 4'">Transparent Processes: {{fullResultList.Enabler['Transparent Processes'].level}}.<br>{{'VisualizationLevel4'|translate}}</div>
+          <div *ngIf="fullResultList.Enabler['Transparent Processes'].level === 'Level 5'">Transparent Processes: {{fullResultList.Enabler['Transparent Processes'].level}}.<br>{{'VisualizationLevel5'|translate}}</div>
 
-          <div *ngIf="fullResultList.Enabler['Associate Involvement'].level === 'Level 1'">{{'AssociatesInvolvementLevel1'|translate}}</div>
-          <div *ngIf="fullResultList.Enabler['Associate Involvement'].level === 'Level 2'">{{'AssociatesInvolvementLevel2'|translate}}</div>
-          <div *ngIf="fullResultList.Enabler['Associate Involvement'].level === 'Level 3'">{{'AssociatesInvolvementLevel3'|translate}}</div>
-          <div *ngIf="fullResultList.Enabler['Associate Involvement'].level === 'Level 4'">{{'AssociatesInvolvementLevel4'|translate}}</div>
-          <div *ngIf="fullResultList.Enabler['Associate Involvement'].level === 'Level 5'">{{'AssociatesInvolvementLevel5'|translate}}</div>
+          <div *ngIf="fullResultList.Enabler['Associate Involvement'].level === 'Level 1'">Associate Involvement: {{fullResultList.Enabler['Associate Involvement'].level}}.<br>{{'AssociatesInvolvementLevel1'|translate}}</div>
+          <div *ngIf="fullResultList.Enabler['Associate Involvement'].level === 'Level 2'">Associate Involvement: {{fullResultList.Enabler['Associate Involvement'].level}}.<br>{{'AssociatesInvolvementLevel2'|translate}}</div>
+          <div *ngIf="fullResultList.Enabler['Associate Involvement'].level === 'Level 3'">Associate Involvement: {{fullResultList.Enabler['Associate Involvement'].level}}.<br>{{'AssociatesInvolvementLevel3'|translate}}</div>
+          <div *ngIf="fullResultList.Enabler['Associate Involvement'].level === 'Level 4'">Associate Involvement: {{fullResultList.Enabler['Associate Involvement'].level}}.<br>{{'AssociatesInvolvementLevel4'|translate}}</div>
+          <div *ngIf="fullResultList.Enabler['Associate Involvement'].level === 'Level 5'">Associate Involvement: {{fullResultList.Enabler['Associate Involvement'].level}}.<br>{{'AssociatesInvolvementLevel5'|translate}}</div>
 
-          <div *ngIf="fullResultList.Lean['Continuous Improvement'].level === 'Level 1'">{{'ContinuousImprovementLevel1'|translate}}</div>
-          <div *ngIf="fullResultList.Lean['Continuous Improvement'].level === 'Level 2'">{{'ContinuousImprovementLevel2'|translate}}</div>
-          <div *ngIf="fullResultList.Lean['Continuous Improvement'].level === 'Level 3'">{{'ContinuousImprovementLevel3'|translate}}</div>
-          <div *ngIf="fullResultList.Lean['Continuous Improvement'].level === 'Level 4'">{{'ContinuousImprovementLevel4'|translate}}</div>
-          <div *ngIf="fullResultList.Lean['Continuous Improvement'].level === 'Level 5'">{{'ContinuousImprovementLevel5'|translate}}</div>
+          <div *ngIf="fullResultList.Lean['Continuous Improvement'].level === 'Level 1'">Continuous Improvement: {{fullResultList.Lean['Continuous Improvement'].level}}.<br>{{'ContinuousImprovementLevel1'|translate}}</div>
+          <div *ngIf="fullResultList.Lean['Continuous Improvement'].level === 'Level 2'">Continuous Improvement: {{fullResultList.Lean['Continuous Improvement'].level}}.<br>{{'ContinuousImprovementLevel2'|translate}}</div>
+          <div *ngIf="fullResultList.Lean['Continuous Improvement'].level === 'Level 3'">Continuous Improvement: {{fullResultList.Lean['Continuous Improvement'].level}}.<br>{{'ContinuousImprovementLevel3'|translate}}</div>
+          <div *ngIf="fullResultList.Lean['Continuous Improvement'].level === 'Level 4'">Continuous Improvement: {{fullResultList.Lean['Continuous Improvement'].level}}.<br>{{'ContinuousImprovementLevel4'|translate}}</div>
+          <div *ngIf="fullResultList.Lean['Continuous Improvement'].level === 'Level 5'">Continuous Improvement: {{fullResultList.Lean['Continuous Improvement'].level}}.<br>{{'ContinuousImprovementLevel5'|translate}}</div>
 
-          <div *ngIf="fullResultList.Lean['Perfect Quality'].level === 'Level 1'">{{'PerfectQualityLevel1'|translate}}</div>
-          <div *ngIf="fullResultList.Lean['Perfect Quality'].level === 'Level 2'">{{'PerfectQualityLevel2'|translate}}</div>
-          <div *ngIf="fullResultList.Lean['Perfect Quality'].level === 'Level 3'">{{'PerfectQualityLevel3'|translate}}</div>
-          <div *ngIf="fullResultList.Lean['Perfect Quality'].level === 'Level 4'">{{'PerfectQualityLevel4'|translate}}</div>
-          <div *ngIf="fullResultList.Lean['Perfect Quality'].level === 'Level 5'">{{'PerfectQualityLevel5'|translate}}</div>
+          <div *ngIf="fullResultList.Lean['Perfect Quality'].level === 'Level 1'">Perfect Quality: {{fullResultList.Lean['Perfect Quality'].level}}.<br>{{'PerfectQualityLevel1'|translate}}</div>
+          <div *ngIf="fullResultList.Lean['Perfect Quality'].level === 'Level 2'">Perfect Quality: {{fullResultList.Lean['Perfect Quality'].level}}.<br>{{'PerfectQualityLevel2'|translate}}</div>
+          <div *ngIf="fullResultList.Lean['Perfect Quality'].level === 'Level 3'">Perfect Quality: {{fullResultList.Lean['Perfect Quality'].level}}.<br>{{'PerfectQualityLevel3'|translate}}</div>
+          <div *ngIf="fullResultList.Lean['Perfect Quality'].level === 'Level 4'">Perfect Quality: {{fullResultList.Lean['Perfect Quality'].level}}.<br>{{'PerfectQualityLevel4'|translate}}</div>
+          <div *ngIf="fullResultList.Lean['Perfect Quality'].level === 'Level 5'">Perfect Quality: {{fullResultList.Lean['Perfect Quality'].level}}.<br>{{'PerfectQualityLevel5'|translate}}</div>
 
-          <div *ngIf="fullResultList.Lean.Flexibility.level === 'Level 1'">{{'FlexibilityLevel1'|translate}}</div>
-          <div *ngIf="fullResultList.Lean.Flexibility.level === 'Level 2'">{{'FlexibilityLevel2'|translate}}</div>
-          <div *ngIf="fullResultList.Lean.Flexibility.level === 'Level 3'">{{'FlexibilityLevel3'|translate}}</div>
-          <div *ngIf="fullResultList.Lean.Flexibility.level === 'Level 4'">{{'FlexibilityLevel4'|translate}}</div>
-          <div *ngIf="fullResultList.Lean.Flexibility.level === 'Level 5'">{{'FlexibilityLevel5'|translate}}</div>
+          <div *ngIf="fullResultList.Lean.Flexibility.level === 'Level 1'">Flexibility: {{fullResultList.Lean.Flexibility.level}}.<br>{{'FlexibilityLevel1'|translate}}</div>
+          <div *ngIf="fullResultList.Lean.Flexibility.level === 'Level 2'">Flexibility: {{fullResultList.Lean.Flexibility.level}}.<br>{{'FlexibilityLevel2'|translate}}</div>
+          <div *ngIf="fullResultList.Lean.Flexibility.level === 'Level 3'">Flexibility: {{fullResultList.Lean.Flexibility.level}}.<br>{{'FlexibilityLevel3'|translate}}</div>
+          <div *ngIf="fullResultList.Lean.Flexibility.level === 'Level 4'">Flexibility: {{fullResultList.Lean.Flexibility.level}}.<br>{{'FlexibilityLevel4'|translate}}</div>
+          <div *ngIf="fullResultList.Lean.Flexibility.level === 'Level 5'">Flexibility: {{fullResultList.Lean.Flexibility.level}}.<br>{{'FlexibilityLevel5'|translate}}</div>
 
-          <div *ngIf="fullResultList.Lean['Pull System'].level === 'Level 1'">{{'PullSystemLevel1'|translate}}</div>
-          <div *ngIf="fullResultList.Lean['Pull System'].level === 'Level 2'">{{'PullSystemLevel2'|translate}}</div>
-          <div *ngIf="fullResultList.Lean['Pull System'].level === 'Level 3'">{{'PullSystemLevel3'|translate}}</div>
-          <div *ngIf="fullResultList.Lean['Pull System'].level === 'Level 4'">{{'PullSystemLevel4'|translate}}</div>
-          <div *ngIf="fullResultList.Lean['Pull System'].level === 'Level 5'">{{'PullSystemLevel5'|translate}}</div>
+          <div *ngIf="fullResultList.Lean['Pull System'].level === 'Level 1'">Pull System: {{fullResultList.Lean['Pull System'].level}}.<br>{{'PullSystemLevel1'|translate}}</div>
+          <div *ngIf="fullResultList.Lean['Pull System'].level === 'Level 2'">Pull System: {{fullResultList.Lean['Pull System'].level}}.<br>{{'PullSystemLevel2'|translate}}</div>
+          <div *ngIf="fullResultList.Lean['Pull System'].level === 'Level 3'">Pull System: {{fullResultList.Lean['Pull System'].level}}.<br>{{'PullSystemLevel3'|translate}}</div>
+          <div *ngIf="fullResultList.Lean['Pull System'].level === 'Level 4'">Pull System: {{fullResultList.Lean['Pull System'].level}}.<br>{{'PullSystemLevel4'|translate}}</div>
+          <div *ngIf="fullResultList.Lean['Pull System'].level === 'Level 5'">Pull System: {{fullResultList.Lean['Pull System'].level}}.<br>{{'PullSystemLevel5'|translate}}</div>
 
-          <div *ngIf="fullResultList.Lean['Process Orientation'].level === 'Level 1'">{{'ProcessOrientationLevel1'|translate}}</div>
-          <div *ngIf="fullResultList.Lean['Process Orientation'].level === 'Level 2'">{{'ProcessOrientationLevel2'|translate}}</div>
-          <div *ngIf="fullResultList.Lean['Process Orientation'].level === 'Level 3'">{{'ProcessOrientationLevel3'|translate}}</div>
-          <div *ngIf="fullResultList.Lean['Process Orientation'].level === 'Level 4'">{{'ProcessOrientationLevel4'|translate}}</div>
-          <div *ngIf="fullResultList.Lean['Process Orientation'].level === 'Level 5'">{{'ProcessOrientationLevel5'|translate}}</div>
+          <div *ngIf="fullResultList.Lean['Process Orientation'].level === 'Level 1'">Process Orientation: {{fullResultList.Lean['Process Orientation'].level}}.<br>{{'ProcessOrientationLevel1'|translate}}</div>
+          <div *ngIf="fullResultList.Lean['Process Orientation'].level === 'Level 2'">Process Orientation: {{fullResultList.Lean['Process Orientation'].level}}.<br>{{'ProcessOrientationLevel2'|translate}}</div>
+          <div *ngIf="fullResultList.Lean['Process Orientation'].level === 'Level 3'">Process Orientation: {{fullResultList.Lean['Process Orientation'].level}}.<br>{{'ProcessOrientationLevel3'|translate}}</div>
+          <div *ngIf="fullResultList.Lean['Process Orientation'].level === 'Level 4'">Process Orientation: {{fullResultList.Lean['Process Orientation'].level}}.<br>{{'ProcessOrientationLevel4'|translate}}</div>
+          <div *ngIf="fullResultList.Lean['Process Orientation'].level === 'Level 5'">Process Orientation: {{fullResultList.Lean['Process Orientation'].level}}.<br>{{'ProcessOrientationLevel5'|translate}}</div>
 
-          <div *ngIf="fullResultList['I4.0'].Resource.level === 'Level 1'">{{'ResourceLevel1'|translate}}</div>
-          <div *ngIf="fullResultList['I4.0'].Resource.level === 'Level 2'">{{'ResourceLevel2'|translate}}</div>
-          <div *ngIf="fullResultList['I4.0'].Resource.level === 'Level 3'">{{'ResourceLevel3'|translate}}</div>
-          <div *ngIf="fullResultList['I4.0'].Resource.level === 'Level 4'">{{'ResourceLevel4'|translate}}</div>
-          <div *ngIf="fullResultList['I4.0'].Resource.level === 'Level 5'">{{'ResourceLevel5'|translate}}</div>
+          <div *ngIf="fullResultList['I4.0'].Resource.level === 'Level 1'">Resource: {{fullResultList['I4.0'].Resource.level}}.<br>{{'ResourceLevel1'|translate}}</div>
+          <div *ngIf="fullResultList['I4.0'].Resource.level === 'Level 2'">Resource: {{fullResultList['I4.0'].Resource.level}}.<br>{{'ResourceLevel2'|translate}}</div>
+          <div *ngIf="fullResultList['I4.0'].Resource.level === 'Level 3'">Resource: {{fullResultList['I4.0'].Resource.level}}.<br>{{'ResourceLevel3'|translate}}</div>
+          <div *ngIf="fullResultList['I4.0'].Resource.level === 'Level 4'">Resource: {{fullResultList['I4.0'].Resource.level}}.<br>{{'ResourceLevel4'|translate}}</div>
+          <div *ngIf="fullResultList['I4.0'].Resource.level === 'Level 5'">Resource: {{fullResultList['I4.0'].Resource.level}}.<br>{{'ResourceLevel5'|translate}}</div>
 
-          <div *ngIf="fullResultList['I4.0'].Digitization.level === 'Level 1'">{{'DigitizationLevel1'|translate}}</div>
-          <div *ngIf="fullResultList['I4.0'].Digitization.level === 'Level 2'">{{'DigitizationLevel2'|translate}}</div>
-          <div *ngIf="fullResultList['I4.0'].Digitization.level === 'Level 3'">{{'DigitizationLevel3'|translate}}</div>
-          <div *ngIf="fullResultList['I4.0'].Digitization.level === 'Level 4'">{{'DigitizationLevel4'|translate}}</div>
-          <div *ngIf="fullResultList['I4.0'].Digitization.level === 'Level 5'">{{'DigitizationLevel5'|translate}}</div>
+          <div *ngIf="fullResultList['I4.0'].Digitization.level === 'Level 1'">Digitization: {{fullResultList['I4.0'].Digitization.level}}.<br>{{'DigitizationLevel1'|translate}}</div>
+          <div *ngIf="fullResultList['I4.0'].Digitization.level === 'Level 2'">Digitization: {{fullResultList['I4.0'].Digitization.level}}.<br>{{'DigitizationLevel2'|translate}}</div>
+          <div *ngIf="fullResultList['I4.0'].Digitization.level === 'Level 3'">Digitization: {{fullResultList['I4.0'].Digitization.level}}.<br>{{'DigitizationLevel3'|translate}}</div>
+          <div *ngIf="fullResultList['I4.0'].Digitization.level === 'Level 4'">Digitization: {{fullResultList['I4.0'].Digitization.level}}.<br>{{'DigitizationLevel4'|translate}}</div>
+          <div *ngIf="fullResultList['I4.0'].Digitization.level === 'Level 5'">Digitization: {{fullResultList['I4.0'].Digitization.level}}.<br>{{'DigitizationLevel5'|translate}}</div>
 
-          <div *ngIf="fullResultList['I4.0'].Automation.level === 'Level 1'">{{'AutomationLevel1'|translate}}</div>
-          <div *ngIf="fullResultList['I4.0'].Automation.level === 'Level 2'">{{'AutomationLevel2'|translate}}</div>
-          <div *ngIf="fullResultList['I4.0'].Automation.level === 'Level 3'">{{'AutomationLevel3'|translate}}</div>
-          <div *ngIf="fullResultList['I4.0'].Automation.level === 'Level 4'">{{'AutomationLevel4'|translate}}</div>
-          <div *ngIf="fullResultList['I4.0'].Automation.level === 'Level 5'">{{'AutomationLevel5'|translate}}</div>
+          <div *ngIf="fullResultList['I4.0'].Automation.level === 'Level 1'">Automation: {{fullResultList['I4.0'].Automation.level}}.<br>{{'AutomationLevel1'|translate}}</div>
+          <div *ngIf="fullResultList['I4.0'].Automation.level === 'Level 2'">Automation: {{fullResultList['I4.0'].Automation.level}}.<br>{{'AutomationLevel2'|translate}}</div>
+          <div *ngIf="fullResultList['I4.0'].Automation.level === 'Level 3'">Automation: {{fullResultList['I4.0'].Automation.level}}.<br>{{'AutomationLevel3'|translate}}</div>
+          <div *ngIf="fullResultList['I4.0'].Automation.level === 'Level 4'">Automation: {{fullResultList['I4.0'].Automation.level}}.<br>{{'AutomationLevel4'|translate}}</div>
+          <div *ngIf="fullResultList['I4.0'].Automation.level === 'Level 5'">Automation: {{fullResultList['I4.0'].Automation.level}}.<br>{{'AutomationLevel5'|translate}}</div>
         </div>
       </div>
     </div>

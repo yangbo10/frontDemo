@@ -13,9 +13,11 @@
   <div class="col-md-12">
     <input #search [hidden]="false" class="search form-inline" style="width: 200px" type="text" placeholder="{{'searchHolder'|translate}}" (keydown.enter)="onSearch(search.value)">
     <button class="btn btn-block btn-danger btn-sm"
+            [disabled]="deleteList.length == 0"
             style="min-width: 80px; width: 6%; float: right; margin-bottom: 15px; margin-left: 20px; margin-top: 5px;"
             (click)="batchDelete()">{{'batchDeleteBtn'|translate}}</button>
     <button class="btn btn-block btn-success btn-sm"
+            [disabled]="tableData.length == 0"
             style="min-width: 80px; width: 6%; float: right; margin-bottom: 15px; margin-top: 0px; margin-left: 20px; margin-top: 5px;"
             (click)="openCreateModal(template)">{{'addToTestBtn'|translate}}</button>
     <button class="btn btn-block btn-primary btn-sm" style="min-width: 80px; width: 6%; float: right; margin-bottom: 15px"
@@ -28,7 +30,7 @@
                      (deleteConfirm)="onDeleteConfirm($event)"
                      (editConfirm)="onSaveConfirm($event)"
                      (userRowSelect)="rowSelectEvent($event)"></ng2-smart-table>
-    <label>Total: {{tableData.length}}</label>
+    <label>{{'totalLabel'|translate}}: {{tableData.length}}</label>
   </div>
   <div class="col-md-12">
 
@@ -58,7 +60,7 @@
             <label>{{'importPreview'|translate}}</label>
           </div>
           <ng2-smart-table [settings]="newSettings" [source]="newSource"></ng2-smart-table>
-          <label>Total: {{newTableData.length}}</label>
+          <label>{{'totalLabel'|translate}}: {{newTableData.length}}</label>
         </div>
       </div>
       <div class="modal-footer" style="border-top: none !important">

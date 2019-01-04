@@ -22,6 +22,7 @@ export class TestmanageComponent implements OnInit {
   public modalRef: BsModalRef;
   testName: string;
   testComment: string;
+  detailTestId: number;
   detailSource: LocalDataSource;
   questionCount: number;
   @ViewChild('detailTemplate') detailTemplate: TemplateRef<any>;
@@ -34,6 +35,9 @@ export class TestmanageComponent implements OnInit {
     this.testComment = '';
     this.questionCount = 0;
     this.user.mainShowing = false;
+    // @ts-ignore
+    this.tableData = [];
+    this.source = new LocalDataSource(this.tableData);
   }
 
   public settings = {
@@ -85,7 +89,8 @@ export class TestmanageComponent implements OnInit {
     attr: {
       class: 'table table-striped table-bordered table-hover'
     },
-    defaultStyle: true
+    defaultStyle: true,
+    noDataMessage: this.translate.instant('noDataMessage')
   };
 
   public detailSettings = {
@@ -105,19 +110,37 @@ export class TestmanageComponent implements OnInit {
     },
 
     isPaginationEnabled: true,
-    actions: false,
+    actions: {
+      columnTitle: this.translate.instant('operation'),
+      add: false,
+      position: 'right'
+    },
+    edit: {
+      position: 'right',
+      editButtonContent: '<i class="fa fa-1x fa-pencil-square" aria-hidden="true"></i><i>       </i>',
+      saveButtonContent: '<i class="fa fa-1x fa-check"></i><i>       </i>',
+      cancelButtonContent: '<i class="fa fa-1x fa-close"></i>',
+      confirmSave: true
+    },
+    delete: {
+      position: 'right',
+      deleteButtonContent: '<i class="fa fa-1x fa-trash" aria-hidden="true"></i>',
+      confirmDelete: true
+    },
     attr: {
       class: 'table table-striped table-bordered table-hover'
     },
-    defaultStyle: true
+    defaultStyle: true,
+    noDataMessage: this.translate.instant('noDataMessage')
   };
 
   ngOnInit() {
+    // @ts-ignore
+    this.tableData = [];
+    this.source = new LocalDataSource(this.tableData);
     this.taskService.getAllTest().subscribe( res => {
       // @ts-ignore
       const testJson = JSON.parse(res._body);
-      // @ts-ignore
-      this.tableData = [];
       // check empty
       if (testJson.hasOwnProperty('_embedded')) {
         this.testList = testJson._embedded.tests;
@@ -138,8 +161,9 @@ export class TestmanageComponent implements OnInit {
   }
 
   onCustom(event) {
+    this.detailTestId = event.data.id;
     this.detailSource = new LocalDataSource(event.data.detail);
-    console.log(this.detailSource);
+    console.log(event);
     this.questionCount = event.data.detail.length;
     this.openDetailModal(this.detailTemplate);
   }
@@ -157,7 +181,7 @@ export class TestmanageComponent implements OnInit {
         this.taskService.deleteTest(event.data.id).subscribe(res => {
             if (res.status >= 200) {
               Swal(
-                this.translate.instant('删除成功'),
+                this.translate.instant('deleteSuccess'),
                 '',
                 'success'
               );
@@ -166,7 +190,7 @@ export class TestmanageComponent implements OnInit {
           },
           error => {
               Swal(
-                this.translate.instant('删除失败'),
+                this.translate.instant('deleteFail'),
                 '',
                 'error'
               );
@@ -221,8 +245,107 @@ export class TestmanageComponent implements OnInit {
     });
   }
 
+  onDetailSave(event) {
+    const questionObj = {
+      'questionId': event.newData.questionId,
+      'name': event.newData.name,
+      'detail': event.newData.detail
+    };
+    Swal({
+      title: this.translate.instant('detailUpdateAlert'),
+      text: '',
+      type: 'warning',
+      showCancelButton: true,
+      confirmButtonText: this.translate.instant('sure'),
+      cancelButtonText: this.translate.instant('cancel')
+    }).then((result) => {
+      if (result.value) {
+        this.taskService.updateQuestion(questionObj).subscribe(res => {
+            console.log(res);
+            if (res.status  >= 200) {
+              Swal(
+                this.translate.instant('updateSuccess'),
+                '',
+                'success'
+              );
+              this.refreshModalTable();
+              this.ngOnInit();
+            }
+          },
+          error => {
+            Swal(
+              this.translate.instant('updateFail'),
+              '',
+              'error'
+            );
+          });
+      } else if (result.dismiss === Swal.DismissReason.cancel) {
+        Swal(
+          this.translate.instant('canceled'),
+          '',
+          'error'
+        );
+      }
+    });
+  }
+
+  onDetailDelete(event) {
+    console.log('id:', this.detailTestId);
+    Swal({
+      title: this.translate.instant('detailDeleteAlert'),
+      type: 'warning',
+      showCancelButton: true,
+      confirmButtonText: this.translate.instant('sure'),
+      cancelButtonText: this.translate.instant('cancel')
+    }).then((result) => {
+      if (result.value) {
+        this.taskService.deleteQuestionInTest(this.detailTestId, event.data.questionId).subscribe(res => {
+            if (res.status  >= 200) {
+              Swal(
+                this.translate.instant('deleteSuccess'),
+                '',
+                'success'
+              );
+              event.confirm.resolve();
+              this.ngOnInit();
+            }
+          },
+          error => {
+            Swal(
+              this.translate.instant('deleteFail'),
+              '',
+              'error'
+            );
+            event.confirm.reject();
+          });
+      } else if (result.dismiss === Swal.DismissReason.cancel) {
+        Swal(
+          this.translate.instant('canceled'),
+          '',
+          'error'
+        );
+      }
+    });
+  }
+
+  refreshModalTable() {
+    // refresh modal table
+    this.taskService.getTestById(this.detailTestId).subscribe(data => {
+      // @ts-ignore
+      const testJson = JSON.parse(data._body);
+      // check empty
+      if (testJson.hasOwnProperty('_embedded')) {
+        const questionList = testJson._embedded.tests[0].test.questions;
+        console.log(questionList);
+        this.detailSource = new LocalDataSource(questionList);
+      }
+    });
+  }
+
   openCreateModal(template: TemplateRef<any>) {
     this.modalRef = this.modalService.show(template, {class: 'modal-lg create-model'});
+    this.testName = '';
+    this.testComment = '';
   }
 
   openDetailModal(template: TemplateRef<any>) {
@@ -230,33 +353,42 @@ export class TestmanageComponent implements OnInit {
   }
 
   createNewTest() {
-    const newTestObj = {'name': this.testName, 'comment': this.testComment};
-    this.taskService.createTest(newTestObj).subscribe( res => {
-      this.modalRef.hide();
-      if (res.status >= 200) {
-        Swal({
-          title: this.translate.instant('createAlertTitle'),
-          text: this.translate.instant('createAlertDescribe'),
-          type: 'success',
-          showCancelButton: true,
-          confirmButtonText: this.translate.instant('yes'),
-          cancelButtonText: this.translate.instant('no')
-        }).then((result) => {
-          if (result.value) {
-            console.log('aaa');
-            this.router.navigate(['home/questionnaire']);
-          } else if (result.dismiss === Swal.DismissReason.cancel) {
-            this.ngOnInit();
-          }
-        });
-      } else {
-        Swal(
-          this.translate.instant('createFail'),
-          '',
-          'error'
-        );
-      }
-    });
+    if (this.testName.trim() !== '') {
+      const newTestObj = {'name': this.testName, 'comment': this.testComment};
+      this.taskService.createTest(newTestObj).subscribe( res => {
+        this.modalRef.hide();
+        if (res.status >= 200) {
+          Swal({
+            title: this.translate.instant('createAlertTitle'),
+            text: this.translate.instant('createAlertDescribe'),
+            type: 'success',
+            showCancelButton: true,
+            confirmButtonText: this.translate.instant('yes'),
+            cancelButtonText: this.translate.instant('no')
+          }).then((result) => {
+            if (result.value) {
+              console.log('aaa');
+              this.router.navigate(['home/questionnaire']);
+            } else if (result.dismiss === Swal.DismissReason.cancel) {
+              this.ngOnInit();
+            }
+          });
+        } else {
+          Swal(
+            this.translate.instant('createFail'),
+            '',
+            'error'
+          );
+        }
+      });
+    } else {
+      Swal(
+        this.translate.instant('createFail'),
+        this.translate.instant('testNameEmpty'),
+        'error'
+      );
+    }
+
   }
 
 }

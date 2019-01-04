@@ -7,6 +7,7 @@ import Swal from 'sweetalert2';
 import {User} from '../models/user';
 import {TranslateService} from 'ng2-translate';
 import {Router} from '@angular/router';
+import {s} from '../../../node_modules/@angular/core/src/render3';
 
 declare var require: any;
 const myChart = require('ngx-echarts');
@@ -21,6 +22,7 @@ export class ReportComponent implements OnInit {
   resultObjRaw: any;
   simpleResultList: any;
   fullResultList: any;
+  tagResultList: any;
   optionList: any;
   options: object;
   options1: object;
@@ -46,6 +48,7 @@ export class ReportComponent implements OnInit {
   activeCode: string;
   levelList: any;
   overAllLevel: string;
+  overAllScore: number;
 
   @ViewChild('main') mainPage: ElementRef;
   @ViewChild('myChart1') myChart1: ElementRef;
@@ -154,6 +157,28 @@ export class ReportComponent implements OnInit {
         }
       }
     };
+
+    this.tagResultList = {
+      'Source': {
+        'total': 0,
+        'actual': 0,
+        'normalized': 0,
+        'level': ''
+      },
+      'Make': {
+        'total': 0,
+        'actual': 0,
+        'normalized': 0,
+        'level': ''
+      },
+      'Delivery': {
+        'total': 0,
+        'actual': 0,
+        'normalized': 0,
+        'level': ''
+      }
+    };
+
   }
 
   ngOnInit() {
@@ -165,14 +190,73 @@ export class ReportComponent implements OnInit {
         const rawResultList = rawResult._embedded.results;
         const rawOptionList = rawResultList[rawResultList.length - 1].result.choices;
         this.resultId = rawResultList[rawResultList.length - 1].result.resultId;
-        const overallScore = rawResultList[rawResultList.length - 1].result.score;
-        this.overAllLevel = this.cacualateLevel(overallScore);
+        this.overAllScore = rawResultList[rawResultList.length - 1].result.score;
+        this.overAllLevel = this.cacualateLevel(this.overAllScore);
         this.optionList = [];
         for ( const item of rawOptionList) {
           this.optionList.push(item.options[0].value * item.question.weight);
         }
 
-        this.taskService.getResultById(this.resultId).subscribe( data => {
+        this.taskService.getResultById(this.resultId, 1, 3).subscribe( data => {
+          this.taskService.getTagResult(this.resultId, 2).subscribe( data2 => {
+            // @ts-ignore
+            const tagResult = JSON.parse(data2._body);
+            if (tagResult.hasOwnProperty('Source')) {
+              this.tagResultList.Source.level = this.cacualateLevel(tagResult.Source.normalized);
+              this.tagResultList.Source.normalized = tagResult.Source.normalized;
+            }
+            if (tagResult.hasOwnProperty('Make')) {
+              this.tagResultList.Make.level = this.cacualateLevel(tagResult.Make.normalized);
+              this.tagResultList.Make.normalized = tagResult.Make.normalized;
+            }
+            if (tagResult.hasOwnProperty('Delivery')) {
+              this.tagResultList.Delivery.level = this.cacualateLevel(tagResult.Delivery.normalized);
+              this.tagResultList.Delivery.normalized = tagResult.Delivery.normalized;
+            }
+            this.options7 = {
+              title: {
+                text: 'GSMD',
+                y: -5
+              },
+              tooltip: {},
+              legend: {
+              },
+              radar: {
+                // shape: 'circle',
+                name: {
+                  textStyle: {
+                    color: '#fff',
+                    backgroundColor: '#999',
+                    borderRadius: 3,
+                    padding: [3, 5]
+                  }
+                },
+                indicator: [
+                  { name: 'General', max: 100},
+                  { name: 'Source', max: 100},
+                  { name: 'Make', max: 100},
+                  { name: 'Deliver', max: 100}
+                ]
+              },
+              series: [{
+                name: this.translate.instant('score'),
+                type: 'radar',
+                // areaStyle: {normal: {}},
+                data : [
+                  {
+                    value : [this.overAllScore,
+                      this.tagResultList.Source.normalized,
+                      this.tagResultList.Make.normalized,
+                      this.tagResultList.Delivery.normalized]
+                  }
+                ],
+                label: {
+                  show: false
+                }
+              }]
+            };
+            }
+          );
           // @ts-ignore
           this.resultObjRaw = JSON.parse(data._body);
           this.fullResultList.Enabler = this.resultObjRaw.Enabler;
@@ -272,7 +356,7 @@ export class ReportComponent implements OnInit {
                 }
               ],
               label: {
-                show: true
+                show: false
               }
             }]
           };
@@ -317,7 +401,7 @@ export class ReportComponent implements OnInit {
                 }
               ],
               label: {
-                show: true
+                show: false
               }
             }]
           };
@@ -358,7 +442,7 @@ export class ReportComponent implements OnInit {
                 }
               ],
               label: {
-                show: true
+                show: false
               }
             }]
           };
@@ -398,7 +482,7 @@ export class ReportComponent implements OnInit {
                 }
               ],
               label: {
-                show: true
+                show: false
               }
             }]
           };
@@ -451,7 +535,7 @@ export class ReportComponent implements OnInit {
                 }
               ],
               label: {
-                show: true
+                show: false
               }
             }]
           };
@@ -474,48 +558,7 @@ export class ReportComponent implements OnInit {
             }]
           };
 
-          this.options7 = {
-            title: {
-              text: 'GSMD',
-              y: -5
-            },
-            tooltip: {},
-            legend: {
-            },
-            radar: {
-              // shape: 'circle',
-              name: {
-                textStyle: {
-                  color: '#fff',
-                  backgroundColor: '#999',
-                  borderRadius: 3,
-                  padding: [3, 5]
-                }
-              },
-              indicator: [
-                { name: 'General', max: 100},
-                { name: 'Source', max: 100},
-                { name: 'Make', max: 100},
-                { name: 'Deliver', max: 100}
-              ]
-            },
-            series: [{
-              name: this.translate.instant('score'),
-              type: 'radar',
-              // areaStyle: {normal: {}},
-              data : [
-                {
-                  value : [this.simpleResultList.Lean.normalized,
-                    this.simpleResultList.Lean.normalized,
-                    this.simpleResultList.Enabler.normalized,
-                    this.simpleResultList['I4.0'].normalized]
-                }
-              ],
-              label: {
-                show: true
-              }
-            }]
-          };
+
 
         });
       } else {
@@ -530,7 +573,11 @@ export class ReportComponent implements OnInit {
   }
 
   cacualateLevel(score) {
-    return 'Level ' + ((score - 0.01) / 20 + 1).toString().substring(0, 1);
+    if (score === 0) {
+      return 'Level 1';
+    } else {
+      return 'Level ' + ((score - 0.01) / 20 + 1).toString().substring(0, 1);
+    }
   }
 
   convertToImg() {

@@ -1,10 +1,11 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, Inject, OnInit} from '@angular/core';
 import {TaskService} from '../service/taskService';
 import {Router} from '@angular/router';
 import {User} from '../models/user';
 import Swal from 'sweetalert2';
 import {TranslateService} from 'ng2-translate';
 import 'rxjs/add/observable/fromEvent';
+import { DOCUMENT } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-diagnosis',
@@ -35,18 +36,22 @@ export class DiagnosisComponent implements OnInit {
   activeCodeCorrect: boolean;
   activeCode: string;
   selectedTestId: number;
+  finalLevel: string;
 
-  constructor(public user: User, private taskService: TaskService, private router: Router, private translate: TranslateService) {
+  constructor(@Inject(DOCUMENT) private document: Document,
+              public user: User, private taskService: TaskService,
+              private router: Router, private translate: TranslateService) {
     this.user.mainShowing = false;
     this.diagnosisPhase = 0;
     this.activeCodeCorrect = false;
     this.activeCode = '';
     this.selectedTestId = 0;
+    this.finalLevel = '';
   }
 
   ngOnInit() {
     this.diagnosisPhase = 0;
-    this.unsubmitable = true;
+    this.unsubmitable = false;
     this.questionShowing = true;
     // @ts-ignore
     this.testList = [];
@@ -198,12 +203,6 @@ export class DiagnosisComponent implements OnInit {
         case 5: this.deliveryAnswerList[index - this.sourceAnswerList.length - this.makeAnswerList.length] = val; break;
       }
     }
-
-    console.log(this.makeAnswerList);
-    if (/*this.answerList.length === this.questionList.length*/1) {
-
-      this.unsubmitable = false;
-    }
   }
 
   sentAnswer() {
@@ -228,6 +227,7 @@ export class DiagnosisComponent implements OnInit {
           this.taskService.commitAnswer(this.answerObj).subscribe(data => {
             // @ts-ignore
             this.resultDemo = JSON.parse(data._body);
+            this.finalLevel = this.cacualateLevel(this.resultDemo.result.score);
             this.questionShowing = false;
             console.log(this.resultDemo);
             localStorage.setItem('overallScore', this.resultDemo.result.score);
@@ -307,6 +307,8 @@ export class DiagnosisComponent implements OnInit {
         '',
         'error'
       );
+      const mainDiv = document.getElementById('phaseOneDiv');
+      mainDiv.scrollTop = 0;
     }
   }
 
@@ -372,11 +374,11 @@ export class DiagnosisComponent implements OnInit {
 
   verifyCode() {
     this.taskService.verifyActiveCode(this.activeCode, this.selectedTestId ).subscribe( res => {
-      /*Swal(
+      Swal(
         this.translate.instant('verifySuccess'),
         '',
         'success'
-      );*/
+      );
       this.activeCodeCorrect = true;
     }, error => {
       Swal(
@@ -384,8 +386,17 @@ export class DiagnosisComponent implements OnInit {
         '',
         'error'
       );
+      this.diagnosisPhase = 0;
     });
 
+  }
+
+  cacualateLevel(score) {
+    if (score === 0) {
+      return 'Level 1';
+    } else {
+      return 'Level ' + ((score - 0.01) / 20 + 1).toString().substring(0, 1);
+    }
   }
 
 }

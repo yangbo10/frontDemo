@@ -30,6 +30,13 @@
   height: 14px !important;
   line-height: 7px !important;
 }
+:host /deep/ ng2-smart-table input[type=checkbox]:checked{
+  content: '';
+  font-size: 0;
+  background: rgb(100, 150, 238);
+  border-radius: 2px !important;
+  display: block;
+}
 .import-model{
   width: 800px !important;
 
@@ -47,11 +54,4 @@
 .upload-modal-body{
   min-height: 80px;
   height: auto;
-}
-:host /deep/ ng2-smart-table input[type=checkbox]:checked{
-  content: '';
-  font-size: 0;
-  background: rgb(100, 150, 238);
-  border-radius: 2px !important;
-  display: block;
 }

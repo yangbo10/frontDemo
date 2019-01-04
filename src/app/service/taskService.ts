@@ -116,6 +116,15 @@ export class TaskService {
       });
     }
 
+    deleteQuestionInTest(testId, questionId) {
+      const headers = new Headers();
+      this.createAuthorizationHeader(headers);
+      return this.http.delete(this.TASK_URL + 'api/tests/' + testId + '/questions', {
+        headers: headers,
+        body: [questionId]
+      });
+    }
+
     batchDeleteQuestion(ids) {
       const headers = new Headers();
       this.createAuthorizationHeader(headers);
@@ -157,10 +166,10 @@ export class TaskService {
       });
     }
 
-    getResultById(resultId) {
+    getResultById(resultId, tagId1, tagId3) {
       const headers = new Headers();
       this.createAuthorizationHeader(headers);
-      return this.http.get(this.TASK_URL + 'api/results/' + resultId + '/summary',  {
+      return this.http.get(this.TASK_URL + 'api/results/' + resultId + '/' + tagId1 + '/' + tagId3 + '/' + '/summary',  {
         headers: headers
       });
     }
@@ -194,6 +203,14 @@ export class TaskService {
       const headers = new Headers();
       this.createAuthorizationHeader(headers);
       return this.http.get(this.TASK_URL + 'api/users',  {
+        headers: headers
+      });
+    }
+
+    queryUsers(query) {
+      const headers = new Headers();
+      this.createAuthorizationHeader(headers);
+      return this.http.get(this.TASK_URL + 'api/users?size=10000&search=username=co=' + query,  {
         headers: headers
       });
     }
@@ -240,6 +257,14 @@ export class TaskService {
       const headers = new Headers();
       this.createAuthorizationHeader(headers);
       return this.http.post(this.TASK_URL + 'api/licenses/generate', param,  {
+        headers: headers
+      });
+    }
+
+    getTagResult(resultId, tagId) {
+      const headers = new Headers();
+      this.createAuthorizationHeader(headers);
+      return this.http.get(this.TASK_URL + 'api/results/' + resultId + '/' + tagId + '/summary',  {
         headers: headers
       });
     }
