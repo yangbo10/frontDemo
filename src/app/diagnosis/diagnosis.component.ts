@@ -1,4 +1,4 @@
-import {Component, Inject, OnInit} from '@angular/core';
+import {Component, HostListener, Inject, OnInit} from '@angular/core';
 import {TaskService} from '../service/taskService';
 import {Router} from '@angular/router';
 import {User} from '../models/user';
@@ -6,6 +6,7 @@ import Swal from 'sweetalert2';
 import {TranslateService} from 'ng2-translate';
 import 'rxjs/add/observable/fromEvent';
 import { DOCUMENT } from '@angular/platform-browser';
+import {toNumber} from '../../../node_modules/ngx-bootstrap/timepicker/timepicker.utils';
 
 @Component({
   selector: 'app-diagnosis',
@@ -26,17 +27,34 @@ export class DiagnosisComponent implements OnInit {
   sourceAnswerList: [any];
   makeAnswerList: [any];
   deliveryAnswerList: [any];
+  sourceAnswerIdList: [any];
+  makeAnswerIdList: [any];
+  deliveryAnswerIdList: [any];
   answerObj: any;
   resultDemo: any;
   diagnosisPhase: number;
   options1: object;
   options2: object;
+  options3: object;
   pieData1: [any];
   pieData2: [any];
+  pieData3: [any];
   activeCodeCorrect: boolean;
   activeCode: string;
   selectedTestId: number;
   finalLevel: string;
+  scrollHeight: number;
+  finishAlertShowing: boolean;
+  unFinishedQuestionHeight: number;
+  findFirstUnFinish: boolean;
+  lastSavedHeight: number;
+  lastSavedId: number;
+  phaseOneScore: string;
+  phaseTwoScore: string;
+  phaseThreeScore: string;
+  answerStorage: any;
+  currentUserId: string;
+  gotHistory: boolean;
 
   constructor(@Inject(DOCUMENT) private document: Document,
               public user: User, private taskService: TaskService,
@@ -47,12 +65,38 @@ export class DiagnosisComponent implements OnInit {
     this.activeCode = '';
     this.selectedTestId = 0;
     this.finalLevel = '';
+    this.finishAlertShowing = false;
+    this.gotHistory = false;
+    this.answerStorage = {
+      'testId': 0,
+      'currentPhase': 0,
+      'answerList': [],
+      'sourceAnswerList': [],
+      'makeAnswerList': [],
+      'deliveryAnswerList': [],
+      'sourceAnswerIdList': [],
+      'makeAnswerIdList': [],
+      'deliveryAnswerIdList': [],
+    };
+  }
+  // handle window scroll
+  @HostListener('window:scroll', ['$event']) public windowScrolled($event: Event) {
+    this.windowScrollEvent($event);
   }
 
   ngOnInit() {
     this.diagnosisPhase = 0;
+    this.scrollHeight = 0;
+    this.unFinishedQuestionHeight = 0;
+    this.lastSavedHeight = 0;
+    this.lastSavedId = 0;
+    this.phaseOneScore = '';
+    this.phaseTwoScore = '';
+    this.phaseThreeScore = '';
     this.unsubmitable = false;
     this.questionShowing = true;
+    this.findFirstUnFinish = false;
+    this.currentUserId = localStorage.getItem('user_id');
     // @ts-ignore
     this.testList = [];
     // @ts-ignore
@@ -64,6 +108,12 @@ export class DiagnosisComponent implements OnInit {
     // @ts-ignore
     this.deliveryAnswerList = [];
     // @ts-ignore
+    this.sourceAnswerIdList = [];
+    // @ts-ignore
+    this.makeAnswerIdList = [];
+    // @ts-ignore
+    this.deliveryAnswerIdList = [];
+    // @ts-ignore
     this.sourceList = [];
     // @ts-ignore
     this.makeList = [];
@@ -74,6 +124,9 @@ export class DiagnosisComponent implements OnInit {
     ];
     // @ts-ignore
     this.pieData2 = [
+    ];
+    // @ts-ignore
+    this.pieData3 = [
     ];
     if (localStorage.getItem('access_token') === null) {
       this.router.navigate(['']);
@@ -102,7 +155,7 @@ export class DiagnosisComponent implements OnInit {
       },
       series : [
         {
-          name: 'Score',
+          name: this.translate.instant('score'),
           type: 'pie',
           radius : '55%',
           center: ['50%', '60%'],
@@ -135,7 +188,7 @@ export class DiagnosisComponent implements OnInit {
       },
       series : [
         {
-          name: 'Score',
+          name: this.translate.instant('score'),
           type: 'pie',
           radius : '55%',
           center: ['50%', '60%'],
@@ -151,9 +204,47 @@ export class DiagnosisComponent implements OnInit {
       ]
     };
 
+    this.options3 = {
+      title : {
+        text: '',
+        subtext: '',
+        x: 'center'
+      },
+      tooltip : {
+        trigger: 'item',
+        formatter: '{a} <br/>{b} : {c} ({d}%)'
+      },
+      legend: {
+        orient: 'vertical',
+        left: 'left',
+        data: ['A', 'B']
+      },
+      series : [
+        {
+          name: this.translate.instant('score'),
+          type: 'pie',
+          radius : '55%',
+          center: ['50%', '60%'],
+          data: this.pieData3,
+          itemStyle: {
+            emphasis: {
+              shadowBlur: 10,
+              shadowOffsetX: 0,
+              shadowColor: 'rgba(0, 0, 0, 0.5)'
+            }
+          }
+        }
+      ]
+    };
+
+  }
+
+  protected windowScrollEvent($event: Event) {
+    this.scrollHeight = window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop || 0;
   }
 
   startDiagnosis(test) {
+    this.unFinishedQuestionHeight = 0;
     console.log(test);
     if (test.questions.length === 0 ) {
       Swal(
@@ -174,6 +265,15 @@ export class DiagnosisComponent implements OnInit {
         }
       }
       this.diagnosisPhase++;
+      const storage = JSON.parse(localStorage.getItem('answerStorage_' + this.currentUserId));
+      if (storage !== null) {
+        if (toNumber(storage.testId) === test.testId) {
+          console.log(storage);
+          console.log('Got history');
+          this.gotHistory = true;
+          this.answerStorage = storage;
+        }
+      }
     }
   }
 
@@ -192,10 +292,32 @@ export class DiagnosisComponent implements OnInit {
     if ( this.reChoose === false) {
       this.answerList.push(val);
       switch (this.diagnosisPhase) {
-        case 1: this.sourceAnswerList.push(val); break;
-        case 3: this.makeAnswerList.push(val); break;
-        case 5: this.deliveryAnswerList.push(val); break;
+        case 1: this.sourceAnswerList.push(val);
+          this.sourceAnswerIdList.push(val.question.questionId);
+          if (this.sourceAnswerList.length === this.sourceList.length) {
+            this.finishAlertShowing = false;
+          }
+          // calculate the first unfinished question position first time
+          this.getFirstUnFinishedPosition(this.sourceAnswerIdList, this.sourceList);
+        break;
+        case 3: this.makeAnswerList.push(val);
+          this.makeAnswerIdList.push(val.question.questionId);
+          if (this.makeAnswerList.length === this.makeList.length) {
+            this.finishAlertShowing = false;
+          }
+          // calculate the first unfinished question position first time
+          this.getFirstUnFinishedPosition(this.makeAnswerIdList, this.makeList);
+          break;
+        case 5: this.deliveryAnswerList.push(val);
+          this.deliveryAnswerIdList.push(val.question.questionId);
+          if (this.deliveryAnswerList.length === this.deliveryList.length) {
+            this.finishAlertShowing = false;
+          }
+          // calculate the first unfinished question position first time
+          this.getFirstUnFinishedPosition(this.deliveryAnswerIdList, this.deliveryList);
+          break;
       }
+
     } else {
       switch (this.diagnosisPhase) {
         case 1: this.sourceAnswerList[index] = val; break;
@@ -203,6 +325,54 @@ export class DiagnosisComponent implements OnInit {
         case 5: this.deliveryAnswerList[index - this.sourceAnswerList.length - this.makeAnswerList.length] = val; break;
       }
     }
+    this.answerStorage.testId = this.selectedTestId;
+    this.answerStorage.answerList = this.answerList;
+    this.answerStorage.sourceAnswerList = this.sourceAnswerList;
+    this.answerStorage.makeAnswerList = this.makeAnswerList;
+    this.answerStorage.deliveryAnswerList = this.deliveryAnswerList;
+    this.answerStorage.sourceAnswerIdList = this.sourceAnswerIdList;
+    this.answerStorage.makeAnswerIdList = this.makeAnswerIdList;
+    this.answerStorage.deliveryAnswerIdList = this.deliveryAnswerIdList;
+    this.answerStorage.currentPhase = this.diagnosisPhase;
+    localStorage.setItem('answerStorage_' + this.currentUserId, JSON.stringify(this.answerStorage));
+  }
+
+  // sort method
+  arraySort(arr) {
+    for (let i = 1; i < arr.length; i ++) {
+      const temp = arr[i];
+      let j = i - 1;
+      while (temp < arr[j]) {
+        arr[j + 1] = arr[j];
+        j--;
+        if (j === -1) {
+          break;
+        }
+      }
+      arr[j + 1] = temp;
+    }
+  }
+
+  // calculate the first unfinished question position
+  getFirstUnFinishedPosition(answerList, questionList) {
+    let i = 0;
+    this.findFirstUnFinish = false;
+    this.arraySort(answerList);
+    // 挨个对比找到未答的第一道题
+    for ( const item of answerList) {
+      if (item !== questionList[i].questionId) {
+        // get the first unFinished question position
+        this.unFinishedQuestionHeight = (i + 1) * 270;
+        this.findFirstUnFinish = true;
+        break;
+      }
+      i ++;
+    }
+    // 如果对比完没找到，那未完成的位置就是所答题目的最后一题后面一题的位置
+    if (!this.findFirstUnFinish && answerList.length < questionList.length) {
+      this.unFinishedQuestionHeight = this.scrollHeight + 300;
+    }
+    return;
   }
 
   sentAnswer() {
@@ -242,16 +412,15 @@ export class DiagnosisComponent implements OnInit {
         }
       });
     } else {
-      Swal(
-        this.translate.instant('finishAlert'),
-        '',
-        'error'
-      );
+      this.finishAlertShowing = true;
+      this.findFirstUnFinish = false;
+      window.scrollTo(0, this.unFinishedQuestionHeight);
     }
   }
 
   gotoNextPhase() {
     this.diagnosisPhase ++;
+    window.scrollTo(0, 0);
   }
 
   getPhaseOneResult() {
@@ -263,10 +432,11 @@ export class DiagnosisComponent implements OnInit {
         sourceTotal = sourceTotal + item.point.totalScore;
         sourceActual = sourceActual + item.point.score;
       }
+      this.phaseOneScore = (sourceActual * 100 / sourceTotal).toFixed(2);
       // @ts-ignore
       this.pieData1 = [
-        {value: sourceActual, name: 'scored'},
-        {value: sourceTotal - sourceActual, name: 'not scored'}
+        {value: sourceActual, name: this.translate.instant('scoredPoints')},
+        {value: sourceTotal - sourceActual, name: this.translate.instant('unScoredPoints')}
       ];
       this.options1 = {
         title : {
@@ -277,11 +447,6 @@ export class DiagnosisComponent implements OnInit {
         tooltip : {
           trigger: 'item',
           formatter: '{a} <br/>{b} : {c} ({d}%)'
-        },
-        legend: {
-          orient: 'vertical',
-          left: 'left',
-          data: ['scored', 'unscored']
         },
         series : [
           {
@@ -301,14 +466,12 @@ export class DiagnosisComponent implements OnInit {
         ]
       };
       this.diagnosisPhase++;
+      this.answerStorage.currentPhase = this.diagnosisPhase + 1;
+      localStorage.setItem('answerStorage_' + this.currentUserId, JSON.stringify(this.answerStorage));
     } else {
-      Swal(
-        this.translate.instant('finishAlert'),
-        '',
-        'error'
-      );
-      const mainDiv = document.getElementById('phaseOneDiv');
-      mainDiv.scrollTop = 0;
+      this.finishAlertShowing = true;
+      this.findFirstUnFinish = false;
+      window.scrollTo(0, this.unFinishedQuestionHeight);
     }
   }
 
@@ -321,10 +484,11 @@ export class DiagnosisComponent implements OnInit {
         makeTotal = makeTotal + item.point.totalScore;
         makeActual = makeActual + item.point.score;
       }
+      this.phaseTwoScore = (makeActual * 100 / makeTotal).toFixed(2);
       // @ts-ignore
       this.pieData2 = [
-        {value: makeActual, name: 'A'},
-        {value: makeTotal - makeActual, name: 'B'}
+        {value: makeActual, name: this.translate.instant('scoredPoints')},
+        {value: makeTotal - makeActual, name: this.translate.instant('unScoredPoints')}
       ];
       this.options2 = {
         title : {
@@ -335,11 +499,6 @@ export class DiagnosisComponent implements OnInit {
         tooltip : {
           trigger: 'item',
           formatter: '{a} <br/>{b} : {c} ({d}%)'
-        },
-        legend: {
-          orient: 'vertical',
-          left: 'left',
-          data: ['A', 'B']
         },
         series : [
           {
@@ -359,12 +518,64 @@ export class DiagnosisComponent implements OnInit {
         ]
       };
       this.diagnosisPhase++;
+      this.answerStorage.currentPhase = this.diagnosisPhase + 1;
+      localStorage.setItem('answerStorage_' + this.currentUserId, JSON.stringify(this.answerStorage));
     } else {
-      Swal(
-        this.translate.instant('finishAlert'),
-        '',
-        'error'
-      );
+      this.finishAlertShowing = true;
+      this.findFirstUnFinish = false;
+      window.scrollTo(0, this.unFinishedQuestionHeight);
+    }
+  }
+
+  getPhaseThreeResult() {
+    if (this.deliveryAnswerList.length === this.deliveryList.length) {
+      // calculate score
+      let deliveryTotal = 0;
+      let deliveryActual = 0;
+      for (const item of this.makeAnswerList) {
+        deliveryTotal = deliveryTotal + item.point.totalScore;
+        deliveryActual = deliveryActual + item.point.score;
+      }
+      this.phaseThreeScore = (deliveryActual * 100 / deliveryTotal).toFixed(2);
+      // @ts-ignore
+      this.pieData3 = [
+        {value: deliveryActual, name: this.translate.instant('scoredPoints')},
+        {value: deliveryTotal - deliveryActual, name: this.translate.instant('unScoredPoints')}
+      ];
+      this.options3 = {
+        title : {
+          text: '',
+          subtext: '',
+          x: 'center'
+        },
+        tooltip : {
+          trigger: 'item',
+          formatter: '{a} <br/>{b} : {c} ({d}%)'
+        },
+        series : [
+          {
+            name: 'Score',
+            type: 'pie',
+            radius : '55%',
+            center: ['50%', '60%'],
+            data: this.pieData3,
+            itemStyle: {
+              emphasis: {
+                shadowBlur: 10,
+                shadowOffsetX: 0,
+                shadowColor: 'rgba(0, 0, 0, 0.5)'
+              }
+            }
+          }
+        ]
+      };
+      this.diagnosisPhase++;
+      this.answerStorage.currentPhase = this.diagnosisPhase + 1;
+      localStorage.setItem('answerStorage_' + this.currentUserId, JSON.stringify(this.answerStorage));
+    } else {
+      this.finishAlertShowing = true;
+      this.findFirstUnFinish = false;
+      window.scrollTo(0, this.unFinishedQuestionHeight);
     }
   }
 
@@ -380,23 +591,48 @@ export class DiagnosisComponent implements OnInit {
         'success'
       );
       this.activeCodeCorrect = true;
+      // -----------  present history here ------------
+      if (this.gotHistory) {
+        this.diagnosisPhase = this.answerStorage.currentPhase;
+        this.answerList = this.answerStorage.answerList;
+        this.sourceAnswerList = this.answerStorage.sourceAnswerList;
+        this.makeAnswerList = this.answerStorage.makeAnswerList;
+        this.deliveryAnswerList = this.answerStorage.deliveryAnswerList;
+        this.sourceAnswerIdList = this.answerStorage.sourceAnswerIdList;
+        this.makeAnswerIdList = this.answerStorage.makeAnswerIdList;
+        this.deliveryAnswerIdList = this.answerStorage.deliveryAnswerIdList;
+        switch (this.diagnosisPhase) {
+          case 1: console.log('1');
+             break;
+          case 3: console.log('1');
+            break;
+          case 5: console.log('1');
+            break;
+        }
+      }
     }, error => {
       Swal(
         this.translate.instant('verifyFail'),
         '',
         'error'
       );
-      this.diagnosisPhase = 0;
     });
 
   }
 
   cacualateLevel(score) {
+    const levelList = ['Beginner', 'Intermediate', 'Experienced', 'Expert', 'Top Performer'];
+    const level = ((score - 0.01) / 20).toString().substring(0, 1);
     if (score === 0) {
-      return 'Level 1';
+      return levelList[0];
     } else {
-      return 'Level ' + ((score - 0.01) / 20 + 1).toString().substring(0, 1);
+      return levelList[toNumber(level)];
     }
   }
+
+  backToChoose() {
+    this.diagnosisPhase = 0;
+  }
+
 
 }

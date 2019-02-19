@@ -7,7 +7,7 @@
     <ng-container *ngFor="let item of questionItem.answer.options">
       <label class = "box-header">
         <input name= {{questionItem.name}} value={{item.optionId}} [ngModel]="chooseItem"
-               (ngModelChange)="chooseItemChange($event)" type="radio" class="a-radio">
+               (ngModelChange)="chooseItemChange($event)" type="radio" class="a-radio" [checked]="chooseItem == item.optionId">
         <span class="b-radio"></span> {{item.name}}. {{item.detail}}
       </label>
     </ng-container>

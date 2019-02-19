@@ -1,11 +1,20 @@
 
   <section class="content-header">
-    <h1>
+    <h1 *ngIf="diagnosisPhase == 0 || diagnosisPhase == 1 || diagnosisPhase == 3 || diagnosisPhase == 5 ">
       {{'diagnosisTitle'|translate}}
     </h1>
-    <ol class="breadcrumb">
-
-    </ol>
+    <h1 *ngIf="diagnosisPhase == 2">
+      Source{{'phaseResult'|translate}}
+    </h1>
+    <h1 *ngIf="diagnosisPhase == 4">
+      Make{{'phaseResult'|translate}}
+    </h1>
+    <h1 *ngIf="diagnosisPhase == 6">
+      Delivery{{'phaseResult'|translate}}
+    </h1>
+    <h1 *ngIf="diagnosisPhase == 7">
+      {{'finalResult'|translate}}
+    </h1>
   </section>
 
   <div class="box col-md-12" style="min-height: 850px" *ngIf="diagnosisPhase == 0">
@@ -38,19 +47,29 @@
       <div style="margin-bottom: 50px">
         <input class="form-control" [(ngModel)]="activeCode" style="height: 30px; width: 30% ;margin: 0 auto">
       </div>
-      <button class="btn btn-block btn-primary btn-lg" style="width: 10%; margin: 0 auto" (click)="verifyCode()">{{'verifyButton'|translate}}</button>
+      <button class="btn btn-block btn-primary btn-lg" style="width: 20%; margin: 0 auto" (click)="verifyCode()">{{'verifyButton'|translate}}</button>
+      <button class="btn btn-block btn-warning btn-lg" style="width: 20%; margin: 0 auto; margin-top: 20px;" (click)="backToChoose()">{{'backToChoose'|translate}}</button>
     </div>
     <div *ngIf="activeCodeCorrect">
-      <div class="sticky-nav-wrapper">
-        <nav class="sticky-nav" ngStickyNav stickyClass="sticky-box-shadow">
+      <div class="nav-wrapper">
+        <div class="top-nav" *ngIf="scrollHeight == 0">
           <span class="info-box-icon" style="height: 50px; width: 50px; line-height: 38px"><i class="ion ion-ios-pricetag-outline" style="font-size: 40px !important;"></i></span>
           <div class="info-box-content">
             <span class="diagnosis-info-box">Source: {{sourceAnswerList.length}}/{{sourceList.length}} {{'items'|translate}}</span>
+            <span *ngIf="finishAlertShowing" class="diagnosis-info-alert">&nbsp;&nbsp;&nbsp;{{'finishAlert'|translate}}</span>
           </div>
-        </nav>
+        </div>
+        <div class="nav-wrapper-shadow" *ngIf="scrollHeight >40">
+          <span class="info-box-icon" style="height: 50px; width: 50px; line-height: 38px"><i class="ion ion-ios-pricetag-outline" style="font-size: 40px !important;"></i></span>
+          <div class="info-box-content">
+            <span class="diagnosis-info-box">Source: {{sourceAnswerList.length}}/{{sourceList.length}} {{'items'|translate}}</span>
+            <span *ngIf="finishAlertShowing" class="diagnosis-info-alert">&nbsp;&nbsp;&nbsp;{{'finishAlert'|translate}}</span>
+          </div>
+        </div>
       </div>
+
       <ng-container *ngFor="let item of sourceList">
-        <app-questionbox [questionFromFather] = item   (answerFromChild)="getFromChild($event)"></app-questionbox>
+        <app-questionbox [questionFromFather] = item  [answerFromFather] = sourceAnswerList  (answerFromChild)="getFromChild($event)"></app-questionbox>
       </ng-container>
       <button class="btn btn-block btn-primary btn-lg" style="width: 20%; float: right; margin-bottom: 15px" (click)="getPhaseOneResult()" [disabled]="unsubmitable">{{'nextStep'|translate}}</button>
     </div>
@@ -58,52 +77,79 @@
 
   <div class="box col-md-12" *ngIf="diagnosisPhase == 2">
     <h1>{{'phaseOneFinish'|translate}}</h1>
-    <div class="col-md-12" echarts [options]="options1" style="min-width: 400px; max-width: 800px; height: 400px; margin: 0 auto"></div>
-    <div class="row">
+    <h1>{{'score'|translate}}: {{phaseOneScore}}</h1>
+    <div class="col-md-12" echarts [options]="options1" style="min-width: 400px; height: 400px;"></div>
+    <div class="col-md-12">
       <button class="btn btn-block btn-primary btn-lg" style="width: 20%; float: left; margin-bottom: 15px" (click)="gotoNextPhase()">{{'continue'|translate}}</button>
     </div>
   </div>
 
   <div class="box col-md-12" *ngIf="diagnosisPhase == 3">
-    <div class="sticky-nav-wrapper">
-      <nav class="sticky-nav" ngStickyNav>
+    <div class="nav-wrapper">
+      <div class="top-nav" *ngIf="scrollHeight == 0">
         <span class="info-box-icon" style="height: 50px; width: 50px; line-height: 38px"><i class="ion ion-ios-pricetag-outline" style="font-size: 40px !important;"></i></span>
         <div class="info-box-content">
           <span class="diagnosis-info-box">Make: {{makeAnswerList.length}}/{{makeList.length}} {{'items'|translate}}</span>
+          <span *ngIf="finishAlertShowing" class="diagnosis-info-alert">&nbsp;&nbsp;&nbsp;{{'finishAlert'|translate}}</span>
         </div>
-      </nav>
+      </div>
+      <div class="nav-wrapper-shadow" *ngIf="scrollHeight >40">
+        <span class="info-box-icon" style="height: 50px; width: 50px; line-height: 38px"><i class="ion ion-ios-pricetag-outline" style="font-size: 40px !important;"></i></span>
+        <div class="info-box-content">
+          <span class="diagnosis-info-box">Make: {{makeAnswerList.length}}/{{makeList.length}} {{'items'|translate}}</span>
+          <span *ngIf="finishAlertShowing" class="diagnosis-info-alert">&nbsp;&nbsp;&nbsp;{{'finishAlert'|translate}}</span>
+        </div>
+      </div>
     </div>
     <ng-container *ngFor="let item of makeList">
-      <app-questionbox [questionFromFather] = item   (answerFromChild)="getFromChild($event)"></app-questionbox>
+      <app-questionbox [questionFromFather] = item  [answerFromFather] = makeAnswerList  (answerFromChild)="getFromChild($event)"></app-questionbox>
     </ng-container>
     <button class="btn btn-block btn-primary btn-lg" style="width: 20%; float: right; margin-bottom: 15px" (click)="getPhaseTwoResult()" [disabled]="unsubmitable">{{'nextStep'|translate}}</button>
   </div>
 
   <div class="box col-md-12" *ngIf="diagnosisPhase == 4">
     <h1>{{'phaseTwoFinish'|translate}}</h1>
-    <div class="col-md-12" echarts [options]="options2" style="min-width: 400px; max-width: 800px; height: 400px; margin: 0 auto"></div>
-    <div class="row">
+    <h1>{{'score'|translate}}: {{phaseTwoScore}}</h1>
+    <div class="col-md-12" echarts [options]="options2" style="min-width: 400px; height: 400px;"></div>
+    <div class="col-md-12">
       <button class="btn btn-block btn-primary btn-lg" style="width: 20%; float: left; margin-bottom: 15px" (click)="gotoNextPhase()">{{'continue'|translate}}</button>
     </div>
   </div>
 
   <div class="box col-md-12" *ngIf="diagnosisPhase == 5">
-    <div class="sticky-nav-wrapper">
-      <nav class="sticky-nav" ngStickyNav>
+    <div class="nav-wrapper">
+      <div class="top-nav" *ngIf="scrollHeight == 0">
         <span class="info-box-icon" style="height: 50px; width: 50px; line-height: 38px"><i class="ion ion-ios-pricetag-outline" style="font-size: 40px !important;"></i></span>
         <div class="info-box-content">
           <span class="diagnosis-info-box">Delivery: {{deliveryAnswerList.length}}/{{deliveryList.length}} {{'items'|translate}}</span>
+          <span *ngIf="finishAlertShowing" class="diagnosis-info-alert">&nbsp;&nbsp;&nbsp;{{'finishAlert'|translate}}</span>
         </div>
-      </nav>
+      </div>
+      <div class="nav-wrapper-shadow" *ngIf="scrollHeight >40">
+        <span class="info-box-icon" style="height: 50px; width: 50px; line-height: 38px"><i class="ion ion-ios-pricetag-outline" style="font-size: 40px !important;"></i></span>
+        <div class="info-box-content">
+          <span class="diagnosis-info-box">Delivery: {{deliveryAnswerList.length}}/{{deliveryList.length}} {{'items'|translate}}</span>
+          <span *ngIf="finishAlertShowing" class="diagnosis-info-alert">&nbsp;&nbsp;&nbsp;{{'finishAlert'|translate}}</span>
+        </div>
+      </div>
     </div>
     <ng-container *ngFor="let item of deliveryList">
-      <app-questionbox [questionFromFather] = item   (answerFromChild)="getFromChild($event)"></app-questionbox>
+      <app-questionbox [questionFromFather] = item  [answerFromFather] = deliveryAnswerList  (answerFromChild)="getFromChild($event)"></app-questionbox>
     </ng-container>
-    <button class="btn btn-block btn-primary btn-lg" style="width: 20%; float: right; margin-bottom: 15px" (click)="sentAnswer()" [disabled]="unsubmitable">{{'submit'|translate}}</button>
+    <button class="btn btn-block btn-primary btn-lg" style="width: 20%; float: right; margin-bottom: 15px" (click)="getPhaseThreeResult()" [disabled]="unsubmitable">{{'submit'|translate}}</button>
   </div>
 
   <div class="box col-md-12" *ngIf="diagnosisPhase == 6">
     <h1>{{'phaseThreeFinish'|translate}}</h1>
+    <h1>{{'score'|translate}}: {{phaseThreeScore}}</h1>
+    <div class="col-md-12" echarts [options]="options2" style="min-width: 400px; height: 400px;"></div>
+    <div class="col-md-12">
+      <button class="btn btn-block btn-primary btn-lg" style="width: 20%; float: left; margin-bottom: 15px" (click)="sentAnswer()">{{'continue'|translate}}</button>
+    </div>
+  </div>
+
+  <div class="box col-md-12" *ngIf="diagnosisPhase == 7">
+    <h1>{{'allPhaseFinish'|translate}}</h1>
     <h1>{{finalLevel}}</h1>
-    <button class="btn btn-block btn-primary btn-lg" style="width: 20%; float: left; margin-bottom: 15px" (click)="gotoResultDetail()">{{'detailReport'|translate}}</button>
+    <button class="btn btn-block btn-primary btn-lg" style="width: 20%; float: left; margin-bottom: 15px" (click)="gotoResultDetail()">{{'reportTitle'|translate}}</button>
   </div>

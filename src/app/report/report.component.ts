@@ -49,6 +49,10 @@ export class ReportComponent implements OnInit {
   levelList: any;
   overAllLevel: string;
   overAllScore: number;
+  lineChartShowing: boolean;
+  firstPage: boolean;
+  secondPage: boolean;
+  exporting: boolean;
 
   @ViewChild('main') mainPage: ElementRef;
   @ViewChild('myChart1') myChart1: ElementRef;
@@ -60,6 +64,9 @@ export class ReportComponent implements OnInit {
     this.resultId = 1;
     this.showStaticImg = false;
     this.activeCodeCorrect = false;
+    this.firstPage = true;
+    this.secondPage = false;
+    this.exporting = false;
     this.activeCode = '';
     this.levelList = ['Beginner', 'Intermediate', 'Experienced', 'Expert', 'Top Performer'];
     this.simpleResultList = {
@@ -182,6 +189,11 @@ export class ReportComponent implements OnInit {
   }
 
   ngOnInit() {
+    if (localStorage.getItem('user_name') === 'admin') {
+      this.lineChartShowing = true;
+    } else {
+      this.lineChartShowing = false;
+    }
     this.taskService.getAllResult(localStorage.getItem('user_name')).subscribe( res => {
       // @ts-ignore
       const rawResult = JSON.parse(res._body);
@@ -215,8 +227,7 @@ export class ReportComponent implements OnInit {
             }
             this.options7 = {
               title: {
-                text: 'GSMD',
-                y: -5
+                text: 'GSMD'
               },
               tooltip: {},
               legend: {
@@ -236,7 +247,9 @@ export class ReportComponent implements OnInit {
                   { name: 'Source', max: 100},
                   { name: 'Make', max: 100},
                   { name: 'Deliver', max: 100}
-                ]
+                ],
+                center: ['50%', '50%'],
+                radius: '60%'
               },
               series: [{
                 name: this.translate.instant('score'),
@@ -322,8 +335,7 @@ export class ReportComponent implements OnInit {
           }
           this.options1 = {
             title: {
-              text: 'Enabler-STA Radar Graph',
-              y: -5
+              text: 'Enabler-STA Radar Graph'
             },
             tooltip: {},
             legend: {
@@ -342,7 +354,9 @@ export class ReportComponent implements OnInit {
                 { name: 'Standardization', max: 100},
                 { name: 'Associate Involvement', max: 100},
                 { name: 'Transparent Processes', max: 100}
-              ]
+              ],
+              center: ['50%', '55%'],
+              radius: '50%'
             },
             series: [{
               name: this.translate.instant('score'),
@@ -363,8 +377,7 @@ export class ReportComponent implements OnInit {
 
           this.options2 = {
             title: {
-              text: 'Lean-CFPPP Radar Graph',
-              y: -5
+              text: 'Lean-CFPPP Radar Graph'
             },
             tooltip: {},
             legend: {
@@ -385,7 +398,9 @@ export class ReportComponent implements OnInit {
                 { name: 'Associate Involvement', max: 100},
                 { name: 'Pull System', max: 100},
                 { name: 'Process Orientation', max: 100}
-              ]
+              ],
+              center: ['53%', '55%'],
+              radius: '48%'
             },
             series: [{
               name: this.translate.instant('score'),
@@ -408,8 +423,7 @@ export class ReportComponent implements OnInit {
 
           this.options3 = {
             title: {
-              text: 'I4.0-RDA Radar Graph',
-              y: -5
+              text: 'I4.0-RDA Radar Graph'
             },
             tooltip: {},
             legend: {
@@ -428,7 +442,9 @@ export class ReportComponent implements OnInit {
                 { name: 'Process Orientation', max: 100},
                 { name: 'Perfect Quality', max: 100},
                 { name: 'Continuous Improvement', max: 100}
-              ]
+              ],
+              center: ['45%', '55%'],
+              radius: '50%'
             },
             series: [{
               name: this.translate.instant('score'),
@@ -449,8 +465,7 @@ export class ReportComponent implements OnInit {
 
           this.options4 = {
             title: {
-              text: 'Source-Enabler Lean I4.0 Radar Graph',
-              y: -5
+              text: 'Source-Enabler Lean I4.0 Radar Graph'
             },
             tooltip: {},
             legend: {
@@ -469,7 +484,9 @@ export class ReportComponent implements OnInit {
                 { name: 'Enabler', max: 100},
                 { name: 'Lean', max: 100},
                 { name: 'I4.0', max: 100}
-              ]
+              ],
+              center: ['50%', '55%'],
+              radius: '60%'
             },
             series: [{
               name: this.translate.instant('score'),
@@ -489,8 +506,7 @@ export class ReportComponent implements OnInit {
 
           this.options5 = {
             title: {
-              text: '11 Dimensions Radar Graph',
-              y: -5
+              text: '11 Dimensions Radar Graph'
             },
             tooltip: {},
             legend: {
@@ -517,7 +533,9 @@ export class ReportComponent implements OnInit {
                 { name: 'Continuous Improvement', max: 100},
                 { name: 'Associate Involvement', max: 100},
                 { name: 'Transparent Processes', max: 100}
-              ]
+              ],
+              center: ['41%', '50%'],
+              radius: '60%'
             },
             series: [{
               name: this.translate.instant('score'),
@@ -580,6 +598,11 @@ export class ReportComponent implements OnInit {
     }
   }
 
+  goToSecondPage() {
+    this.firstPage = false;
+    this.secondPage = true;
+  }
+
   convertToImg() {
     this.showStaticImg = true;
     const myCharts1 = echarts.init(document.getElementById('myChart1'));
@@ -621,6 +644,7 @@ export class ReportComponent implements OnInit {
 
   createPdf() {
     this.convertToImg();
+    this.exporting = true;
     Swal({
       title: this.translate.instant('exportConfirm'),
       text: this.translate.instant('exportDescribe'),
@@ -662,6 +686,7 @@ export class ReportComponent implements OnInit {
         );
         this.showStaticImg = false;
       }
+      this.exporting = false;
     });
   }
 

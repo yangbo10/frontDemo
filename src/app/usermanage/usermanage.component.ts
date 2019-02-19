@@ -44,6 +44,7 @@ export class UsermanageComponent implements OnInit {
     ]
   };
   @ViewChild('assignTemplate') assignTemplate: TemplateRef<any>;
+  @ViewChild('mainTable') mainTable: TemplateRef<any>;
 
   constructor(public user: User, private taskService: TaskService,
               private modalService: BsModalService,
@@ -164,6 +165,8 @@ export class UsermanageComponent implements OnInit {
   }
 
   onSearch(query) {
+    // @ts-ignore
+    this.mainTable.isAllSelected = false;
     if (query === '') {
       this.source = new LocalDataSource(this.tableData);
     } else {

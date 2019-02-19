@@ -1,4 +1,4 @@
-import {Component, OnInit, EventEmitter, TemplateRef} from '@angular/core';
+import {Component, OnInit, EventEmitter, TemplateRef, ViewChild, ElementRef} from '@angular/core';
 import {TaskService} from '../service/taskService';
 import {LocalDataSource} from 'ng2-smart-table';
 import { UploadOutput, UploadInput, UploadFile, UploaderOptions } from 'ngx-uploader';
@@ -42,7 +42,7 @@ export class QuestionnaireComponent implements OnInit {
   dimensionList: [any];
   dimensionCheckList: [any];
   addBtnDisable: boolean;
-
+  @ViewChild('mainTable') mainTable: ElementRef;
   constructor(public user: User, private taskService: TaskService,
               private modalService: BsModalService,
               private translate: TranslateService) {
@@ -62,6 +62,10 @@ export class QuestionnaireComponent implements OnInit {
     this.tableData2 = [];
     // @ts-ignore
     this.newTableData = [];
+    // @ts-ignore
+    this.nameCache = [];
+    // @ts-ignore
+    this.questionCache = [];
   }
 
   public tagList = [
@@ -250,15 +254,9 @@ export class QuestionnaireComponent implements OnInit {
     // @ts-ignore
     this.selectedQuestions = [];
     // @ts-ignore
-    this.questionCache = [];
-    // @ts-ignore
     this.dimensionList = [];
     // @ts-ignore
     this.dimensionCheckList = [];
-    // @ts-ignore
-    this.nameCache = [];
-    // @ts-ignore
-    this.questionCache = [];
     this.addBtnDisable = false;
     // @ts-ignore
     this.tableData = [];
@@ -309,6 +307,12 @@ export class QuestionnaireComponent implements OnInit {
 
 
   onSearch(query) {
+    // @ts-ignore
+    this.mainTable.isAllSelected = false;
+    // @ts-ignore
+    this.deleteList = [];
+    // @ts-ignore
+    this.selectedQuestions = [];
     if (query === '') {
       this.source = new LocalDataSource(this.tableData);
     } else {
@@ -690,13 +694,15 @@ export class QuestionnaireComponent implements OnInit {
   }
 
   closeAddModal() {
+    this.modalRef.hide();
+    // @ts-ignore
+    this.mainTable.isAllSelected = false;
     // @ts-ignore
     this.selectedQuestions = [];
     // @ts-ignore
     this.deleteList = [];
     // @ts-ignore
     this.dimensionList = [];
-    this.modalRef.hide();
     this.onSearch('');
   }
 }

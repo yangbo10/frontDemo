@@ -10,24 +10,48 @@
   box-shadow: 0 1px 1px rgba(0, 0, 0, 0.1);
 }
 
-.sticky-nav-wrapper {
+.nav-wrapper {
   min-height: 50px;
   margin-top: 10px;
   margin-bottom: 10px;
 }
 
-.sticky-nav {
+.top-nav {
   height: 50px;
   width: 100%;
   background-color: #d2d6de;
 }
-.sticky-box-shadow {
+.nav-wrapper-shadow {
+  height: 50px;
+  width: 100%;
   box-shadow: 0px 0px 10px 5px rgba(0,0,0,0.5);
+  background-color: #d2d6de;
+  position: fixed;
+  top: 0;
+  z-index: 999;
 }
 .diagnosis-info-box {
-  display: block;
+  display: inline-block;
   font-size: 16px;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+}
+.diagnosis-info-alert {
+  display: inline-block;
+  font-size: 16px;
+  font-weight: bold;
+  color: #db0920;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.do-these-line-up{
+  margin: 0 15px 0;
+  border: 1px blue solid;
+  min-width: 600px;
+}
+.scroll__fixed{
+  overflow: hidden;
+  background-color: orange;
 }
