@@ -68,16 +68,16 @@
         </div>
       </div>
 
-      <ng-container *ngFor="let item of sourceList">
-        <app-questionbox [questionFromFather] = item  [answerFromFather] = sourceAnswerList  (answerFromChild)="getFromChild($event)"></app-questionbox>
+      <ng-container *ngFor="let item of sourceList let i = index" [attr.data-index]="i">
+        <app-questionbox [questionFromFather] = item  [questionNumberFromFather] = i+1  [answerFromFather] = sourceAnswerList  (answerFromChild)="getFromChild($event)"></app-questionbox>
       </ng-container>
       <button class="btn btn-block btn-primary btn-lg" style="width: 20%; float: right; margin-bottom: 15px" (click)="getPhaseOneResult()" [disabled]="unsubmitable">{{'nextStep'|translate}}</button>
     </div>
   </div>
 
   <div class="box col-md-12" *ngIf="diagnosisPhase == 2">
-    <h1>{{'phaseOneFinish'|translate}}</h1>
-    <h1>{{'score'|translate}}: {{phaseOneScore}}</h1>
+    <h2>{{'phaseOneFinish'|translate}}</h2>
+    <h2>{{'score'|translate}}: {{phaseOneScore}}</h2>
     <div class="col-md-12" echarts [options]="options1" style="min-width: 400px; height: 400px;"></div>
     <div class="col-md-12">
       <button class="btn btn-block btn-primary btn-lg" style="width: 20%; float: left; margin-bottom: 15px" (click)="gotoNextPhase()">{{'continue'|translate}}</button>
@@ -101,15 +101,15 @@
         </div>
       </div>
     </div>
-    <ng-container *ngFor="let item of makeList">
-      <app-questionbox [questionFromFather] = item  [answerFromFather] = makeAnswerList  (answerFromChild)="getFromChild($event)"></app-questionbox>
+    <ng-container *ngFor="let item of makeList; let i = index" [attr.data-index]="i">
+      <app-questionbox [questionFromFather] = item [questionNumberFromFather] = i+1 [answerFromFather] = makeAnswerList  (answerFromChild)="getFromChild($event)"></app-questionbox>
     </ng-container>
     <button class="btn btn-block btn-primary btn-lg" style="width: 20%; float: right; margin-bottom: 15px" (click)="getPhaseTwoResult()" [disabled]="unsubmitable">{{'nextStep'|translate}}</button>
   </div>
 
   <div class="box col-md-12" *ngIf="diagnosisPhase == 4">
-    <h1>{{'phaseTwoFinish'|translate}}</h1>
-    <h1>{{'score'|translate}}: {{phaseTwoScore}}</h1>
+    <h2>{{'phaseTwoFinish'|translate}}</h2>
+    <h2>{{'score'|translate}}: {{phaseTwoScore}}</h2>
     <div class="col-md-12" echarts [options]="options2" style="min-width: 400px; height: 400px;"></div>
     <div class="col-md-12">
       <button class="btn btn-block btn-primary btn-lg" style="width: 20%; float: left; margin-bottom: 15px" (click)="gotoNextPhase()">{{'continue'|translate}}</button>
@@ -133,16 +133,16 @@
         </div>
       </div>
     </div>
-    <ng-container *ngFor="let item of deliveryList">
-      <app-questionbox [questionFromFather] = item  [answerFromFather] = deliveryAnswerList  (answerFromChild)="getFromChild($event)"></app-questionbox>
+    <ng-container *ngFor="let item of deliveryList let i = index" [attr.data-index]="i">
+      <app-questionbox [questionFromFather] = item  [questionNumberFromFather] = i+1  [answerFromFather] = deliveryAnswerList  (answerFromChild)="getFromChild($event)"></app-questionbox>
     </ng-container>
     <button class="btn btn-block btn-primary btn-lg" style="width: 20%; float: right; margin-bottom: 15px" (click)="getPhaseThreeResult()" [disabled]="unsubmitable">{{'submit'|translate}}</button>
   </div>
 
   <div class="box col-md-12" *ngIf="diagnosisPhase == 6">
-    <h1>{{'phaseThreeFinish'|translate}}</h1>
-    <h1>{{'score'|translate}}: {{phaseThreeScore}}</h1>
-    <div class="col-md-12" echarts [options]="options2" style="min-width: 400px; height: 400px;"></div>
+    <h2>{{'phaseThreeFinish'|translate}}</h2>
+    <h2>{{'score'|translate}}: {{phaseThreeScore}}</h2>
+    <div class="col-md-12" echarts [options]="options3" style="min-width: 400px; height: 400px;"></div>
     <div class="col-md-12">
       <button class="btn btn-block btn-primary btn-lg" style="width: 20%; float: left; margin-bottom: 15px" (click)="sentAnswer()">{{'continue'|translate}}</button>
     </div>

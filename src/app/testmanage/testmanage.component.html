@@ -11,21 +11,62 @@
 
   </div>
   <div class="col-md-12">
+    <input #search [hidden]="false" class="search form-inline" style="width: 200px" type="text"
+           placeholder="{{'searchHolder'|translate}}" (keydown.enter)="onSearch(search.value)">
+    <button class="btn btn-block btn-success btn-sm search-btn"
+            (click)="onSearch(search.value)">{{'searchButton'|translate}}</button>
     <button class="btn btn-block btn-success btn-sm"
             style="min-width: 80px; width: 6%; float: right; margin-bottom: 15px; margin-top: 0px; margin-left: 20px; margin-top: 5px;"
             (click)="openCreateModal(template)">{{'createTestBtn'|translate}}</button>
+    <button class="btn btn-block btn-success btn-sm"
+            style="min-width: 80px; width: 6%; float: right; margin-bottom: 15px; margin-top: 0px; margin-left: 20px; margin-top: 5px;"
+            data-toggle="modal" data-target="#import-modal" (click)="openUpload()">{{'importQuestionBtn'|translate}}</button>
 
   </div>
 
   <div class="table-responsive col-md-12">
-    <ng2-smart-table [settings]="settings" [source]="source"
+    <ng2-smart-table #mainTable [settings]="settings" [source]="source"
                      (deleteConfirm)="onDeleteConfirm($event)"
                      (editConfirm)="onSaveConfirm($event)"
                      (custom)="onCustom($event)"></ng2-smart-table>
-    <label>{{'totalLabel'|translate}}: {{tableData.length}}</label>
+    <label>{{'totalLabel'|translate}}: {{currentLength}}</label>
   </div>
   <div class="col-md-12">
 
+  </div>
+</div>
+
+<div class="modal fade" id="import-modal" tabindex="-1" role="dialog" aria-labelledby="modalLabel">
+  <div class="modal-dialog import-model" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <span class="modal-title" style="font-size: 20px">{{'importQuestionTitle'|translate}}</span>
+        <button type="button" class="close" aria-label="Close" (click)="openUpload()"
+                data-dismiss="modal" data-dismiss="modal">
+          <span aria-hidden="true">×</span>
+        </button>
+      </div>
+
+      <div class="modal-body upload-modal-body">
+        <div class="col-md-12">
+          <label class="upload-button">
+            <input type="file" ngFileSelect [options]="options" (uploadOutput)="onUploadOutput($event)" [uploadInput]="uploadInput" multiple>
+          </label>
+          <button type="button" class="btn btn-block btn-primary btn-sm btn-upload" (click)="startUpload()">
+            {{'startUpload'|translate}}
+          </button>
+        </div>
+
+        <div class="col-md-12" *ngIf="uploadDone">
+          <label>{{'addSuccess'|translate}}</label>
+        </div>
+
+      </div>
+
+      <div class="modal-footer" style="border-top: none !important">
+
+      </div>
+    </div>
   </div>
 </div>
 

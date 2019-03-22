@@ -1,0 +1,51 @@
+.a-radio{
+  display: none;
+}
+.b-radio{
+  display: inline-block;
+  border:1px solid #ccc;
+  width:16px;
+  height: 16px;
+  border-radius:2px;
+  vertical-align: middle;
+  margin-right: 5px;
+  position: relative;
+}
+.b-radio:before{
+  content: '';
+  font-size: 0;
+  width: 10px;
+  height: 10px;
+  background: rgb(100, 150, 238);
+  position: absolute;
+  left:50%;
+  top:50%;
+  margin-left: -5px;
+  margin-top: -5px;
+  border-radius: 2px;
+  display: none;
+}
+.a-radio:checked~.b-radio::before{
+  display: block;
+}
+.img-div{
+  display: inline-block;
+  text-align:center;
+  height: 100px;
+  width: 100px;
+  line-height: 7;
+  background-repeat:no-repeat;
+  background-size:100% 100%;
+  -moz-background-size:100% 100%;
+}
+.table-div{
+  display: inline-block;
+  text-align:center;
+  height: 100px;
+  width: 100px;
+  background-repeat:no-repeat;
+  position: absolute;
+  background-size:100% 100%;
+  -moz-background-size:100% 100%;
+}
+

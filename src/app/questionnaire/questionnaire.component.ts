@@ -42,6 +42,7 @@ export class QuestionnaireComponent implements OnInit {
   dimensionList: [any];
   dimensionCheckList: [any];
   addBtnDisable: boolean;
+  currentLength: number;
   @ViewChild('mainTable') mainTable: ElementRef;
   constructor(public user: User, private taskService: TaskService,
               private modalService: BsModalService,
@@ -51,6 +52,7 @@ export class QuestionnaireComponent implements OnInit {
     this.uploadInput = new EventEmitter<UploadInput>();
     this.uploadDone = false;
     this.selectTestId = 0;
+    this.currentLength = 0;
     this.resultMessage = '';
     this.user.mainShowing = false;
     this.uploadButtonMsg = this.translate.instant('startUpload');
@@ -92,6 +94,10 @@ export class QuestionnaireComponent implements OnInit {
   public settings = {
     columns: {
       id: {
+        title: this.translate.instant('questionIndex'),
+        filter: false,
+      },
+      name: {
         title: this.translate.instant('questionName'),
         filter: false,
       },
@@ -206,14 +212,18 @@ export class QuestionnaireComponent implements OnInit {
     },
     edit: {
       position: 'right',
-      editButtonContent: '<i class="fa fa-1x fa-pencil-square" aria-hidden="true"></i><i>       </i>',
-      saveButtonContent: '<i class="fa fa-1x fa-check"></i><i>       </i>',
-      cancelButtonContent: '<i class="fa fa-1x fa-close"></i>',
+      editButtonContent: '<i title="' + this.translate.instant('editIcon') +
+        '" class="fa fa-1x fa-pencil-square" aria-hidden="true"></i><i>       </i>',
+      saveButtonContent: '<i title="' + this.translate.instant('saveIcon') +
+        '" class="fa fa-1x fa-check"></i><i>       </i>',
+      cancelButtonContent: '<i title="' + this.translate.instant('cancelIcon') +
+        '" class="fa fa-1x fa-close"></i>',
       confirmSave: true
     },
     delete: {
       position: 'right',
-      deleteButtonContent: '<i class="fa fa-1x fa-trash" aria-hidden="true"></i>',
+      deleteButtonContent: '<i title="' + this.translate.instant('deleteIcon') +
+        '" class="fa fa-1x fa-trash" aria-hidden="true"></i>',
       confirmDelete: true
     },
     attr: {
@@ -269,7 +279,7 @@ export class QuestionnaireComponent implements OnInit {
         this.questionList = this.testDemo._embedded.questions;
         for ( let i = 0; i < this.questionList.length; i++) {
           const item = {'id': '', 'name': '', 'detail': '', 'tag1': '', 'tag2': '', 'tag3': '', 'dimensionId': 0};
-          item.id = this.questionList[i].question.questionId;
+          item.id = (i + 1).toString();
           item.name = this.questionList[i].question.name;
           item.detail = this.questionList[i].question.detail;
           if (this.questionList[i].question.tags.length > 0) {
@@ -289,6 +299,7 @@ export class QuestionnaireComponent implements OnInit {
       }
       console.log(this.tableData);
       this.source = new LocalDataSource(this.tableData);
+      this.currentLength = this.tableData.length;
     });
     this.taskService.getAllTest().subscribe( res => {
       // @ts-ignore
@@ -315,6 +326,7 @@ export class QuestionnaireComponent implements OnInit {
     this.selectedQuestions = [];
     if (query === '') {
       this.source = new LocalDataSource(this.tableData);
+      this.currentLength = this.tableData.length;
     } else {
       this.taskService.getAllQuestions(query).subscribe(data => {
         // @ts-ignore
@@ -325,7 +337,7 @@ export class QuestionnaireComponent implements OnInit {
           this.questionList = this.testDemo._embedded.questions;
           for ( let i = 0; i < this.questionList.length; i++) {
             const item = {'id': '', 'name': '', 'detail': '', 'tag1': '', 'tag2': '', 'tag3': '', 'dimensionId': 0};
-            item.id = this.questionList[i].question.questionId;
+            item.id = (i + 1).toString();
             item.name = this.questionList[i].question.name;
             item.detail = this.questionList[i].question.detail;
             if (this.questionList[i].question.tags.length > 0) {
@@ -342,6 +354,7 @@ export class QuestionnaireComponent implements OnInit {
           }
         }
         this.source = new LocalDataSource(this.tableData2);
+        this.currentLength = this.tableData2.length;
         console.log(this.source);
       });
     }
@@ -360,28 +373,28 @@ export class QuestionnaireComponent implements OnInit {
         this.taskService.deleteQuestion(event.data.id).subscribe(res => {
             console.log(res);
             if (res.status  >= 200) {
-              Swal(
-                this.translate.instant('deleteSuccess'),
-                '',
-                'success'
-              );
+              // @ts-ignore
+              Swal.fire({
+                title: this.translate.instant('deleteSuccess'),
+                type: 'success',
+                showConfirmButton: true,
+                timer: 3000
+              });
               event.confirm.resolve();
+              this.ngOnInit();
             }
           },
           error => {
-              Swal(
-                this.translate.instant('deleteFail'),
-                '',
-                'error'
-              );
+              // @ts-ignore
+              Swal.fire({
+                title: this.translate.instant('deleteFail'),
+                type: 'error',
+                showConfirmButton: true,
+                timer: 3000
+              });
               event.confirm.reject();
           });
       } else if (result.dismiss === Swal.DismissReason.cancel) {
-        Swal(
-          this.translate.instant('canceled'),
-          '',
-          'error'
-        );
       }
     });
   }
@@ -397,39 +410,40 @@ export class QuestionnaireComponent implements OnInit {
     }).then((result) => {
       if (result.value) {
         if ( this.deleteList.length < 1 ) {
-          Swal(
-            this.translate.instant('selectAlert'),
-            '',
-            'error'
-          );
+          // @ts-ignore
+          Swal.fire({
+            title: this.translate.instant('selectAlert'),
+            type: 'error',
+            showConfirmButton: true,
+            timer: 3000
+          });
         } else {
           this.taskService.batchDeleteQuestion( this.deleteList ).subscribe(res => {
               console.log(res);
               if (res.status  >= 200) {
-                Swal(
-                  this.translate.instant('deleteSuccess'),
-                  '',
-                  'success'
-                );
+                // @ts-ignore
+                Swal.fire({
+                  title: this.translate.instant('deleteSuccess'),
+                  type: 'success',
+                  showConfirmButton: true,
+                  timer: 3000
+                });
                 this.ngOnInit();
               }
             },
             error => {
               if (error.status === 409) {
-                Swal(
-                  this.translate.instant('deleteFail'),
-                  '',
-                  'error'
-                );
+                // @ts-ignore
+                Swal.fire({
+                  title: this.translate.instant('deleteFail'),
+                  type: 'error',
+                  showConfirmButton: true,
+                  timer: 3000
+                });
               }
             });
         }
       } else if (result.dismiss === Swal.DismissReason.cancel) {
-        Swal(
-          this.translate.instant('canceled'),
-          '',
-          'error'
-        );
       }
     });
   }
@@ -475,11 +489,13 @@ export class QuestionnaireComponent implements OnInit {
         this.taskService.updateQuestion(questionObj).subscribe(res => {
             console.log(res);
             if (res.status  >= 200) {
-              Swal(
-                this.translate.instant('updateSuccess'),
-                '',
-                'success'
-              );
+              // @ts-ignore
+              Swal.fire({
+                title: this.translate.instant('updateSuccess'),
+                type: 'success',
+                showConfirmButton: true,
+                timer: 3000
+              });
               this.ngOnInit();
             }
           },
@@ -491,11 +507,6 @@ export class QuestionnaireComponent implements OnInit {
             );
           });
       } else if (result.dismiss === Swal.DismissReason.cancel) {
-        Swal(
-          this.translate.instant('canceled'),
-          '',
-          'error'
-        );
       }
     });
   }
@@ -560,11 +571,13 @@ export class QuestionnaireComponent implements OnInit {
         this.dimensionCheckList.push(item);
       }
     } else {
-      Swal(
-        this.translate.instant('itemDuplicate'),
-        '',
-        'error'
-      );
+      // @ts-ignore
+      Swal.fire({
+        title: this.translate.instant('itemDuplicate'),
+        type: 'error',
+        showConfirmButton: true,
+        timer: 3000
+      });
     }
     console.log('check dimension: ', this.dimensionCheckList);
   }
@@ -663,25 +676,31 @@ export class QuestionnaireComponent implements OnInit {
       console.log(res.status);
       this.modalRef.hide();
       if (res.status >= 200) {
-        Swal(
-          this.translate.instant('addSuccess'),
-          '',
-          'success'
-        );
+        // @ts-ignore
+        Swal.fire({
+          title: this.translate.instant('addSuccess'),
+          type: 'success',
+          showConfirmButton: true,
+          timer: 3000
+        });
       } else {
-        Swal(
-          this.translate.instant('addFail'),
-          '',
-          'error'
-        );
+        // @ts-ignore
+        Swal.fire({
+          title: this.translate.instant('addFail'),
+          type: 'error',
+          showConfirmButton: true,
+          timer: 3000
+        });
       }
     }, error => {
       console.log(error);
-      Swal(
-        this.translate.instant('addFail'),
-        this.translate.instant('addFailReason'),
-        'error'
-      );
+      // @ts-ignore
+      Swal.fire({
+        title: this.translate.instant('addFail') + ', ' + this.translate.instant('addFailReason'),
+        type: 'error',
+        showConfirmButton: true,
+        timer: 3000
+      });
     });
   }
 

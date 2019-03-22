@@ -1,4 +1,4 @@
-import {Component, ElementRef, OnInit, Renderer, TemplateRef, ViewChild} from '@angular/core';
+import {Component, ElementRef, EventEmitter, OnInit, Renderer, TemplateRef, ViewChild} from '@angular/core';
 import {BsModalRef, BsModalService} from 'ngx-bootstrap';
 import {User} from '../models/user';
 import {TaskService} from '../service/taskService';
@@ -6,6 +6,7 @@ import {LocalDataSource} from 'ng2-smart-table';
 import Swal from 'sweetalert2';
 import {Router} from '@angular/router';
 import {TranslateService} from 'ng2-translate';
+import {UploaderOptions, UploadFile, UploadInput, UploadOutput} from 'ngx-uploader';
 
 const tr = document.createElement('tr');
 const aUpdate  =  tr.querySelector('a.bg-color-blue');
@@ -18,6 +19,7 @@ const aUpdate  =  tr.querySelector('a.bg-color-blue');
 export class TestmanageComponent implements OnInit {
   testList: [any];
   tableData: [any];
+  tableData2: [any];
   source: LocalDataSource;
   public modalRef: BsModalRef;
   testName: string;
@@ -25,7 +27,13 @@ export class TestmanageComponent implements OnInit {
   detailTestId: number;
   detailSource: LocalDataSource;
   questionCount: number;
+  currentLength: number;
+  uploadInput: EventEmitter<UploadInput>;
+  uploadDone: boolean;
+  files: UploadFile[];
+  options: UploaderOptions;
   @ViewChild('detailTemplate') detailTemplate: TemplateRef<any>;
+  @ViewChild('mainTable') mainTable: TemplateRef<any>;
 
   constructor(public user: User, private taskService: TaskService,
               private modalService: BsModalService,
@@ -34,10 +42,15 @@ export class TestmanageComponent implements OnInit {
     this.testName = '';
     this.testComment = '';
     this.questionCount = 0;
+    this.currentLength = 0;
     this.user.mainShowing = false;
+    this.files = []; // local uploading files array
     // @ts-ignore
     this.tableData = [];
     this.source = new LocalDataSource(this.tableData);
+    this.uploadInput = new EventEmitter<UploadInput>();
+    this.uploadDone = false;
+    this.options = { concurrency: 1, maxUploads: 3 };
   }
 
   public settings = {
@@ -70,20 +83,25 @@ export class TestmanageComponent implements OnInit {
       custom: [
         {
           name: 'view',
-          title: '<i class="fa fa-1x fa-eye" aria-hidden="true"></i><i>       </i>',
+          title: '<i title="' + this.translate.instant('detailIcon') +
+            '" class="fa fa-1x fa-eye" aria-hidden="true"></i><i>       </i>',
         }
       ]
     },
     edit: {
       position: 'right',
-      editButtonContent: '<i class="fa fa-1x fa-pencil-square" aria-hidden="true"></i><i>       </i>',
-      saveButtonContent: '<i class="fa fa-1x fa-check"></i><i>       </i>',
-      cancelButtonContent: '<i class="fa fa-1x fa-close"></i>',
+      editButtonContent: '<i title="' + this.translate.instant('editIcon') +
+        '" class="fa fa-1x fa-pencil-square" aria-hidden="true"></i><i>       </i>',
+      saveButtonContent: '<i title="' + this.translate.instant('saveIcon') +
+        '" class="fa fa-1x fa-check"></i><i>       </i>',
+      cancelButtonContent: '<i title="' + this.translate.instant('cancelIcon') +
+        '" class="fa fa-1x fa-close"></i>',
       confirmSave: true
     },
     delete: {
       position: 'right',
-      deleteButtonContent: '<i class="fa fa-1x fa-trash" aria-hidden="true"></i>',
+      deleteButtonContent: '<i title="' + this.translate.instant('deleteIcon') +
+        '" class="fa fa-1x fa-trash" aria-hidden="true"></i>',
       confirmDelete: true
     },
     attr: {
@@ -117,14 +135,18 @@ export class TestmanageComponent implements OnInit {
     },
     edit: {
       position: 'right',
-      editButtonContent: '<i class="fa fa-1x fa-pencil-square" aria-hidden="true"></i><i>       </i>',
-      saveButtonContent: '<i class="fa fa-1x fa-check"></i><i>       </i>',
-      cancelButtonContent: '<i class="fa fa-1x fa-close"></i>',
+      editButtonContent: '<i title="' + this.translate.instant('editIcon') +
+        '" class="fa fa-1x fa-pencil-square" aria-hidden="true"></i><i>       </i>',
+      saveButtonContent: '<i title="' + this.translate.instant('saveIcon') +
+        '" class="fa fa-1x fa-check"></i><i>       </i>',
+      cancelButtonContent: '<i title="' + this.translate.instant('cancelIcon') +
+        '" class="fa fa-1x fa-close"></i>',
       confirmSave: true
     },
     delete: {
       position: 'right',
-      deleteButtonContent: '<i class="fa fa-1x fa-trash" aria-hidden="true"></i>',
+      deleteButtonContent: '<i title="' + this.translate.instant('deleteIcon') +
+        '" class="fa fa-1x fa-trash" aria-hidden="true"></i>',
       confirmDelete: true
     },
     attr: {
@@ -156,8 +178,41 @@ export class TestmanageComponent implements OnInit {
         console.log('data empty!');
       }
       this.source = new LocalDataSource(this.tableData);
+      this.currentLength = this.tableData.length;
     });
 
+  }
+
+  onSearch(query) {
+    // @ts-ignore
+    this.mainTable.isAllSelected = false;
+    if (query === '') {
+      this.source = new LocalDataSource(this.tableData);
+      this.currentLength = this.tableData.length;
+    } else {
+      this.taskService.getTestByName(query).subscribe(data => {
+        // @ts-ignore
+        const testJson = JSON.parse(data._body);
+        // @ts-ignore
+        this.tableData2 = [];
+        // check empty
+        if (testJson.hasOwnProperty('_embedded')) {
+          this.testList = testJson._embedded.tests;
+          for (let i = 0; i < this.testList.length; i++) {
+            const item = {'id': '', 'name': '', 'comment': '', 'detail': []};
+            item.id = this.testList[i].test.testId;
+            item.name = this.testList[i].test.name;
+            item.comment = this.testList[i].test.comment;
+            item.detail = this.testList[i].test.questions;
+            this.tableData2.push(item);
+          }
+        } else {
+          console.log('data empty!');
+        }
+        this.source = new LocalDataSource(this.tableData2);
+        this.currentLength = this.tableData2.length;
+      });
+    }
   }
 
   onCustom(event) {
@@ -180,28 +235,28 @@ export class TestmanageComponent implements OnInit {
       if (result.value) {
         this.taskService.deleteTest(event.data.id).subscribe(res => {
             if (res.status >= 200) {
-              Swal(
-                this.translate.instant('deleteSuccess'),
-                '',
-                'success'
-              );
+              // @ts-ignore
+              Swal.fire({
+                title: this.translate.instant('deleteSuccess'),
+                type: 'success',
+                showConfirmButton: true,
+                timer: 3000
+              });
               event.confirm.resolve();
+              this.ngOnInit();
             }
           },
           error => {
-              Swal(
-                this.translate.instant('deleteFail'),
-                '',
-                'error'
-              );
+              // @ts-ignore
+              Swal.fire({
+                title: this.translate.instant('deleteFail'),
+                type: 'error',
+                showConfirmButton: true,
+                timer: 3000
+              });
               event.confirm.reject();
           });
       } else if (result.dismiss === Swal.DismissReason.cancel) {
-        Swal(
-          this.translate.instant('canceled'),
-          '',
-          'error'
-        );
       }
     });
   }
@@ -220,27 +275,26 @@ export class TestmanageComponent implements OnInit {
         this.taskService.updateTest(testObj).subscribe(res => {
             console.log(res);
             if (res.status >= 200) {
-              Swal(
-                this.translate.instant('updateSuccess'),
-                '',
-                'success'
-              );
+              // @ts-ignore
+              Swal.fire({
+                title: this.translate.instant('updateSuccess'),
+                type: 'success',
+                showConfirmButton: true,
+                timer: 3000
+              });
               event.confirm.resolve();
             }
           },
           error => {
-            Swal(
-              this.translate.instant('updateFail'),
-              '',
-              'error'
-            );
+            // @ts-ignore
+            Swal.fire({
+              title: this.translate.instant('updateFail'),
+              type: 'error',
+              showConfirmButton: true,
+              timer: 3000
+            });
           });
       } else if (result.dismiss === Swal.DismissReason.cancel) {
-        Swal(
-          this.translate.instant('canceled'),
-          '',
-          'error'
-        );
       }
     });
   }
@@ -263,28 +317,27 @@ export class TestmanageComponent implements OnInit {
         this.taskService.updateQuestion(questionObj).subscribe(res => {
             console.log(res);
             if (res.status  >= 200) {
-              Swal(
-                this.translate.instant('updateSuccess'),
-                '',
-                'success'
-              );
+              // @ts-ignore
+              Swal.fire({
+                title: this.translate.instant('updateSuccess'),
+                type: 'success',
+                showConfirmButton: true,
+                timer: 3000
+              });
               this.refreshModalTable();
               this.ngOnInit();
             }
           },
           error => {
-            Swal(
-              this.translate.instant('updateFail'),
-              '',
-              'error'
-            );
+            // @ts-ignore
+            Swal.fire({
+              title: this.translate.instant('updateFail'),
+              type: 'error',
+              showConfirmButton: true,
+              timer: 3000
+            });
           });
       } else if (result.dismiss === Swal.DismissReason.cancel) {
-        Swal(
-          this.translate.instant('canceled'),
-          '',
-          'error'
-        );
       }
     });
   }
@@ -301,29 +354,35 @@ export class TestmanageComponent implements OnInit {
       if (result.value) {
         this.taskService.deleteQuestionInTest(this.detailTestId, event.data.questionId).subscribe(res => {
             if (res.status  >= 200) {
-              Swal(
-                this.translate.instant('deleteSuccess'),
-                '',
-                'success'
-              );
+              // @ts-ignore
+              Swal.fire({
+                title: this.translate.instant('deleteSuccess'),
+                type: 'success',
+                showConfirmButton: true,
+                timer: 3000
+              });
               event.confirm.resolve();
               this.ngOnInit();
             }
           },
           error => {
-            Swal(
-              this.translate.instant('deleteFail'),
-              '',
-              'error'
-            );
+            // @ts-ignore
+            Swal.fire({
+              title: this.translate.instant('deleteFail'),
+              type: 'error',
+              showConfirmButton: true,
+              timer: 3000
+            });
             event.confirm.reject();
           });
       } else if (result.dismiss === Swal.DismissReason.cancel) {
-        Swal(
-          this.translate.instant('canceled'),
-          '',
-          'error'
-        );
+        // @ts-ignore
+        Swal.fire({
+          title: this.translate.instant('canceled'),
+          type: 'success',
+          showConfirmButton: true,
+          timer: 3000
+        });
       }
     });
   }
@@ -374,21 +433,72 @@ export class TestmanageComponent implements OnInit {
             }
           });
         } else {
-          Swal(
-            this.translate.instant('createFail'),
-            '',
-            'error'
-          );
+          // @ts-ignore
+          Swal.fire({
+            title: this.translate.instant('createFail'),
+            type: 'error',
+            showConfirmButton: true,
+            timer: 3000
+          });
         }
       });
     } else {
-      Swal(
-        this.translate.instant('createFail'),
-        this.translate.instant('testNameEmpty'),
-        'error'
-      );
+      // @ts-ignore
+      Swal.fire({
+        title: this.translate.instant('createFail'),
+        message: this.translate.instant('testNameEmpty'),
+        type: 'error',
+        showConfirmButton: true,
+        timer: 3000
+      });
     }
 
+  }
+
+  openUpload() {
+    this.uploadDone = false;
+    this.files = [];
+  }
+
+  onUploadOutput(output: UploadOutput): void {
+    switch (output.type) {
+      case 'allAddedToQueue':
+        break;
+      case 'addedToQueue':
+        if (typeof output.file !== 'undefined') {
+          this.files.push(output.file);
+        }
+        break;
+      case 'uploading':
+        if (typeof output.file !== 'undefined') {
+          // update current data in files array for uploading file
+          const index = this.files.findIndex((file) => typeof output.file !== 'undefined' && file.id === output.file.id);
+          this.files[index] = output.file;
+        }
+        break;
+      case 'removed':
+        // remove file from array when removed
+        this.files = this.files.filter((file: UploadFile) => file !== output.file);
+        break;
+      case 'done':
+        this.uploadDone = true;
+        break;
+    }
+  }
+
+  startUpload(): void {
+    this.uploadDone = false;
+    const name = 'flowchart';
+    const event: UploadInput = {
+      type: 'uploadAll',
+      url: this.taskService.TASK_URL + 'api/templates' + '?name=' + name,
+      method: 'POST',
+      headers: { 'Authorization': 'Bearer ' +
+          localStorage.getItem('access_token'),
+        'X-Requested-With': 'XMLHttpRequest'}
+    };
+
+    this.uploadInput.emit(event);
   }
 
 }

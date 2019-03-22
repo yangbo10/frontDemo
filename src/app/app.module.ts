@@ -24,6 +24,7 @@ import { TestmanageComponent } from './testmanage/testmanage.component';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 import { TranslateModule, TranslateLoader } from 'ng2-translate/ng2-translate';
 import {ScrollEventModule} from 'ngx-scroll-event';
+import { FlowchartComponent } from './flowchart/flowchart.component';
 
 const appChildRoutes: Routes = [
   {
@@ -49,6 +50,10 @@ const appChildRoutes: Routes = [
   {
     path: 'test',
     component: TestmanageComponent
+  },
+  {
+    path: 'flowchart',
+    component: FlowchartComponent
   }
 ];
 
@@ -79,7 +84,8 @@ export function HttpLoaderFactory(http: HttpClient) {
     QuestionboxComponent,
     ContactComponent,
     UsermanageComponent,
-    TestmanageComponent
+    TestmanageComponent,
+    FlowchartComponent
   ],
   imports: [
     BrowserModule,

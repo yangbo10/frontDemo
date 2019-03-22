@@ -42,6 +42,7 @@
         <li class="header"></li>
         <!-- Optionally, you can add icons to the links    class="active"-->
         <li (click)="changePage()"><a routerLink="diagnosis"><i class='fa fa-edit'></i> <span>{{'diagnosisMenu'|translate}}</span></a></li>
+        <li (click)="changePage()"><a routerLink="flowchart"><i class='fa fa-edit'></i> <span>{{'flowchartMenu'|translate}}</span></a></li>
         <li (click)="changePage()"><a routerLink="report"><i class='fa fa-bar-chart'></i> <span>{{'reportMenu'|translate}}</span></a></li>
         <li (click)="changePage()" *ngIf="user.roles[0].roleId == 1 || user.roles[0].roleId == 2"><a routerLink="questionnaire"><i class='fa fa-database'></i> <span>{{'questionMenu'|translate}}</span></a></li>
         <li (click)="changePage()" *ngIf="user.roles[0].roleId == 1 || user.roles[0].roleId == 2"><a routerLink="test"><i class='fa fa-th-list'></i> <span>{{'testMenu'|translate}}</span></a></li>

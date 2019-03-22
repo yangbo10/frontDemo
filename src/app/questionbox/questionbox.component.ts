@@ -9,6 +9,7 @@ export class QuestionboxComponent implements OnInit {
 
   @Input() questionFromFather;
   @Input() answerFromFather;
+  @Input() questionNumberFromFather;
   @Output() answerFromChild = new EventEmitter();
 
   questionItem: any;
@@ -21,7 +22,7 @@ export class QuestionboxComponent implements OnInit {
 
   ngOnInit() {
     this.questionItem = this.questionFromFather;
-    this.questionName = this.questionItem.name;
+    this.questionName = this.questionNumberFromFather;
     // show the selected radio
     if (this.answerFromFather.length > 0) {
       for (const item of this.answerFromFather) {

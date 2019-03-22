@@ -6,8 +6,9 @@ import * as echarts from 'echarts';
 import Swal from 'sweetalert2';
 import {User} from '../models/user';
 import {TranslateService} from 'ng2-translate';
-import {Router} from '@angular/router';
+import {ActivatedRoute, Router} from '@angular/router';
 import {s} from '../../../node_modules/@angular/core/src/render3';
+import {toNumber} from '../../../node_modules/ngx-bootstrap/timepicker/timepicker.utils';
 
 declare var require: any;
 const myChart = require('ngx-echarts');
@@ -53,13 +54,14 @@ export class ReportComponent implements OnInit {
   firstPage: boolean;
   secondPage: boolean;
   exporting: boolean;
+  finalLevel: string;
 
   @ViewChild('main') mainPage: ElementRef;
   @ViewChild('myChart1') myChart1: ElementRef;
 
   constructor(public user: User, private taskService: TaskService,
               private modalService: BsModalService, private router: Router,
-              private translate: TranslateService) {
+              private translate: TranslateService, private activatedRoute: ActivatedRoute) {
     this.user.mainShowing = false;
     this.resultId = 1;
     this.showStaticImg = false;
@@ -68,6 +70,7 @@ export class ReportComponent implements OnInit {
     this.secondPage = false;
     this.exporting = false;
     this.activeCode = '';
+    this.finalLevel = '';
     this.levelList = ['Beginner', 'Intermediate', 'Experienced', 'Expert', 'Top Performer'];
     this.simpleResultList = {
       'Enabler': {
@@ -204,6 +207,7 @@ export class ReportComponent implements OnInit {
         this.resultId = rawResultList[rawResultList.length - 1].result.resultId;
         this.overAllScore = rawResultList[rawResultList.length - 1].result.score;
         this.overAllLevel = this.cacualateLevel(this.overAllScore);
+        this.finalLevel = this.cacualateOverallLevel(this.overAllScore);
         this.optionList = [];
         for ( const item of rawOptionList) {
           this.optionList.push(item.options[0].value * item.question.weight);
@@ -580,11 +584,13 @@ export class ReportComponent implements OnInit {
 
         });
       } else {
-        Swal(
-          this.translate.instant('noReport'),
-          '',
-          'error'
-        );
+        // @ts-ignore
+        Swal.fire({
+          title: this.translate.instant('noReport'),
+          type: 'error',
+          showConfirmButton: true,
+          timer: 3000
+        });
       }
     });
 
@@ -595,6 +601,16 @@ export class ReportComponent implements OnInit {
       return 'Level 1';
     } else {
       return 'Level ' + ((score - 0.01) / 20 + 1).toString().substring(0, 1);
+    }
+  }
+
+  cacualateOverallLevel(score) {
+    const levelList = ['Beginner', 'Intermediate', 'Experienced', 'Expert', 'Top Performer'];
+    const level = ((score - 0.01) / 20).toString().substring(0, 1);
+    if (score === 0) {
+      return levelList[0];
+    } else {
+      return levelList[toNumber(level)];
     }
   }
 
@@ -673,17 +689,14 @@ export class ReportComponent implements OnInit {
           link.click();
           document.body.removeChild(link);
         });
-        Swal(
-          this.translate.instant('exportSuccess'),
-          '',
-          'success'
-        );
+        // @ts-ignore
+        Swal.fire({
+          title: this.translate.instant('exportSuccess'),
+          type: 'success',
+          showConfirmButton: true,
+          timer: 3000
+        });
       } else if (result.dismiss === Swal.DismissReason.cancel) {
-        Swal(
-          this.translate.instant('canceled'),
-          '',
-          'error'
-        );
         this.showStaticImg = false;
       }
       this.exporting = false;

@@ -8,7 +8,7 @@
   "passwordNotSame":"两次输入密码不一致",
   "confirmPassword":"密码确认",
   "registerSuccess":"注册成功",
-  "registerFail":"注册失败",
+  "registerFail":"注册失败，用户名无效。",
   "OnlineSystem":"在线诊断系统",
   "LogOut":"登出",
   "switchLanguage":"English",
@@ -20,6 +20,14 @@
   "passWordIncorrect":"用户名或密码错误",
   "noDataMessage":"无数据",
   "totalLabel":"总计",
+  "editIcon":"编辑",
+  "addIcon":"增加",
+  "saveIcon":"保存",
+  "cancelIcon":"取消",
+  "deleteIcon":"删除",
+  "activeIcon":"生成激活码",
+  "detailIcon":"详情",
+
 
   "diagnosisMenu":"诊断",
   "reportMenu":"结果报告",
@@ -49,6 +57,7 @@
   "diagnosis":"诊断",
   "testZeroAlert":"试卷为空，请选择其他试卷",
   "searchHolder":"输入关键字搜索",
+  "searchButton":"搜索",
   "activeCodeAlert": "请输入激活码开始诊断",
   "verifyButton": "验证激活码",
   "verifyFail": "验证失败",
@@ -95,6 +104,7 @@
   "dimensions":"已覆盖维度",
   "itemDuplicate":"所选试题中包含已添加试题，请重新选择。",
   "continueAdd":"返回继续添加",
+  "questionIndex":"序号",
 
   "reportTitle":"结果报告",
   "fullScore":"总分",
@@ -138,19 +148,25 @@
   "userDetail":"用户详情",
   "createConfirm":"确认创建？",
   "createSuccess":"创建成功",
+  "createUserFail":"创建失败，用户名已存在。",
+  "emailFail":"邮箱地址不合法。",
   "generateCode":"生成激活码",
   "generateBtn":"生成",
   "generateSuccess":"生成成功",
   "generateDetail":"激活码为：",
   "generateFail":"生成失败",
+  "deleteUserFail":"删除失败",
   "generateExisted":"激活码已存在，是否重新生成？",
+  "passwordNotValid":"密码长度不得少于6位",
+
 
   "contactTitle":"联系我们",
   "tel":"电话",
-  "email":"电子邮件",
+  "contactTel":"联系方式",
+  "email":"电子邮箱",
   "selectText":"请选择...",
 
-  "reportThankYou":"感谢您抽出时间来完成这份问卷。您的评价结果概述如下。我们还重点突出了您可以采取的以改善和提升您的精益生产和工业4.0成熟度的具体措施。",
+  "reportThankYou":"感谢您抽出时间来完成这份问卷，您的评价结果概述如下。我们还重点提出了您可以采取的以改善和提升您的精益生产和工业4.0成熟度的具体措施。",
 
   "overallLevel1":"考虑到目前存在的问题（没有支持生产的IT解决方案，信息或数据少，技能少，机器之间没有互联等），贵公司开始重视精益生产和工业4.0。",
   "overallLevel2":"贵公司对工业4.0的投资有控制策略，在一些领域拥有必要的技能，但沟通只在内部存在，且不完整，没有考虑信息安全问题。",
@@ -264,8 +280,16 @@
   "AssociatesInvolvementLevel2": "团队各个层级被划分较为模糊，职责权力划分较为混乱，员工不能发挥自己的长处，团队成员无法参与团队的改善中。",
   "AssociatesInvolvementLevel3": "团队各个层级有明确的划分，职责权力的划分较为模糊，员工发挥自己长处的空间不够自由，团队成员不能很好地参与团队地改善中。",
   "AssociatesInvolvementLevel4": "团队各个层级划分明确，职责权力划分比较清晰，员工的长处得到比较好的发挥，团队参与改善活动的热情较高。",
-  "AssociatesInvolvementLevel5": "团队的职责权力清晰地划分到各个相应的层面，职责清晰所有人都十分明确，员工积极参与到改善活动中，并发挥着自己在团队中不可或缺的作用，员工的参与热情高涨。"
+  "AssociatesInvolvementLevel5": "团队的职责权力清晰地划分到各个相应的层面，职责清晰所有人都十分明确，员工积极参与到改善活动中，并发挥着自己在团队中不可或缺的作用，员工的参与热情高涨。",
 
 
+  "flowchartMenu": "流图绘制",
+  "welcomeToFlowchart": "欢迎来到ZENO现状价值流绘制模块，即将带领您开启精益之旅!",
+  "setProductClass": "确定产品家族（成品）",
+  "inputProductName": "输入产品名称：",
+  "startFlowchart": "开始价值流绘制",
+  "nextQuestion": "下一步",
+  "materialDrawn": "物料流绘制完成，接下来进行信息流绘制",
+  "allFlowDrawn": "恭喜你，完成了所有物料流和信息流的绘制，工厂的诊断结果稍后给您呈现"
 
 }

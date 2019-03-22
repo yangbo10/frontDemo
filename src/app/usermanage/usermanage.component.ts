@@ -24,6 +24,7 @@ export class UsermanageComponent implements OnInit {
   selectTestId: number;
   selectUserId: number;
   currentCode: string;
+  currentLength: number;
   public modalRef: BsModalRef;
   public roleList = [
     {'roleId': 1, 'roleName': 'ADMIN'},
@@ -51,6 +52,7 @@ export class UsermanageComponent implements OnInit {
               private translate: TranslateService) {
     this.selectTestId = 0;
     this.selectUserId = 0;
+    this.currentLength = 0;
     this.currentCode = '';
     this.user.mainShowing = false;
     // @ts-ignore
@@ -79,8 +81,8 @@ export class UsermanageComponent implements OnInit {
           }
         }
       },
-      comment: {
-        title: this.translate.instant('userDetail'),
+      email: {
+        title: this.translate.instant('email'),
         filter: false,
       }
     },
@@ -103,20 +105,25 @@ export class UsermanageComponent implements OnInit {
       custom: [
         {
           name: 'assign',
-          title: '<i class="fa fa-1x fa-legal" aria-hidden="true"></i><i>       </i>',
+          title: '<i title="' + this.translate.instant('activeIcon') +
+            '" class="fa fa-1x fa-legal" aria-hidden="true"></i><i>       </i>',
         }
       ]
     },
     edit: {
       position: 'right',
-      editButtonContent: '<i class="fa fa-1x fa-pencil-square" aria-hidden="true"></i><i>       </i>',
-      saveButtonContent: '<i class="fa fa-1x fa-check"></i><i>       </i>',
-      cancelButtonContent: '<i class="fa fa-1x fa-close"></i>',
+      editButtonContent: '<i title="' + this.translate.instant('editIcon') +
+        '" class="fa fa-1x fa-pencil-square" aria-hidden="true"></i><i>       </i>',
+      saveButtonContent: '<i title="' + this.translate.instant('saveIcon') +
+        '" class="fa fa-1x fa-check"></i><i>       </i>',
+      cancelButtonContent: '<i title="' + this.translate.instant('cancelIcon') +
+        '" class="fa fa-1x fa-close"></i>',
       confirmSave: true
     },
     delete: {
       position: 'right',
-      deleteButtonContent: '<i class="fa fa-1x fa-trash" aria-hidden="true"></i>',
+      deleteButtonContent: '<i title="' + this.translate.instant('deleteIcon') +
+        '" class="fa fa-1x fa-trash" aria-hidden="true"></i>',
       confirmDelete: true
     },
     attr: {
@@ -136,10 +143,10 @@ export class UsermanageComponent implements OnInit {
       if (userJson.hasOwnProperty('_embedded')) {
         this.userList = userJson._embedded.users;
         for ( let i = 0; i < this.userList.length; i++) {
-          const item = {'id': '', 'name': '', 'comment': '', 'roles': ''};
+          const item = {'id': '', 'name': '', 'email': '', 'roles': ''};
           item.id = this.userList[i].user.userId;
           item.name = this.userList[i].user.username;
-          item.comment = this.userList[i].user.comment;
+          item.email = this.userList[i].user.email;
           if (this.userList[i].user.roles.length > 0) {
             item.roles = this.userList[i].user.roles[0].name;
           }
@@ -147,6 +154,7 @@ export class UsermanageComponent implements OnInit {
         }
       }
       this.source = new LocalDataSource(this.tableData);
+      this.currentLength = this.tableData.length;
     });
 
     this.taskService.getAllTest().subscribe( res => {
@@ -168,7 +176,7 @@ export class UsermanageComponent implements OnInit {
     // @ts-ignore
     this.mainTable.isAllSelected = false;
     if (query === '') {
-      this.source = new LocalDataSource(this.tableData);
+      this.ngOnInit();
     } else {
       this.taskService.queryUsers(query).subscribe(data => {
         // @ts-ignore
@@ -190,6 +198,7 @@ export class UsermanageComponent implements OnInit {
           }
         }
         this.source = new LocalDataSource(this.tableData2);
+        this.currentLength = this.tableData2.length;
       });
     }
   }
@@ -215,28 +224,28 @@ export class UsermanageComponent implements OnInit {
         this.taskService.deleteUser(event.data.id).subscribe(res => {
             console.log(res);
             if (res.status  >= 200) {
-              Swal(
-                this.translate.instant('deleteSuccess'),
-                '',
-                'success'
-              );
+              // @ts-ignore
+              Swal.fire({
+                title: this.translate.instant('deleteSuccess'),
+                type: 'success',
+                showConfirmButton: true,
+                timer: 3000
+              });
               event.confirm.resolve();
+              this.ngOnInit();
             }
           },
           error => {
-              Swal(
-                this.translate.instant('deleteFail'),
-                '',
-                'error'
-              );
+              // @ts-ignore
+              Swal.fire({
+                title: this.translate.instant('deleteUserFail'),
+                type: 'error',
+                showConfirmButton: true,
+                timer: 3000
+              });
               event.confirm.reject();
           });
       } else if (result.dismiss === Swal.DismissReason.cancel) {
-        Swal(
-          this.translate.instant('canceled'),
-          '',
-          'error'
-        );
       }
     });
   }
@@ -257,7 +266,7 @@ export class UsermanageComponent implements OnInit {
     const userObj = {
       'userId': event.newData.id,
       'username': event.newData.name,
-      'comment': event.newData.comment,
+      'email': event.newData.email,
       'roles': this.getRoleIdByName(event.newData.roles)
     };
     Swal({
@@ -269,30 +278,39 @@ export class UsermanageComponent implements OnInit {
       cancelButtonText: this.translate.instant('cancel')
     }).then((result) => {
       if (result.value) {
-        this.taskService.updateUser(userObj).subscribe(res => {
-            console.log(res);
-            if (res.status  >= 200) {
-              Swal(
-                this.translate.instant('updateSuccess'),
-                '',
-                'success'
-              );
-              event.confirm.resolve();
-            }
-          },
-          error => {
-            Swal(
-              this.translate.instant('updateFail'),
-              '',
-              'error'
-            );
+        if (this.isEmail(event.newData.email)) {
+          this.taskService.updateUser(userObj).subscribe(res => {
+              console.log(res);
+              if (res.status  >= 200) {
+                // @ts-ignore
+                Swal.fire({
+                  title: this.translate.instant('updateSuccess'),
+                  type: 'success',
+                  showConfirmButton: true,
+                  timer: 3000
+                });
+                event.confirm.resolve();
+              }
+            },
+            error => {
+              // @ts-ignore
+              Swal.fire({
+                title: this.translate.instant('updateFail'),
+                type: 'error',
+                showConfirmButton: true,
+                timer: 3000
+              });
+            });
+        } else {
+          // @ts-ignore
+          Swal.fire({
+            title: this.translate.instant('emailFail'),
+            type: 'error',
+            showConfirmButton: true,
+            timer: 3000
           });
+        }
       } else if (result.dismiss === Swal.DismissReason.cancel) {
-        Swal(
-          this.translate.instant('canceled'),
-          '',
-          'error'
-        );
       }
     });
   }
@@ -323,33 +341,48 @@ export class UsermanageComponent implements OnInit {
       cancelButtonText: this.translate.instant('cancel')
     }).then((result) => {
       if (result.value) {
-        this.taskService.createUser(this.newUser).subscribe(res => {
-            console.log(res);
-            if (res.status >= 200) {
-              Swal(
-                this.translate.instant('createSuccess'),
-                '',
-                'success'
-              );
-              this.modalRef.hide();
-              this.ngOnInit();
-            }
-          },
-          error => {
-            Swal(
-              this.translate.instant('createFail'),
-              '',
-              'error'
-            );
+        // 验证邮箱地址合法
+        if (this.isEmail(this.newUser.email)) {
+          this.taskService.createUser(this.newUser).subscribe(res => {
+              console.log(res);
+              if (res.status >= 200) {
+                // @ts-ignore
+                Swal.fire({
+                  title: this.translate.instant('createSuccess'),
+                  type: 'success',
+                  showConfirmButton: true,
+                  timer: 3000
+                });
+                this.modalRef.hide();
+                this.ngOnInit();
+              }
+            },
+            error => {
+              // @ts-ignore
+              Swal.fire({
+                title: this.translate.instant('createUserFail'),
+                type: 'error',
+                showConfirmButton: true,
+                timer: 3000
+              });
+            });
+        } else {
+          // @ts-ignore
+          Swal.fire({
+            title: this.translate.instant('emailFail'),
+            type: 'error',
+            showConfirmButton: true,
+            timer: 3000
           });
+        }
       } else if (result.dismiss === Swal.DismissReason.cancel) {
-        Swal(
-          this.translate.instant('canceled'),
-          '',
-          'error'
-        );
       }
     });
+  }
+
+  isEmail(str) {
+    const reg = /^([a-zA-Z0-9_-])+@([a-zA-Z0-9_-])+(.[a-zA-Z0-9_-])+/;
+    return reg.test(str);
   }
 
   generateCode() {
@@ -361,24 +394,28 @@ export class UsermanageComponent implements OnInit {
         // @ts-ignore
         this.currentCode = codeJson.license.licenceKey;
         Swal(
-          this.translate.instant('createSuccess'),
+          this.translate.instant('generateSuccess'),
           this.translate.instant('generateDetail') + this.currentCode,
           'success'
         );
         this.modalRef.hide();
       } else {
-        Swal(
-          this.translate.instant('generateFail'),
-          '',
-          'error'
-        );
+        // @ts-ignore
+        Swal.fire({
+          title: this.translate.instant('generateFail'),
+          type: 'error',
+          showConfirmButton: true,
+          timer: 3000
+        });
       }
     }, error => {
-      Swal(
-        this.translate.instant('generateFail'),
-        '',
-        'error'
-      );
+      // @ts-ignore
+      Swal.fire({
+        title: this.translate.instant('generateFail'),
+        type: 'error',
+        showConfirmButton: true,
+        timer: 3000
+      });
     });
 
   }

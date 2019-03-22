@@ -13,6 +13,8 @@
   <div class="col-md-12">
     <input #search [hidden]="false" class="search form-inline" style="width: 200px" type="text"
            placeholder="{{'searchHolder'|translate}}" (keydown.enter)="onSearch(search.value)">
+    <button class="btn btn-block btn-success btn-sm search-btn"
+            (click)="onSearch(search.value)">{{'searchButton'|translate}}</button>
     <button class="btn btn-block btn-success btn-sm"
             style="min-width: 80px; width: 6%; float: right; margin-bottom: 15px; margin-top: 0px; margin-left: 20px; margin-top: 5px;"
             (click)="openCreateModal(template)">{{'createUserBtn'|translate}}</button>
@@ -24,7 +26,7 @@
                      (deleteConfirm)="onDeleteConfirm($event)"
                      (editConfirm)="onSaveConfirm($event)"
                      (custom)="onCustom($event)"></ng2-smart-table>
-    <label>{{'totalLabel'|translate}}: {{tableData.length}}</label>
+    <label>{{'totalLabel'|translate}}: {{currentLength}}</label>
   </div>
   <div class="col-md-12">
 
@@ -42,11 +44,17 @@
     <div class="col-md-12">
       <div class="col-md-4">
         <label> {{'userName'|translate}}：</label>
-        <input type="text" class="form-inline" placeholder="{{'userName'|translate}}" name="testName" [(ngModel)]="newUser.username">
+        <input type="text" class="form-inline" required="required" placeholder="{{'userName'|translate}}" name="testName" [(ngModel)]="newUser.username">
       </div>
       <div class="col-md-4">
         <label> {{'password'|translate}}：</label>
-        <input type="password" class="form-inline" placeholder="{{'password'|translate}}" name="testComment" [(ngModel)]="newUser.password">
+        <input type="password" class="form-inline" required="required" placeholder="{{'password'|translate}}" name="testComment" [(ngModel)]="newUser.password">
+        <p *ngIf="newUser.password.length < 6" style="color: #ff0000;"> {{'passwordNotValid'|translate}}</p>
+        <p *ngIf="newUser.password.length >= 6" style="color: #15ff2e;">密码长度合法</p>
+      </div>
+      <div class="col-md-4">
+        <label> {{'email'|translate}}：</label>
+        <input type="text" class="form-inline" required="required" placeholder="{{'email'|translate}}" name="testName" [(ngModel)]="newUser.email">
       </div>
       <div class="col-md-4">
         <label> {{'role'|translate}}：</label>
@@ -57,7 +65,9 @@
     </div>
   </div>
   <div class="modal-footer" style="border-top: none !important">
-    <button class="btn btn-block btn-primary btn-sm" style="width: 100px; float: right;" (click)="createNewUser()">{{'createBtn'|translate}}</button>
+    <button class="btn btn-block btn-primary btn-sm" style="width: 100px; float: right;"
+            [disabled]="newUser.password.length < 6 || newUser.username.length == 0 || newUser.email.length == 0"
+            (click)="createNewUser()">{{'createBtn'|translate}}</button>
   </div>
 </ng-template>
 

@@ -55,3 +55,13 @@
   min-height: 80px;
   height: auto;
 }
+.search-btn{
+  width: 5%;
+  float: left;
+  position: absolute;
+  margin-bottom: 15px;
+  left: 220px;
+  top: 0px;
+  height: 26px;
+  line-height: 1;
+}

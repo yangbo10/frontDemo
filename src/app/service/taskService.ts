@@ -72,10 +72,10 @@ export class TaskService {
       });
     }
 
-    getTestByName(name) {
+    getTestByName(query) {
       const headers = new Headers();
       this.createAuthorizationHeader(headers);
-      return this.http.get(this.TASK_URL + 'api/tests' + '?search=' + 'name==' + name,  {
+      return this.http.get(this.TASK_URL + 'api/tests?size=10000&search=name=co=' + query,  {
         headers: headers
       });
     }
@@ -91,7 +91,7 @@ export class TaskService {
     getAllQuestions(containStr) {
       const headers = new Headers();
       this.createAuthorizationHeader(headers);
-      let locale = 'zh_CN'
+      let locale = 'zh_CN';
       if (localStorage.getItem('language') === 'en') {
         locale = 'en_US';
       }
@@ -202,7 +202,7 @@ export class TaskService {
     getAllUser() {
       const headers = new Headers();
       this.createAuthorizationHeader(headers);
-      return this.http.get(this.TASK_URL + 'api/users',  {
+      return this.http.get(this.TASK_URL + 'api/users?search=enabled==true',  {
         headers: headers
       });
     }
@@ -210,7 +210,7 @@ export class TaskService {
     queryUsers(query) {
       const headers = new Headers();
       this.createAuthorizationHeader(headers);
-      return this.http.get(this.TASK_URL + 'api/users?size=10000&search=username=co=' + query,  {
+      return this.http.get(this.TASK_URL + 'api/users?size=10000&search=enabled==true;username=co=' + query,  {
         headers: headers
       });
     }
@@ -218,7 +218,7 @@ export class TaskService {
     createUser(userObj) {
       const headers = new Headers();
       this.createAuthorizationHeader(headers);
-      return this.http.put(this.TASK_URL + 'api/users', userObj, {
+      return this.http.post(this.TASK_URL + 'api/users', userObj, {
         headers: headers
       });
     }
@@ -265,6 +265,46 @@ export class TaskService {
       const headers = new Headers();
       this.createAuthorizationHeader(headers);
       return this.http.get(this.TASK_URL + 'api/results/' + resultId + '/' + tagId + '/summary',  {
+        headers: headers
+      });
+    }
+
+    createTemplate(param) {
+      const headers = new Headers();
+      this.createAuthorizationHeader(headers);
+      return this.http.post(this.TASK_URL + 'api/templates', param, {
+        headers: headers
+      });
+    }
+
+    getTemplate() {
+      const headers = new Headers();
+      this.createAuthorizationHeader(headers);
+      return this.http.get(this.TASK_URL + 'api/templates',  {
+        headers: headers
+      });
+    }
+
+    createProcess(param) {
+      const headers = new Headers();
+      this.createAuthorizationHeader(headers);
+      return this.http.post(this.TASK_URL + 'api/processes', param, {
+        headers: headers
+      });
+    }
+
+    saveTask(taskId, param) {
+      const headers = new Headers();
+      this.createAuthorizationHeader(headers);
+      return this.http.put(this.TASK_URL + 'api/tasks/' + taskId, param, {
+        headers: headers
+      });
+    }
+
+    completeTask(taskId, param) {
+      const headers = new Headers();
+      this.createAuthorizationHeader(headers);
+      return this.http.post(this.TASK_URL + 'api/tasks/' + taskId, param, {
         headers: headers
       });
     }

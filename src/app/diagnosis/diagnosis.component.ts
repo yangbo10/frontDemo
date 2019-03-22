@@ -160,6 +160,22 @@ export class DiagnosisComponent implements OnInit {
           radius : '55%',
           center: ['50%', '60%'],
           data: this.pieData1,
+          label: {
+            normal: {
+              show: false
+            },
+            emphasis: {
+              show: true
+            }
+          },
+          lableLine: {
+            normal: {
+              show: false
+            },
+            emphasis: {
+              show: true
+            }
+          },
           itemStyle: {
             emphasis: {
               shadowBlur: 10,
@@ -193,6 +209,22 @@ export class DiagnosisComponent implements OnInit {
           radius : '55%',
           center: ['50%', '60%'],
           data: this.pieData2,
+          label: {
+            normal: {
+              show: false
+            },
+            emphasis: {
+              show: true
+            }
+          },
+          lableLine: {
+            normal: {
+              show: false
+            },
+            emphasis: {
+              show: true
+            }
+          },
           itemStyle: {
             emphasis: {
               shadowBlur: 10,
@@ -226,6 +258,22 @@ export class DiagnosisComponent implements OnInit {
           radius : '55%',
           center: ['50%', '60%'],
           data: this.pieData3,
+          label: {
+            normal: {
+              show: false
+            },
+            emphasis: {
+              show: true
+            }
+          },
+          lableLine: {
+            normal: {
+              show: false
+            },
+            emphasis: {
+              show: true
+            }
+          },
           itemStyle: {
             emphasis: {
               shadowBlur: 10,
@@ -247,11 +295,13 @@ export class DiagnosisComponent implements OnInit {
     this.unFinishedQuestionHeight = 0;
     console.log(test);
     if (test.questions.length === 0 ) {
-      Swal(
-        this.translate.instant('testZeroAlert'),
-        '',
-        'error'
-      );
+      // @ts-ignore
+      Swal.fire({
+        title: this.translate.instant('testZeroAlert'),
+        type: 'error',
+        showConfirmButton: true,
+        timer: 3000
+      });
     } else {
       this.selectedTestId = test.testId;
       this.questionList = test.questions;
@@ -401,14 +451,11 @@ export class DiagnosisComponent implements OnInit {
             this.questionShowing = false;
             console.log(this.resultDemo);
             localStorage.setItem('overallScore', this.resultDemo.result.score);
-            this.diagnosisPhase++;
+            // 提交所有回答后清空localStorage 并 跳转到结果报告模块
+            localStorage.setItem('answerStorage_' + this.currentUserId, null);
+            this.router.navigate(['home/report']);
           });
         } else if (result.dismiss === Swal.DismissReason.cancel) {
-          Swal(
-            this.translate.instant('canceled'),
-            '',
-            'error'
-          );
         }
       });
     } else {
@@ -435,8 +482,8 @@ export class DiagnosisComponent implements OnInit {
       this.phaseOneScore = (sourceActual * 100 / sourceTotal).toFixed(2);
       // @ts-ignore
       this.pieData1 = [
-        {value: sourceActual, name: this.translate.instant('scoredPoints')},
-        {value: sourceTotal - sourceActual, name: this.translate.instant('unScoredPoints')}
+        {value: sourceActual},
+        {value: sourceTotal - sourceActual}
       ];
       this.options1 = {
         title : {
@@ -455,6 +502,14 @@ export class DiagnosisComponent implements OnInit {
             radius : '55%',
             center: ['50%', '60%'],
             data: this.pieData1,
+            label: {
+              normal: {
+                show: false
+              },
+              emphasis: {
+                show: false
+              }
+            },
             itemStyle: {
               emphasis: {
                 shadowBlur: 10,
@@ -487,8 +542,8 @@ export class DiagnosisComponent implements OnInit {
       this.phaseTwoScore = (makeActual * 100 / makeTotal).toFixed(2);
       // @ts-ignore
       this.pieData2 = [
-        {value: makeActual, name: this.translate.instant('scoredPoints')},
-        {value: makeTotal - makeActual, name: this.translate.instant('unScoredPoints')}
+        {value: makeActual},
+        {value: makeTotal - makeActual}
       ];
       this.options2 = {
         title : {
@@ -507,6 +562,14 @@ export class DiagnosisComponent implements OnInit {
             radius : '55%',
             center: ['50%', '60%'],
             data: this.pieData2,
+            label: {
+              normal: {
+                show: false
+              },
+              emphasis: {
+                show: false
+              }
+            },
             itemStyle: {
               emphasis: {
                 shadowBlur: 10,
@@ -539,8 +602,8 @@ export class DiagnosisComponent implements OnInit {
       this.phaseThreeScore = (deliveryActual * 100 / deliveryTotal).toFixed(2);
       // @ts-ignore
       this.pieData3 = [
-        {value: deliveryActual, name: this.translate.instant('scoredPoints')},
-        {value: deliveryTotal - deliveryActual, name: this.translate.instant('unScoredPoints')}
+        {value: deliveryActual},
+        {value: deliveryTotal - deliveryActual}
       ];
       this.options3 = {
         title : {
@@ -559,6 +622,14 @@ export class DiagnosisComponent implements OnInit {
             radius : '55%',
             center: ['50%', '60%'],
             data: this.pieData3,
+            label: {
+              normal: {
+                show: false
+              },
+              emphasis: {
+                show: false
+              }
+            },
             itemStyle: {
               emphasis: {
                 shadowBlur: 10,
@@ -570,8 +641,8 @@ export class DiagnosisComponent implements OnInit {
         ]
       };
       this.diagnosisPhase++;
-      this.answerStorage.currentPhase = this.diagnosisPhase + 1;
-      localStorage.setItem('answerStorage_' + this.currentUserId, JSON.stringify(this.answerStorage));
+      // 在第三阶段阶段结果页面退出重连会清空本地存储
+      localStorage.setItem('answerStorage_' + this.currentUserId, null);
     } else {
       this.finishAlertShowing = true;
       this.findFirstUnFinish = false;
@@ -585,11 +656,13 @@ export class DiagnosisComponent implements OnInit {
 
   verifyCode() {
     this.taskService.verifyActiveCode(this.activeCode, this.selectedTestId ).subscribe( res => {
-      Swal(
-        this.translate.instant('verifySuccess'),
-        '',
-        'success'
-      );
+      // @ts-ignore
+      Swal.fire({
+        title: this.translate.instant('verifySuccess'),
+        type: 'success',
+        showConfirmButton: true,
+        timer: 3000
+      });
       this.activeCodeCorrect = true;
       // -----------  present history here ------------
       if (this.gotHistory) {
@@ -611,11 +684,13 @@ export class DiagnosisComponent implements OnInit {
         }
       }
     }, error => {
-      Swal(
-        this.translate.instant('verifyFail'),
-        '',
-        'error'
-      );
+      // @ts-ignore
+      Swal.fire({
+        title: this.translate.instant('verifyFail'),
+        type: 'error',
+        showConfirmButton: true,
+        timer: 3000
+      });
     });
 
   }

@@ -8,7 +8,7 @@
   "passwordNotSame":"Inconsistent entry password",
   "confirmPassword":"Password Confirmation",
   "registerSuccess":"Registration success",
-  "registerFail":"Registration failed",
+  "registerFail":"Registration failed, username not valid.",
   "OnlineSystem":"Online Diagnostic System",
   "LogOut":"Sign out",
   "switchLanguage":"中文",
@@ -20,6 +20,13 @@
   "passWordIncorrect":"Username or password is incorrect",
   "noDataMessage":"No data found",
   "totalLabel":"Total",
+  "editIcon":"Edit",
+  "addIcon":"Add",
+  "saveIcon":"Save",
+  "cancelIcon":"Cancel",
+  "deleteIcon":"Delete",
+  "activeIcon":"Generate code",
+  "detailIcon":"Detail",
 
   "diagnosisMenu":"Diagnosis",
   "reportMenu":"Results Report",
@@ -48,7 +55,8 @@
   "chooseTest":"Choose Test",
   "diagnosis":"Diagnosis",
   "testZeroAlert":"This test is empty, please choose another one",
-  "searchHolder":"Search...",
+  "searchHolder":"Input keyword to search",
+  "searchButton":"Search",
   "activeCodeAlert": "Please input active code to start diagnosis.",
   "verifyButton": "Verify",
   "verifyFail": "Verify Fail",
@@ -95,6 +103,7 @@
   "dimensions":"Covered dimensions",
   "itemDuplicate":"The selected questions contain the added questions, please re-select.",
   "continueAdd":"Back to continue",
+  "questionIndex":"No.",
 
   "reportTitle":"Results report",
   "fullScore":"Total score",
@@ -138,15 +147,20 @@
   "userDetail":"User Details",
   "createConfirm":"Confirm creation?",
   "createSuccess":"Created successfully",
+  "createUserFail":"Create failed, username already existed.",
+  "emailFail":"Email is not valid.",
   "generateCode":"Generate Activate code",
   "generateBtn":"Generate",
   "generateSuccess":"Generate Success",
   "generateDetail":"Activate Code：",
   "generateFail":"Generate Fail",
+  "deleteUserFail":"Delete Fail",
   "generateExisted":"Code existed, regenerate?",
+  "passwordNotValid":"password length should not shorter then 6",
 
   "contactTitle":"Contact us",
   "tel":"Phone",
+  "contactTel":"Contact",
   "email":"E-mail",
   "selectText":"Select...",
 
@@ -265,8 +279,16 @@
   "AssociatesInvolvementLevel2": "The division of each level of the team is fuzzy, the division of responsibilities and rights is confused, staff can’t play their own strengths, team members can’t participate in the improvement of the team.",
   "AssociatesInvolvementLevel3": "The division of each level of the team is clear, but the division of responsibilities and rights is fuzzy, the space for employees to take advantage of their strengths is not free enough, and team members cannot participate well in the improvement of the team.",
   "AssociatesInvolvementLevel4": "The division of each level of the team, responsibilities and rights are clear, the advantage of staff is brought into full play, and the enthusiasm of the team to participate in the improvement activities is high.",
-  "AssociatesInvolvementLevel5": "The responsibilities and rights of the team are clearly divided into the corresponding levels, and everyone is clear, the staff actively participate in the improvement activities, and play their indispensable role in the team, staff participation enthusiasm is high."
+  "AssociatesInvolvementLevel5": "The responsibilities and rights of the team are clearly divided into the corresponding levels, and everyone is clear, the staff actively participate in the improvement activities, and play their indispensable role in the team, staff participation enthusiasm is high.",
 
 
+  "flowchartMenu": "Flowchart",
+  "welcomeToFlowchart": "Welcome to the ZENO Current Value Streaming Module, which will lead you to a lean journey!",
+  "setProductClass": "Set product class",
+  "inputProductName": "Please input product name:",
+  "startFlowchart": "startDrawing",
+  "nextQuestion": "Next",
+  "materialDrawn": "The material flow is drawn, and then the flow of information is drawn.",
+  "allFlowDrawn": "Congratulations, you have completed the drawing of all the material flow and information flow, and the factory diagnosis will be presented to you later."
 
 }
