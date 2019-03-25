@@ -27,9 +27,10 @@ export class UsermanageComponent implements OnInit {
   currentLength: number;
   public modalRef: BsModalRef;
   public roleList = [
-    {'roleId': 1, 'roleName': 'ADMIN'},
-    {'roleId': 2, 'roleName': 'MANAGER'},
-    {'roleId': 3, 'roleName': 'USER'}
+    {'roleId': '21453f5a-a910-43a3-a33c-270606edfb5e', 'roleName': 'ADMIN'},
+    {'roleId': '06183543-9af4-4ccc-8b80-43140ddc6a6d', 'roleName': 'MANAGER'},
+    {'roleId': 'bc7fafb8-5394-4f07-843e-f12d23aaca84', 'roleName': 'USER'},
+    {'roleId': '7680cdac-4f9d-4a47-9cb3-06154d4279ff', 'roleName': 'ACTUATOR'}
   ];
   public param = {
     'modules': [
@@ -76,7 +77,8 @@ export class UsermanageComponent implements OnInit {
             list: [
               { value: 'ADMIN', title: 'ADMIN' },
               { value: 'MANAGER', title: 'MANAGER' },
-              { value: 'USER', title: 'USER' }
+              { value: 'USER', title: 'USER' },
+              { value: 'ACTUATOR', title: 'ACTUATOR' }
             ]
           }
         }
@@ -258,9 +260,11 @@ export class UsermanageComponent implements OnInit {
         for (let j = i; j < this.roleList.length; j++) {
           roleIdSet.push({'roleId': this.roleList[j].roleId});
         }
-        return roleIdSet;
+        break;
       }
+      break;
     }
+    return roleIdSet;
   }
   onSaveConfirm(event) {
     const userObj = {
@@ -328,6 +332,7 @@ export class UsermanageComponent implements OnInit {
 
   createNewUser() {
     const maxRoleId = this.newUser.roles[0].roleId;
+    this.newUser.roles = [];
     for ( let i = 1; i <= maxRoleId; i++ ) {
       this.newUser.roles.push({'roleId': i});
     }
