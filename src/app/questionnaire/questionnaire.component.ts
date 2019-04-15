@@ -10,6 +10,7 @@ import {e} from '../../../node_modules/@angular/core/src/render3';
 import {toNumber} from '../../../node_modules/ngx-bootstrap/timepicker/timepicker.utils';
 import {Router} from '@angular/router';
 import {TranslateService} from 'ng2-translate';
+import {GlobalLanguageEventService} from '../service/global-language-event.service';
 
 @Component({
   selector: 'app-questionnaire',
@@ -43,10 +44,29 @@ export class QuestionnaireComponent implements OnInit {
   dimensionCheckList: [any];
   addBtnDisable: boolean;
   currentLength: number;
+  public settings: any;
+  public newSettings: any;
+  currentLanguage: string;
+  translateList = {
+    'questionIndex': '',
+    'questionName': '',
+    'questionDetail': '',
+    'tag1': '',
+    'tag2': '',
+    'tag3': '',
+    'operation': '',
+    'editIcon': '',
+    'saveIcon': '',
+    'cancelIcon': '',
+    'deleteIcon': '',
+    'noDataMessage': '',
+    'selectText': ''
+  };
   @ViewChild('mainTable') mainTable: ElementRef;
   constructor(public user: User, private taskService: TaskService,
               private modalService: BsModalService,
-              private translate: TranslateService) {
+              private translate: TranslateService,
+              private globalLanguageService: GlobalLanguageEventService) {
     this.options = { concurrency: 1, maxUploads: 3 };
     this.files = []; // local uploading files array
     this.uploadInput = new EventEmitter<UploadInput>();
@@ -68,6 +88,7 @@ export class QuestionnaireComponent implements OnInit {
     this.nameCache = [];
     // @ts-ignore
     this.questionCache = [];
+    this.currentLanguage = localStorage.getItem('language');
   }
 
   public tagList = [
@@ -91,174 +112,218 @@ export class QuestionnaireComponent implements OnInit {
 
   ];
 
-  public settings = {
-    columns: {
-      id: {
-        title: this.translate.instant('questionIndex'),
-        filter: false,
-      },
-      name: {
-        title: this.translate.instant('questionName'),
-        filter: false,
-      },
-      detail: {
-        title: this.translate.instant('questionDetail'),
-        filter: false,
-        width: '50%',
-      },
-      tag1: {
-        title: this.translate.instant('tag1'),
-        filter: {
-          type: 'list',
-          config: {
-            selectText: this.translate.instant('selectText'),
-            list: [
-              { value: 'Enabler', title: 'Enabler' },
-              { value: 'Lean', title: 'Lean' },
-              { value: 'I4.0', title: 'I4.0' },
-            ],
-          },
+  initTranslate() {
+    this.translate.get('questionIndex').subscribe(label => {
+      this.translateList.questionIndex = label;
+    });
+    this.translate.get('questionName').subscribe(label => {
+      this.translateList.questionName = label;
+    });
+    this.translate.get('questionDetail').subscribe(label => {
+      this.translateList.questionDetail = label;
+    });
+    this.translate.get('tag1').subscribe(label => {
+      this.translateList.tag1 = label;
+    });
+    this.translate.get('tag2').subscribe(label => {
+      this.translateList.tag2 = label;
+    });
+    this.translate.get('tag3').subscribe(label => {
+      this.translateList.tag3 = label;
+    });
+    this.translate.get('operation').subscribe(label => {
+      this.translateList.operation = label;
+    });
+    this.translate.get('editIcon').subscribe(label => {
+      this.translateList.editIcon = label;
+    });
+    this.translate.get('saveIcon').subscribe(label => {
+      this.translateList.saveIcon = label;
+    });
+    this.translate.get('cancelIcon').subscribe(label => {
+      this.translateList.cancelIcon = label;
+    });
+    this.translate.get('deleteIcon').subscribe(label => {
+      this.translateList.deleteIcon = label;
+    });
+    this.translate.get('noDataMessage').subscribe(label => {
+      this.translateList.noDataMessage = label;
+    });
+    this.translate.get('selectText').subscribe(label => {
+      this.translateList.selectText = label;
+      this.setTableSettings();
+    });
+  }
+
+  setTableSettings() {
+    this.settings = {
+      columns: {
+        id: {
+          title: this.translateList.questionIndex,
+          filter: false,
         },
-        editor: {
-          type: 'list',
-          config: {
-            list: [
-              { value: 'Enabler', title: 'Enabler' },
-              { value: 'Lean', title: 'Lean' },
-              { value: 'I4.0', title: 'I4.0' }]
+        name: {
+          title: this.translateList.questionName,
+          filter: false,
+        },
+        detail: {
+          title: this.translateList.questionDetail,
+          filter: false,
+          width: '50%',
+        },
+        tag1: {
+          title: this.translateList.tag1,
+          filter: {
+            type: 'list',
+            config: {
+              selectText: this.translateList.selectText,
+              list: [
+                { value: 'Enabler', title: 'Enabler' },
+                { value: 'Lean', title: 'Lean' },
+                { value: 'I4.0', title: 'I4.0' },
+              ],
+            },
+          },
+          editor: {
+            type: 'list',
+            config: {
+              list: [
+                { value: 'Enabler', title: 'Enabler' },
+                { value: 'Lean', title: 'Lean' },
+                { value: 'I4.0', title: 'I4.0' }]
+            }
           }
-        }
-      },
-      tag2: {
-        title: this.translate.instant('tag2'),
-        filter: {
-          type: 'list',
-          config: {
-            selectText: this.translate.instant('selectText'),
-            list: [
-              { value: 'Source', title: 'Source' },
-              { value: 'Make', title: 'Make' },
-              { value: 'Delivery', title: 'Delivery' }
-            ],
-          },
         },
-        editor: {
-          type: 'list',
-          config: {
-            list: [
-              { value: 'Source', title: 'Source' },
-              { value: 'Make', title: 'Make' },
-              { value: 'Delivery', title: 'Delivery' }
+        tag2: {
+          title: this.translateList.tag2,
+          filter: {
+            type: 'list',
+            config: {
+              selectText: this.translateList.selectText,
+              list: [
+                { value: 'Source', title: 'Source' },
+                { value: 'Make', title: 'Make' },
+                { value: 'Delivery', title: 'Delivery' }
+              ],
+            },
+          },
+          editor: {
+            type: 'list',
+            config: {
+              list: [
+                { value: 'Source', title: 'Source' },
+                { value: 'Make', title: 'Make' },
+                { value: 'Delivery', title: 'Delivery' }
               ]
+            }
           }
-        }
-      },
-      tag3: {
-        title: this.translate.instant('tag3'),
-        filter: {
-          type: 'list',
-          config: {
-            selectText: this.translate.instant('selectText'),
-            list: [
-              { value: 'Standardization', title: 'Standardization' },
-              { value: 'Transparent Processes', title: 'Transparent Processes' },
-              { value: 'Associate Involvement', title: 'Associate Involvement' },
-              { value: 'Continuous Improvement', title: 'Continuous Improvement' },
-              { value: 'Flexibility', title: 'Flexibility' },
-              { value: 'Perfect Quality', title: 'Perfect Quality' },
-              { value: 'Process Orientation', title: 'Process Orientation' },
-              { value: 'Pull System', title: 'Pull System' },
-              { value: 'Resource', title: 'Resource' },
-              { value: 'Digitization', title: 'Digitization' },
-              { value: 'Automation', title: 'Automation' }
-            ],
-          },
         },
-        editor: {
-          type: 'list',
-          config: {
-            list: [
-              { value: 'Standardization', title: 'Standardization' },
-              { value: 'Transparent Processes', title: 'Transparent Processes' },
-              { value: 'Associate Involvement', title: 'Associate Involvement' },
-              { value: 'Continuous Improvement', title: 'Continuous Improvement' },
-              { value: 'Flexibility', title: 'Flexibility' },
-              { value: 'Perfect Quality', title: 'Perfect Quality' },
-              { value: 'Process Orientation', title: 'Process Orientation' },
-              { value: 'Pull System', title: 'Pull System' },
-              { value: 'Resource', title: 'Resource' },
-              { value: 'Digitization', title: 'Digitization' },
-              { value: 'Automation', title: 'Automation' }
-            ]
+        tag3: {
+          title: this.translateList.tag3,
+          filter: {
+            type: 'list',
+            config: {
+              selectText: this.translateList.selectText,
+              list: [
+                { value: 'Standardization', title: 'Standardization' },
+                { value: 'Transparent Processes', title: 'Transparent Processes' },
+                { value: 'Associate Involvement', title: 'Associate Involvement' },
+                { value: 'Continuous Improvement', title: 'Continuous Improvement' },
+                { value: 'Flexibility', title: 'Flexibility' },
+                { value: 'Perfect Quality', title: 'Perfect Quality' },
+                { value: 'Process Orientation', title: 'Process Orientation' },
+                { value: 'Pull System', title: 'Pull System' },
+                { value: 'Resource', title: 'Resource' },
+                { value: 'Digitization', title: 'Digitization' },
+                { value: 'Automation', title: 'Automation' }
+              ],
+            },
+          },
+          editor: {
+            type: 'list',
+            config: {
+              list: [
+                { value: 'Standardization', title: 'Standardization' },
+                { value: 'Transparent Processes', title: 'Transparent Processes' },
+                { value: 'Associate Involvement', title: 'Associate Involvement' },
+                { value: 'Continuous Improvement', title: 'Continuous Improvement' },
+                { value: 'Flexibility', title: 'Flexibility' },
+                { value: 'Perfect Quality', title: 'Perfect Quality' },
+                { value: 'Process Orientation', title: 'Process Orientation' },
+                { value: 'Pull System', title: 'Pull System' },
+                { value: 'Resource', title: 'Resource' },
+                { value: 'Digitization', title: 'Digitization' },
+                { value: 'Automation', title: 'Automation' }
+              ]
+            }
           }
         }
-      }
-    },
-    pager: {
-      display: true,
-      perPage: 45
-    },
-
-    isPaginationEnabled: true,
-    // itemsByPage: 10,
-    selectMode: 'multi',
-
-    // mode: "external",
-    mode: 'inline',
-    actions: {
-      columnTitle: this.translate.instant('operation'),
-      add: false,
-      position: 'right'
-    },
-    edit: {
-      position: 'right',
-      editButtonContent: '<i title="' + this.translate.instant('editIcon') +
-        '" class="fa fa-1x fa-pencil-square" aria-hidden="true"></i><i>       </i>',
-      saveButtonContent: '<i title="' + this.translate.instant('saveIcon') +
-        '" class="fa fa-1x fa-check"></i><i>       </i>',
-      cancelButtonContent: '<i title="' + this.translate.instant('cancelIcon') +
-        '" class="fa fa-1x fa-close"></i>',
-      confirmSave: true
-    },
-    delete: {
-      position: 'right',
-      deleteButtonContent: '<i title="' + this.translate.instant('deleteIcon') +
-        '" class="fa fa-1x fa-trash" aria-hidden="true"></i>',
-      confirmDelete: true
-    },
-    attr: {
-      class: 'table table-striped table-bordered table-hover'
-    },
-    defaultStyle: true,
-    noDataMessage: this.translate.instant('noDataMessage')
-  };
-
-  public newSettings = {
-    columns: {
-      id: {
-        title: this.translate.instant('questionName'),
-        filter: false,
       },
-      detail: {
-        title: this.translate.instant('questionDetail'),
-        filter: false,
-      }
-    },
-    pager: {
-      display: true,
-      perPage: 10
-    },
+      pager: {
+        display: true,
+        perPage: 45
+      },
 
-    isPaginationEnabled: true,
-    actions: false,
-    attr: {
-      class: 'table table-striped table-bordered table-hover'
-    },
-    defaultStyle: true,
-    noDataMessage: this.translate.instant('noDataMessage')
-  };
+      isPaginationEnabled: true,
+      // itemsByPage: 10,
+      selectMode: 'multi',
 
-  ngOnInit() {
+      // mode: "external",
+      mode: 'inline',
+      actions: {
+        columnTitle: '',
+        add: false,
+        position: 'right'
+      },
+      edit: {
+        position: 'right',
+        editButtonContent: '<i title="' + this.translateList.editIcon +
+          '" class="fa fa-1x fa-pencil-square" aria-hidden="true"></i><i>       </i>',
+        saveButtonContent: '<i title="' + this.translateList.saveIcon +
+          '" class="fa fa-1x fa-check"></i><i>       </i>',
+        cancelButtonContent: '<i title="' + this.translateList.cancelIcon +
+          '" class="fa fa-1x fa-close"></i>',
+        confirmSave: true
+      },
+      delete: {
+        position: 'right',
+        deleteButtonContent: '<i title="' + this.translateList.deleteIcon +
+          '" class="fa fa-1x fa-trash" aria-hidden="true"></i>',
+        confirmDelete: true
+      },
+      attr: {
+        class: 'table table-striped table-bordered table-hover'
+      },
+      defaultStyle: true,
+      noDataMessage: this.translateList.noDataMessage
+    };
+    this.newSettings = {
+      columns: {
+        id: {
+          title: this.translateList.questionName,
+          filter: false,
+        },
+        detail: {
+          title: this.translateList.questionDetail,
+          filter: false,
+        }
+      },
+      pager: {
+        display: true,
+        perPage: 10
+      },
+
+      isPaginationEnabled: true,
+      actions: false,
+      attr: {
+        class: 'table table-striped table-bordered table-hover'
+      },
+      defaultStyle: true,
+      noDataMessage: this.translateList.noDataMessage
+    };
+  }
+
+  getData(language) {
     // @ts-ignore
     this.deleteList = [];
     // @ts-ignore
@@ -271,14 +336,20 @@ export class QuestionnaireComponent implements OnInit {
     // @ts-ignore
     this.tableData = [];
     this.source = new LocalDataSource(this.tableData);
-    this.taskService.getAllQuestions('').subscribe(data => {
+    this.taskService.getAllQuestions('', language).subscribe(data => {
       // @ts-ignore
       this.testDemo = JSON.parse(data._body);
-
+      // @ts-ignore
+      this.questionList = [];
       if (this.testDemo.hasOwnProperty('_embedded')) {
-        this.questionList = this.testDemo._embedded.questions;
+        for (const item of this.testDemo._embedded.questions) {
+          if (item.question.tags[0].name !== 'Value Stream') {
+            this.questionList.push(item);
+          }
+        }
         for ( let i = 0; i < this.questionList.length; i++) {
-          const item = {'id': '', 'name': '', 'detail': '', 'tag1': '', 'tag2': '', 'tag3': '', 'dimensionId': 0};
+          const item = {'realId': '', 'id': '', 'name': '', 'detail': '', 'tag1': '', 'tag2': '', 'tag3': '', 'dimensionId': 0};
+          item.realId = this.questionList[i].question.questionId;
           item.id = (i + 1).toString();
           item.name = this.questionList[i].question.name;
           item.detail = this.questionList[i].question.detail;
@@ -313,8 +384,18 @@ export class QuestionnaireComponent implements OnInit {
         this.testList = [];
       }
     });
-
   }
+
+  ngOnInit() {
+    this.initTranslate();
+    // LISTEN TO EVENTS
+    this.globalLanguageService.languageChanged.subscribe(item => {
+      this.initTranslate();
+      this.getData(item);
+    });
+    this.getData(this.currentLanguage);
+  }
+
 
 
   onSearch(query) {
@@ -328,15 +409,23 @@ export class QuestionnaireComponent implements OnInit {
       this.source = new LocalDataSource(this.tableData);
       this.currentLength = this.tableData.length;
     } else {
-      this.taskService.getAllQuestions(query).subscribe(data => {
+      this.taskService.getAllQuestions(query, this.currentLanguage).subscribe(data => {
         // @ts-ignore
         this.testDemo = JSON.parse(data._body);
+        console.log(this.testDemo);
         // @ts-ignore
         this.tableData2 = [];
+        // @ts-ignore
+        this.questionList = [];
         if (this.testDemo.hasOwnProperty('_embedded')) {
-          this.questionList = this.testDemo._embedded.questions;
+          for (const item of this.testDemo._embedded.questions) {
+            if (item.question.tags[0].name !== 'Value Stream') {
+              this.questionList.push(item);
+            }
+          }
           for ( let i = 0; i < this.questionList.length; i++) {
-            const item = {'id': '', 'name': '', 'detail': '', 'tag1': '', 'tag2': '', 'tag3': '', 'dimensionId': 0};
+            const item = {'realId': '', 'id': '', 'name': '', 'detail': '', 'tag1': '', 'tag2': '', 'tag3': '', 'dimensionId': 0};
+            item.realId = this.questionList[i].question.questionId;
             item.id = (i + 1).toString();
             item.name = this.questionList[i].question.name;
             item.detail = this.questionList[i].question.detail;
@@ -524,7 +613,7 @@ export class QuestionnaireComponent implements OnInit {
       this.dimensionList = [];
       if ( event.selected.length > 0) {
         for (let i = 0; i < event.selected.length; i++) {
-          this.deleteList.push(event.selected[i].id);
+          this.deleteList.push(event.selected[i].realId);
           this.selectedQuestions.push(event.selected[i].name);
           this.dimensionList.push(event.selected[i].dimensionId);
         }
@@ -532,7 +621,7 @@ export class QuestionnaireComponent implements OnInit {
     } else {
       // is selected or not
       if ( event.isSelected === true) {
-          this.deleteList.push(event.data.id);
+          this.deleteList.push(event.data.realId);
           this.selectedQuestions.push(event.data.name);
           this.dimensionList.push(event.data.dimensionId);
       } else {
@@ -543,12 +632,13 @@ export class QuestionnaireComponent implements OnInit {
         // @ts-ignore
         this.dimensionList = [];
         for (let i = 0; i < event.selected.length; i++) {
-          this.deleteList.push(event.selected[i].id);
+          this.deleteList.push(event.selected[i].realId);
           this.selectedQuestions.push(event.selected[i].name);
           this.dimensionList.push(event.selected[i].dimensionId);
         }
       }
     }
+    console.log(this.dimensionList);
   }
 
   addToCache() {
@@ -704,7 +794,7 @@ export class QuestionnaireComponent implements OnInit {
     });
   }
 
-  changeBackground(tagId: number): any {
+  changeBackground(tagId: string): any {
     if (this.dimensionCheckList.indexOf(tagId) >= 0) {
       return { 'background-color': '#5cb85c' };
     } else {

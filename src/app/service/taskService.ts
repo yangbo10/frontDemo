@@ -22,31 +22,35 @@ export class TaskService {
           if (res.headers.get('x-access-token') !== null) {
             localStorage.setItem('access_token', res.headers.get('x-access-token'));
             localStorage.setItem('user_name', username);
-            this.getUserByName(username).subscribe( data => {
+            this.getUserByName().subscribe( data => {
               // @ts-ignore
               const userList = JSON.parse(data._body);
-              const userId = userList._embedded.users[0].user.userId;
-              const userRole = userList._embedded.users[0].user.roles[0].roleId;
+              const userId = userList.user.userId;
+              const userRole = userList.user.roles[0].name;
               localStorage.setItem('user_id', userId);
               localStorage.setItem('user_role', userRole);
               console.log(localStorage);
               this.router.navigate(['/home']);
             });
           } else {
-            Swal(
-              this.translate.instant('loginFail'),
-              this.translate.instant('passWordIncorrect'),
-              'error'
-            );
+            // @ts-ignore
+            Swal.fire({
+              title: this.translate.instant('passWordIncorrect'),
+              type: 'error',
+              showConfirmButton: true,
+              timer: 3000
+            });
           }
 
       },
       error => {
-        Swal(
-          this.translate.instant('loginFail'),
-          this.translate.instant('passWordIncorrect'),
-          'error'
-        );
+        // @ts-ignore
+        Swal.fire({
+          title: this.translate.instant('passWordIncorrect'),
+          type: 'error',
+          showConfirmButton: true,
+          timer: 3000
+        });
       });
       return 0;
     }
@@ -56,10 +60,10 @@ export class TaskService {
       return this.http.get(this.TASK_URL + 'logout');
     }
 
-    getUserByName(name) {
+    getUserByName() {
       const headers = new Headers();
       this.createAuthorizationHeader(headers);
-      return this.http.get(this.TASK_URL + 'api/users' + '?search=' + 'username==' + name,  {
+      return this.http.get(this.TASK_URL + 'api/users/me',  {
         headers: headers
       });
     }
@@ -88,11 +92,11 @@ export class TaskService {
       });
     }
 
-    getAllQuestions(containStr) {
+    getAllQuestions(containStr, language) {
       const headers = new Headers();
       this.createAuthorizationHeader(headers);
       let locale = 'zh_CN';
-      if (localStorage.getItem('language') === 'en') {
+      if (language === 'en') {
         locale = 'en_US';
       }
       return this.http.get(this.TASK_URL + 'api/questions?size=10000&search=locale==' + locale + ';detail=co="' + containStr + '"',  {

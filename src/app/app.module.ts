@@ -25,6 +25,8 @@ import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 import { TranslateModule, TranslateLoader } from 'ng2-translate/ng2-translate';
 import {ScrollEventModule} from 'ngx-scroll-event';
 import { FlowchartComponent } from './flowchart/flowchart.component';
+import {GlobalLanguageEventService} from './service/global-language-event.service';
+import { SmalltableComponent } from './smalltable/smalltable.component';
 
 const appChildRoutes: Routes = [
   {
@@ -85,7 +87,8 @@ export function HttpLoaderFactory(http: HttpClient) {
     ContactComponent,
     UsermanageComponent,
     TestmanageComponent,
-    FlowchartComponent
+    FlowchartComponent,
+    SmalltableComponent
   ],
   imports: [
     BrowserModule,
@@ -107,7 +110,10 @@ export function HttpLoaderFactory(http: HttpClient) {
     }),
     RouterModule.forRoot(appRoutes)
   ],
-  providers: [TaskService, User],
+  entryComponents: [
+    SmalltableComponent
+  ],
+  providers: [TaskService, User, GlobalLanguageEventService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

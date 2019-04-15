@@ -13,7 +13,7 @@ export class QuestionboxComponent implements OnInit {
   @Output() answerFromChild = new EventEmitter();
 
   questionItem: any;
-  questionName: string;
+  questionName: number;
   chooseItem: number;
   comment: string;
   commentShowing: boolean;
@@ -61,7 +61,8 @@ export class QuestionboxComponent implements OnInit {
           }
         ],
         'question': {
-          'questionId': this.questionItem.questionId
+          'questionId': this.questionItem.questionId,
+          'questionIndex': this.questionName
         },
         'point': {
           'score': this.questionItem.weight * value,

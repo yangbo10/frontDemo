@@ -42,6 +42,7 @@ export class DiagnosisComponent implements OnInit {
   activeCodeCorrect: boolean;
   activeCode: string;
   selectedTestId: number;
+  selectedTest: any;
   finalLevel: string;
   scrollHeight: number;
   finishAlertShowing: boolean;
@@ -303,19 +304,10 @@ export class DiagnosisComponent implements OnInit {
         timer: 3000
       });
     } else {
-      this.selectedTestId = test.testId;
-      this.questionList = test.questions;
-      for ( const item of this.questionList) {
-        if (item.tags[1].tagId === 4) {
-          this.sourceList.push(item);
-        } else if (item.tags[1].tagId === 5) {
-          this.makeList.push(item);
-        } else {
-          this.deliveryList.push(item);
-        }
-      }
+      this.selectedTest = test;
       this.diagnosisPhase++;
-      const storage = JSON.parse(localStorage.getItem('answerStorage_' + this.currentUserId));
+      // 答题历史纪录功能暂时关闭
+      /*const storage = JSON.parse(localStorage.getItem('answerStorage_' + this.currentUserId));
       if (storage !== null) {
         if (toNumber(storage.testId) === test.testId) {
           console.log(storage);
@@ -323,7 +315,7 @@ export class DiagnosisComponent implements OnInit {
           this.gotHistory = true;
           this.answerStorage = storage;
         }
-      }
+      }*/
     }
   }
 
@@ -343,28 +335,28 @@ export class DiagnosisComponent implements OnInit {
       this.answerList.push(val);
       switch (this.diagnosisPhase) {
         case 1: this.sourceAnswerList.push(val);
-          this.sourceAnswerIdList.push(val.question.questionId);
+          this.sourceAnswerIdList.push(val.question.questionIndex);
           if (this.sourceAnswerList.length === this.sourceList.length) {
             this.finishAlertShowing = false;
           }
           // calculate the first unfinished question position first time
-          this.getFirstUnFinishedPosition(this.sourceAnswerIdList, this.sourceList);
+          this.getFirstUnFinishedPosition(this.sourceAnswerIdList);
         break;
         case 3: this.makeAnswerList.push(val);
-          this.makeAnswerIdList.push(val.question.questionId);
+          this.makeAnswerIdList.push(val.question.questionIndex);
           if (this.makeAnswerList.length === this.makeList.length) {
             this.finishAlertShowing = false;
           }
           // calculate the first unfinished question position first time
-          this.getFirstUnFinishedPosition(this.makeAnswerIdList, this.makeList);
+          this.getFirstUnFinishedPosition(this.makeAnswerIdList);
           break;
         case 5: this.deliveryAnswerList.push(val);
-          this.deliveryAnswerIdList.push(val.question.questionId);
+          this.deliveryAnswerIdList.push(val.question.questionIndex);
           if (this.deliveryAnswerList.length === this.deliveryList.length) {
             this.finishAlertShowing = false;
           }
           // calculate the first unfinished question position first time
-          this.getFirstUnFinishedPosition(this.deliveryAnswerIdList, this.deliveryList);
+          this.getFirstUnFinishedPosition(this.deliveryAnswerIdList);
           break;
       }
 
@@ -375,7 +367,8 @@ export class DiagnosisComponent implements OnInit {
         case 5: this.deliveryAnswerList[index - this.sourceAnswerList.length - this.makeAnswerList.length] = val; break;
       }
     }
-    this.answerStorage.testId = this.selectedTestId;
+    // 答题历史纪录功能暂时关闭
+    /*this.answerStorage.testId = this.selectedTestId;
     this.answerStorage.answerList = this.answerList;
     this.answerStorage.sourceAnswerList = this.sourceAnswerList;
     this.answerStorage.makeAnswerList = this.makeAnswerList;
@@ -384,7 +377,7 @@ export class DiagnosisComponent implements OnInit {
     this.answerStorage.makeAnswerIdList = this.makeAnswerIdList;
     this.answerStorage.deliveryAnswerIdList = this.deliveryAnswerIdList;
     this.answerStorage.currentPhase = this.diagnosisPhase;
-    localStorage.setItem('answerStorage_' + this.currentUserId, JSON.stringify(this.answerStorage));
+    localStorage.setItem('answerStorage_' + this.currentUserId, JSON.stringify(this.answerStorage));*/
   }
 
   // sort method
@@ -404,24 +397,29 @@ export class DiagnosisComponent implements OnInit {
   }
 
   // calculate the first unfinished question position
-  getFirstUnFinishedPosition(answerList, questionList) {
+  getFirstUnFinishedPosition(answerList) {
     let i = 0;
     this.findFirstUnFinish = false;
     this.arraySort(answerList);
     // 挨个对比找到未答的第一道题
     for ( const item of answerList) {
-      if (item !== questionList[i].questionId) {
+      i ++;
+      if (item !== i) {
         // get the first unFinished question position
-        this.unFinishedQuestionHeight = (i + 1) * 270;
+        if (i === 1) {
+          this.unFinishedQuestionHeight = 0;
+        } else {
+          this.unFinishedQuestionHeight = i * 298 - 145;
+        }
         this.findFirstUnFinish = true;
         break;
       }
-      i ++;
     }
     // 如果对比完没找到，那未完成的位置就是所答题目的最后一题后面一题的位置
-    if (!this.findFirstUnFinish && answerList.length < questionList.length) {
-      this.unFinishedQuestionHeight = this.scrollHeight + 300;
+    if (!this.findFirstUnFinish) {
+      this.unFinishedQuestionHeight = (i + 1) * 298 - 145;
     }
+    console.log('position:', this.unFinishedQuestionHeight);
     return;
   }
 
@@ -452,7 +450,7 @@ export class DiagnosisComponent implements OnInit {
             console.log(this.resultDemo);
             localStorage.setItem('overallScore', this.resultDemo.result.score);
             // 提交所有回答后清空localStorage 并 跳转到结果报告模块
-            localStorage.setItem('answerStorage_' + this.currentUserId, null);
+            /*localStorage.setItem('answerStorage_' + this.currentUserId, null);*/
             this.router.navigate(['home/report']);
           });
         } else if (result.dismiss === Swal.DismissReason.cancel) {
@@ -521,8 +519,8 @@ export class DiagnosisComponent implements OnInit {
         ]
       };
       this.diagnosisPhase++;
-      this.answerStorage.currentPhase = this.diagnosisPhase + 1;
-      localStorage.setItem('answerStorage_' + this.currentUserId, JSON.stringify(this.answerStorage));
+      /*this.answerStorage.currentPhase = this.diagnosisPhase + 1;
+      localStorage.setItem('answerStorage_' + this.currentUserId, JSON.stringify(this.answerStorage));*/
     } else {
       this.finishAlertShowing = true;
       this.findFirstUnFinish = false;
@@ -581,8 +579,8 @@ export class DiagnosisComponent implements OnInit {
         ]
       };
       this.diagnosisPhase++;
-      this.answerStorage.currentPhase = this.diagnosisPhase + 1;
-      localStorage.setItem('answerStorage_' + this.currentUserId, JSON.stringify(this.answerStorage));
+      /*this.answerStorage.currentPhase = this.diagnosisPhase + 1;
+      localStorage.setItem('answerStorage_' + this.currentUserId, JSON.stringify(this.answerStorage));*/
     } else {
       this.finishAlertShowing = true;
       this.findFirstUnFinish = false;
@@ -655,7 +653,18 @@ export class DiagnosisComponent implements OnInit {
   }
 
   verifyCode() {
+    this.selectedTestId = this.selectedTest.testId;
     this.taskService.verifyActiveCode(this.activeCode, this.selectedTestId ).subscribe( res => {
+      this.questionList = this.selectedTest.questions;
+      for ( const item of this.questionList) {
+        if (item.tags[1].tagId === 'ad09f93d-e20c-4266-a524-0737040b709b') {
+          this.sourceList.push(item);
+        } else if (item.tags[1].tagId === 'a23c5813-8a42-46f8-8f04-4cdd125fe048') {
+          this.makeList.push(item);
+        } else {
+          this.deliveryList.push(item);
+        }
+      }
       // @ts-ignore
       Swal.fire({
         title: this.translate.instant('verifySuccess'),
@@ -665,7 +674,7 @@ export class DiagnosisComponent implements OnInit {
       });
       this.activeCodeCorrect = true;
       // -----------  present history here ------------
-      if (this.gotHistory) {
+      /*if (this.gotHistory) {
         this.diagnosisPhase = this.answerStorage.currentPhase;
         this.answerList = this.answerStorage.answerList;
         this.sourceAnswerList = this.answerStorage.sourceAnswerList;
@@ -677,12 +686,12 @@ export class DiagnosisComponent implements OnInit {
         switch (this.diagnosisPhase) {
           case 1: console.log('1');
              break;
-          case 3: console.log('1');
+          case 3: console.log('3');
             break;
-          case 5: console.log('1');
+          case 5: console.log('5');
             break;
         }
-      }
+      }*/
     }, error => {
       // @ts-ignore
       Swal.fire({

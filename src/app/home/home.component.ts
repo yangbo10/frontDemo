@@ -6,6 +6,7 @@ import {User} from '../models/user';
 import {toNumber} from '../../../node_modules/ngx-bootstrap/timepicker/timepicker.utils';
 import {BsModalService} from 'ngx-bootstrap';
 import {TranslateService} from 'ng2-translate';
+import {GlobalLanguageEventService} from '../service/global-language-event.service';
 
 @Component({
   selector: 'app-home',
@@ -13,10 +14,12 @@ import {TranslateService} from 'ng2-translate';
   styleUrls: ['./home.component.css']
 })
 export class HomeComponent implements OnInit {
+  selectedLanguage = 'cn';
 
-  constructor(public user: User, private taskService: TaskService, private router: Router, private translate: TranslateService) {
+  constructor(public user: User, private taskService: TaskService, private router: Router,
+              private translate: TranslateService, public globalEventService: GlobalLanguageEventService) {
     this.user.mainShowing = true;
-    this.user.roles[0].roleId = toNumber(localStorage.getItem('user_role'));
+    this.user.roles[0].roleId = localStorage.getItem('user_role');
     if (localStorage.getItem('language') === 'cn') {
       this.translate.setDefaultLang('cn');
       this.translate.use('cn');
@@ -25,6 +28,9 @@ export class HomeComponent implements OnInit {
       this.translate.setDefaultLang('en');
       this.translate.use('en');
     }
+    /*translate.addLangs(['en', 'cn']);
+    const browserLang = translate.getBrowserLang();
+    translate.use(browserLang.match(/en|cn/) ? browserLang : 'cn');*/
 }
 
   ngOnInit() {
@@ -43,21 +49,18 @@ export class HomeComponent implements OnInit {
       cancelButtonText: this.translate.instant('cancel')
     }).then((result) => {
       if (result.value) {
-        Swal(
-          this.translate.instant('logOutSuccess'),
-          '',
-          'success'
-        );
+        // @ts-ignore
+        Swal.fire({
+          title: this.translate.instant('logOutSuccess'),
+          type: 'success',
+          showConfirmButton: true,
+          timer: 3000
+        });
         this.taskService.logOut().subscribe( res => {
           console.log(res);
           this.router.navigate(['']);
         });
       } else if (result.dismiss === Swal.DismissReason.cancel) {
-        Swal(
-          this.translate.instant('canceled'),
-          '',
-          'error'
-        );
       }
     });
   }
@@ -75,12 +78,17 @@ export class HomeComponent implements OnInit {
     if (this.translate.currentLang === 'cn') {
       this.translate.setDefaultLang('en');
       this.translate.use('en');
+      this.selectedLanguage = 'en';
+      this.globalEventService.setLanguage(this.selectedLanguage);
       localStorage.setItem('language', 'en');
     } else {
       this.translate.setDefaultLang('cn');
       this.translate.use('cn');
+      this.selectedLanguage = 'cn';
+      this.globalEventService.setLanguage(this.selectedLanguage);
       localStorage.setItem('language', 'cn');
     }
     this.ngOnInit();
   }
+
 }

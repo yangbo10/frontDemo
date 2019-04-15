@@ -75,7 +75,7 @@ export class LoginComponent implements OnInit {
         this.modalRef.hide();
       }, error => {
         Swal(
-          this.translate.instant('registerFail'),
+          this.translate.instant('createUserFail'),
           '',
           'error'
         );

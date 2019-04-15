@@ -40,6 +40,7 @@
   "logOutSuccess":"Logout successful",
   "logOutFail":"Logout failed",
 
+
   "diagnosisTitle":"Online diagnosis",
   "items":"questions",
   "nextStep":"Next",
@@ -83,12 +84,12 @@
   "save":"Save",
   "startUpload":"Start upload",
   "continueUpload":"Continue upload",
-  "questionName":"title",
-  "questionDetail":"detail",
+  "questionName":"Title",
+  "questionDetail":"Detail",
   "tag1":"Tag 1",
   "tag2":"Tag 2",
   "tag3":"Tag 3",
-  "operation":"operation",
+  "operation":"Operation",
   "deleteConfirm":"Confirm deletion?",
   "deleteDescribe":"The question will be removed from the question bank",
   "deleteSuccess":"Delete successful",
@@ -137,6 +138,7 @@
   "no":"No",
   "createFail":"Create failed",
   "testNameEmpty":"Test name should not be empty.",
+  "testNameExisted":"Test name already exists.",
   "detailDeleteAlert":"Deleting a question may result in the test not covering 11 dimensions, confirm deletion?",
   "detailUpdateAlert":"It will modify the corresponding questions in the question bank, confirm modification?",
 
@@ -156,7 +158,10 @@
   "generateFail":"Generate Fail",
   "deleteUserFail":"Delete Fail",
   "generateExisted":"Code existed, regenerate?",
-  "passwordNotValid":"password length should not shorter then 6",
+  "passwordNotValid":"Password length should not shorter then 6",
+  "passwordLengthValid":"Password length is valid.",
+  "userNameNotValid":"User name should not be white space.",
+
 
   "contactTitle":"Contact us",
   "tel":"Phone",

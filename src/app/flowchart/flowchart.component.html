@@ -7,7 +7,7 @@
   </ol>
 </section>
 
-<div *ngIf="pageNum == 0" class="box col-md-12" style="background-color: white !important; min-height: 400px">
+<div *ngIf="pageNum == 0" class="box col-md-12" style="background-color: white !important; min-height: 300px">
   <div class="col-md-12" style="margin:10px 30px 20px 10px; min-height: 20px;">
     <h2>{{'welcomeToFlowchart'|translate}}</h2>
   </div>
@@ -22,7 +22,7 @@
 
 
 <!--type = form-->
-<div name="type_form" *ngIf="currentType == 'form'" class="box col-md-12" style="background-color: white !important; min-height: 400px">
+<div name="type_form" *ngIf="currentType == 'form'" class="box col-md-12" style="background-color: white !important; min-height: 300px">
   <div class="col-md-12" style="margin:10px 30px 20px 10px; min-height: 20px;">
     <div class = "box-header">
       <b>{{pointItem.taskDefinitionKey}}.</b><b>{{pointItem.name}}</b>
@@ -35,133 +35,164 @@
     </div>
   </div>
   <div class="col-md-12" style="min-height: 50px">
-    <button class="btn btn-block btn-primary btn-lg" style="width: 20%; float: right; margin-bottom: 15px" (click)="goToNextStep()">{{'nextQuestion'|translate}}</button>
+    <button class="btn btn-block btn-primary btn-lg" style="width: 20%; margin-left: 25px;float: left; margin-bottom: 15px" (click)="goToNextStep()">{{'nextQuestion'|translate}}</button>
   </div>
 </div>
 
-<!--type = choose-->
-<div name="type_choose" *ngIf="currentType == 'question'" class="box col-md-12" style="background-color: white !important; min-height: 400px">
+<!--type = question-->
+<div name="type_choose" *ngIf="currentType == 'question'" class="box col-md-12" style="background-color: white !important; min-height: 300px">
   <div class="col-md-12" style="margin:10px 30px 20px 10px; min-height: 20px;">
     <div class = "box-header">
-      <b>{{pointItem.name}}.</b>
+      <b>{{pointItem.taskDefinitionKey}}.</b><b>{{pointItem.name}}</b>
     </div>
     <div class="form-group">
-      <ng-container *ngFor="let item of questionItem.answer.options">
+      <ng-container *ngFor="let item of pointItem.choice.question.answer.options">
         <label class = "box-header">
-          <input name= {{questionItem.name}} value={{item.optionId}} [ngModel]="chooseItem" type="radio" class="a-radio" [checked]="chooseItem == item.optionId">
+          <input name= {{questionItem.name}} value={{item.optionId}} [(ngModel)]="pointItem.form[1].value" type="radio" class="a-radio">
           <span class="b-radio"></span> {{item.name}}. {{item.detail}}
         </label>
       </ng-container>
     </div>
   </div>
   <div class="col-md-12" style="min-height: 50px">
-    <button class="btn btn-block btn-primary btn-lg" style="width: 20%; float: right; margin-bottom: 15px" (click)="goToNextPage()">{{'nextQuestion'|translate}}</button>
+    <button class="btn btn-block btn-primary btn-lg" style="width: 20%; float: left;margin-left: 25px; margin-bottom: 15px" (click)="goToNextStep()">{{'nextQuestion'|translate}}</button>
+  </div>
+</div>
+
+<!--type = line-->
+<div name="type_form" *ngIf="currentType == 'line'" class="box col-md-12" style="background-color: white !important; min-height: 300px">
+  <div class="col-md-12" style="margin:10px 30px 20px 10px; min-height: 20px;">
+    <div class = "box-header">
+      <b>{{pointItem.taskDefinitionKey}}.</b><b>{{pointItem.name}}</b>
+    </div>
+    <div class="form-group">
+      <div>请点击物料流上的节点</div>
+      <div *ngFor="let item of pointItem.form">
+        <div *ngIf="item.writable" class="form-group col-lg-4">
+          <label>{{item.name}}</label>
+          <input class="form-control" [(ngModel)]="item.value" placeholder={{item.name}} type="text">
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="col-md-12" style="min-height: 50px">
+    <button class="btn btn-block btn-primary btn-lg" style="width: 20%; float: left; margin-left: 25px;margin-bottom: 15px" (click)="goToNextStep()">{{'nextQuestion'|translate}}</button>
   </div>
 </div>
 
 
+<!--type = image-->
+<div name="type_form" *ngIf="currentType == 'image'" class="box col-md-12" style="background-color: white !important; min-height: 300px">
+  <div class="col-md-12" style="margin:10px 30px 20px 10px; min-height: 20px;">
+    <div class = "box-header">
+      <b>{{pointItem.taskDefinitionKey}}.</b><b>{{pointItem.name}}</b>
+    </div>
+    <div class="form-group">
+      <div *ngFor="let item of pointItem.form">
+        <div *ngIf="item.writable" class="form-group col-lg-4">
+          <label>{{item.name}}</label>
+          <input class="form-control" [(ngModel)]="item.value" placeholder={{item.name}} type="text">
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="col-md-12" style="min-height: 50px">
+    <button class="btn btn-block btn-primary btn-lg" style="width: 20%; float: left;margin-left: 25px; margin-bottom: 15px" (click)="goToNextStep()">{{'nextQuestion'|translate}}</button>
+  </div>
+</div>
+
+<!--type = highlight-->
+<div name="type_form" *ngIf="currentType == 'highlight'" class="box col-md-12" style="background-color: white !important; min-height: 300px">
+  <div class="col-md-12" style="margin:10px 30px 20px 10px; min-height: 20px;">
+    <div class = "box-header">
+      <b>{{pointItem.taskDefinitionKey}}.</b><b>{{pointItem.name}}</b>
+    </div>
+    <div class="form-group">
+      <div>请点击物料流上的节点</div>
+      <div *ngFor="let item of pointItem.form">
+        <div *ngIf="item.writable" class="form-group col-lg-4">
+          <label>{{item.name}}</label>
+          <input class="form-control" [(ngModel)]="item.value" placeholder={{item.name}} type="text">
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="col-md-12" style="min-height: 50px">
+    <button class="btn btn-block btn-primary btn-lg" style="width: 20%; float: left; margin-left: 25px;margin-bottom: 15px" (click)="goToNextStep()">{{'nextQuestion'|translate}}</button>
+  </div>
+</div>
+
+<!--type = vendorEnd-->
+<div name="type_form" *ngIf="currentType == 'vendorEnd'" class="box col-md-12" style="background-color: white !important; min-height: 300px">
+  <div class="col-md-12" style="margin:10px 30px 20px 10px; min-height: 20px;">
+    <h1>供应商端物流绘制完成，接下来进行工厂物料流绘制！</h1>
+  </div>
+  <div class="col-md-12" style="min-height: 50px">
+    <button class="btn btn-block btn-primary btn-lg" style="width: 20%; float: left; margin-left: 25px;margin-bottom: 15px" (click)="goToNextStep()">{{'nextQuestion'|translate}}</button>
+  </div>
+</div>
+
+<!--type = materialEnd-->
+<div name="type_form" *ngIf="currentType == 'materialEnd'" class="box col-md-12" style="background-color: white !important; min-height: 300px">
+  <div class="col-md-12" style="margin:10px 30px 20px 10px; min-height: 20px;">
+    <h1>物料流绘制完成，接下来进行信息流绘制！</h1>
+  </div>
+  <div class="col-md-12" style="min-height: 50px">
+    <button class="btn btn-block btn-primary btn-lg" style="width: 20%; float: left; margin-left: 25px;margin-bottom: 15px" (click)="goToNextStep()">{{'nextQuestion'|translate}}</button>
+  </div>
+</div>
+
+<!--type = flowchartEnd-->
+<div name="type_form" *ngIf="currentType == 'flowchartEnd'" class="box col-md-12" style="background-color: white !important; min-height: 300px">
+  <div class="col-md-12" style="margin:10px 30px 20px 10px; min-height: 20px;">
+    <h1>恭喜你，完成了所有物料流和信息流的绘制，工厂的诊断结果稍后给您呈现！</h1>
+  </div>
+</div>
+
 <!--flowchart board-->
 <div name="drawnChart" class="box col-md-12" style="float:left;overflow-x:scroll;overFlow-y: hidden;white-space:nowrap; background-color: white !important; height: 600px; min-width: 1000px">
   <div #firstRow class="row" style="height: 100px;">
-    <!--<div class="img-div" style="margin-left: 500px;background-image: url('../../assets/flowchart/product-info.png');">
-      <label style="margin-top: 90px"></label>
-    </div>-->
   </div>
+
   <div #secondRow class="row" style="height: 100px;">
-    <div class="img-div" style="margin-left: 500px;background-image: url('../../assets/flowchart/question-electrial.png');">
-    </div>
   </div>
 
   <div class="row" style="height: 200px">
-    <svg width="1000" height="200">
+    <svg #thirdRow width="1500" height="300">
 
-      <line x1="550" y1="0" x2="50" y2="190"
-            style="stroke:rgb(0,0,0);stroke-width:2px" marker-end="url(#arrow)"/>
-      <rect width="150" height="50" x="290" y="50"
-            style="fill:rgb(255,255,255);stroke-width:2px;stroke:rgb(0,0,0)"/>
-      <text x="290" y="70" fill="black">6个月预测订单 两周固定订单</text>
+      <!--<line *ngFor="let item of lineList" [attr.x1]="item.x1" [attr.y1]="item.y1"
+            [attr.x2]="item.x2" [attr.y2]="item.y2" style="stroke:rgb(0,0,0);stroke-width:2px" marker-end="url(#arrow)">
+      </line>-->
+      <polyline *ngFor="let item of lineList"
+                [attr.points]="item"
+                style="fill:none;stroke:#000000;stroke-width:2px" marker-end="url(#arrow)"></polyline>
 
-      <line x1="550" y1="0" x2="650" y2="190"
-            style="stroke:rgb(0,0,0);stroke-width:2px" marker-end="url(#arrow)"/>
+      <polyline *ngFor="let item of kanbanList"
+                [attr.points]="item"
+                style="fill:none;stroke:#1469d7;stroke-width:2px;stroke-dasharray: 5,5" marker-end="url(#arrow_blue)"></polyline>
 
-      <line x1="550" y1="0" x2="950" y2="190"
-            style="stroke:rgb(0,0,0);stroke-width:2px" marker-end="url(#arrow)"/>
+      <rect *ngFor="let item of rectList" width="100" height="30" [attr.x]="item.rectX" [attr.y]="item.rectY"
+            style="fill:rgb(255,255,255);stroke-width:2px;stroke:rgb(0,0,0);"></rect>
+      <rect *ngFor="let item of rectBlueList" width="80" height="40" [attr.x]="item.rectX" [attr.y]="item.rectY"
+            style="fill:rgb(255,255,255);stroke-width:2px;stroke:#1469d7;"></rect>
+      <text *ngFor="let item of rectList" width="80" [attr.x]="item.rectX" [attr.y]="item.rectY + 15" fill="black">{{item.text}}</text>
 
       <defs>
         <marker id="arrow" markerWidth="10" markerHeight="10" refX="0" refY="3" orient="auto" markerUnits="strokeWidth">
           <path d="M0,0 L0,6 L9,3 z" fill="#000" />
+        </marker>
+        <marker id="arrow_blue" markerWidth="10" markerHeight="10" refX="0" refY="3" orient="auto" markerUnits="strokeWidth">
+          <path d="M0,0 L0,6 L9,3 z" fill="#1469d7" />
         </marker>
       </defs>
 
     </svg>
   </div>
 
-  <div #materialFlow class="row" style="height: 100px;">
-    <!--<div class="img-div" style="background-image: url('../../assets/flowchart/form-external-source.png')">
-      aaaaa
-    </div>
-    <div class="img-div" style="background-image: url('../../assets/flowchart/connection-arrow-ship.png')">
-      每两天一次
-    </div>
-    <div class="img-div" style="background-image: url('../../assets/flowchart/question-inventory.png')">
-      500
-    </div>
-    <div class="img-div" style="background-image: url('../../assets/flowchart/connection-arrow.png')">
-      每周一次
-    </div>
-    <div class="img-div" style="background-image: url('../../assets/flowchart/question-supermarket.png')">
-      &nbsp;
-    </div>
-    <div class="img-div" style="background-image: url('../../assets/flowchart/form-process.png')">
-      ABCD
-    </div>
-    <div class="table-div" style="background-image: none">
-      <table class="table-bordered" style="font-size: 8px; width: 100px">
-        <thead>
-          <tr>
-            <th>预装</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td>设备利用率</td>
-            <td>85</td>
-            <td>%</td>
-          </tr>
-          <tr>
-            <td>POT</td>
-            <td>1200</td>
-            <td>分/天</td>
-          </tr>
-          <tr>
-            <td>设备利用率</td>
-            <td>85</td>
-            <td>%</td>
-          </tr>
-          <tr>
-            <td>POT</td>
-            <td>1200</td>
-            <td>分/天</td>
-          </tr>
-          <tr>
-            <td>POT</td>
-            <td>1200</td>
-            <td>分/天</td>
-          </tr>
-          <tr>
-            <td>POT</td>
-            <td>1200</td>
-            <td>分/天</td>
-          </tr>
-          <tr>
-            <td>POT</td>
-            <td>1200</td>
-            <td>分/天</td>
-          </tr>
-        </tbody>
-      </table>
-    </div>-->
+  <div #smallImgRow class="row" style="height: 0px;">
+  </div>
 
+  <div #materialFlow class="row" style="height: 100px;padding-top: 46px">
   </div>
 
   <div class="row" style="height: 100px">

@@ -195,7 +195,7 @@ export class ReportComponent implements OnInit {
     if (localStorage.getItem('user_name') === 'admin') {
       this.lineChartShowing = true;
     } else {
-      this.lineChartShowing = false;
+      this.lineChartShowing = true;
     }
     this.taskService.getAllResult(localStorage.getItem('user_name')).subscribe( res => {
       // @ts-ignore
@@ -213,8 +213,9 @@ export class ReportComponent implements OnInit {
           this.optionList.push(item.options[0].value * item.question.weight);
         }
 
-        this.taskService.getResultById(this.resultId, 1, 3).subscribe( data => {
-          this.taskService.getTagResult(this.resultId, 2).subscribe( data2 => {
+        this.taskService.getResultById(this.resultId, '2f8db6e8-4533-411b-8c34-0a3c2cddd6f3',
+          '803f897b-6ae2-4feb-93a8-d0fce67d805b').subscribe( data => {
+          this.taskService.getTagResult(this.resultId, '11c1b4b9-d066-4dcf-8449-89bc5610d8b1').subscribe( data2 => {
             // @ts-ignore
             const tagResult = JSON.parse(data2._body);
             if (tagResult.hasOwnProperty('Source')) {
@@ -698,6 +699,7 @@ export class ReportComponent implements OnInit {
         });
       } else if (result.dismiss === Swal.DismissReason.cancel) {
         this.showStaticImg = false;
+        this.ngOnInit();
       }
       this.exporting = false;
     });

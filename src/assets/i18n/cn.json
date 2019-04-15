@@ -138,6 +138,7 @@
   "no":"否",
   "createFail":"创建失败",
   "testNameEmpty":"试卷名称不得为空。",
+  "testNameExisted":"试卷名称已存在。",
   "detailDeleteAlert":"删除试题可能导致该试卷题目不能覆盖11维度，确认删除？",
   "detailUpdateAlert":"将会修改题库中对应试题，确认修改？",
 
@@ -158,6 +159,8 @@
   "deleteUserFail":"删除失败",
   "generateExisted":"激活码已存在，是否重新生成？",
   "passwordNotValid":"密码长度不得少于6位",
+  "passwordLengthValid":"密码长度合法",
+  "userNameNotValid":"用户名不可全为空格",
 
 
   "contactTitle":"联系我们",

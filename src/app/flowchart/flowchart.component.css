@@ -37,6 +37,27 @@
   background-repeat:no-repeat;
   background-size:100% 100%;
   -moz-background-size:100% 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.img2-div{
+  display: inline-block;
+  text-align:center;
+  height: 100px;
+  width: 100px;
+  background-repeat:no-repeat;
+  background-size:100% 100%;
+  -moz-background-size:100% 100%;
+}
+.img-small-div{
+  display: inline-block;
+  text-align:center;
+  height: 45px;
+  width: 45px;
+  background-repeat:no-repeat;
+  background-size:100% 100%;
+  -moz-background-size:100% 100%;
+  position: absolute;
 }
 .table-div{
   display: inline-block;
@@ -44,8 +65,43 @@
   height: 100px;
   width: 100px;
   background-repeat:no-repeat;
-  position: absolute;
   background-size:100% 100%;
   -moz-background-size:100% 100%;
 }
-
+.highlight{
+  width:100px;
+  height:100px;
+  border-radius: 10px;
+  -webkit-box-shadow: 0 0 5px rgb(0, 0, 0);
+}
+.img-div-start-end{
+  display: inline-block;
+  text-align:center;
+  height: 200px;
+  width: 100px;
+  line-height: 7;
+  margin-bottom: 100px;
+  background-repeat:no-repeat;
+  position: absolute;
+  bottom: 0px;
+  background-size:100% 50%;
+  -moz-background-size:100% 50%;
+}
+.img-div-rotate{
+  display: inline-block;
+  text-align:center;
+  height: 200px;
+  width: 100px;
+  line-height: 16;
+  margin-bottom: 100px;
+  background-repeat:no-repeat;
+  position: absolute;
+  bottom: 0px;
+  background-size:100% 100%;
+  -moz-background-size:100% 100%;
+}
+.text-length{
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
+}

@@ -15,9 +15,10 @@
            placeholder="{{'searchHolder'|translate}}" (keydown.enter)="onSearch(search.value)">
     <button class="btn btn-block btn-success btn-sm search-btn"
             (click)="onSearch(search.value)">{{'searchButton'|translate}}</button>
-    <button class="btn btn-block btn-success btn-sm"
+    <!--IOT permission, 去掉注册功能-->
+    <!--<button class="btn btn-block btn-success btn-sm"
             style="min-width: 80px; width: 6%; float: right; margin-bottom: 15px; margin-top: 0px; margin-left: 20px; margin-top: 5px;"
-            (click)="openCreateModal(template)">{{'createUserBtn'|translate}}</button>
+            (click)="openCreateModal(template)">{{'createUserBtn'|translate}}</button>-->
 
   </div>
 
@@ -45,12 +46,13 @@
       <div class="col-md-4">
         <label> {{'userName'|translate}}：</label>
         <input type="text" class="form-inline" required="required" placeholder="{{'userName'|translate}}" name="testName" [(ngModel)]="newUser.username">
+        <p *ngIf="newUser.username.trim().length == 0 && newUser.username.length > 0" style="color: #ff0000;"> {{'userNameNotValid'|translate}}</p>
       </div>
       <div class="col-md-4">
         <label> {{'password'|translate}}：</label>
         <input type="password" class="form-inline" required="required" placeholder="{{'password'|translate}}" name="testComment" [(ngModel)]="newUser.password">
         <p *ngIf="newUser.password.length < 6" style="color: #ff0000;"> {{'passwordNotValid'|translate}}</p>
-        <p *ngIf="newUser.password.length >= 6" style="color: #15ff2e;">密码长度合法</p>
+        <p *ngIf="newUser.password.length >= 6" style="color: #15ff2e;"> {{'passwordLengthValid'|translate}}</p>
       </div>
       <div class="col-md-4">
         <label> {{'email'|translate}}：</label>
@@ -58,15 +60,16 @@
       </div>
       <div class="col-md-4">
         <label> {{'role'|translate}}：</label>
-        <select [(ngModel)]="newUser.roles[0].roleId">
-          <option *ngFor="let item of roleList" [value]="item.roleId">{{item.roleName}}</option>
+        <select [(ngModel)]="selectedRoleName">
+          <option *ngFor="let item of roleList" [value]="item.roleName">{{item.roleName}}</option>
         </select>
       </div>
     </div>
   </div>
   <div class="modal-footer" style="border-top: none !important">
     <button class="btn btn-block btn-primary btn-sm" style="width: 100px; float: right;"
-            [disabled]="newUser.password.length < 6 || newUser.username.length == 0 || newUser.email.length == 0"
+            [disabled]="newUser.password.length < 6 || newUser.username.length == 0 ||
+             newUser.email.length == 0 || newUser.username.trim().length == 0"
             (click)="createNewUser()">{{'createBtn'|translate}}</button>
   </div>
 </ng-template>

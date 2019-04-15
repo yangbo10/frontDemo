@@ -7,6 +7,7 @@ import Swal from 'sweetalert2';
 import {Router} from '@angular/router';
 import {TranslateService} from 'ng2-translate';
 import {toNumber} from '../../../node_modules/ngx-bootstrap/timepicker/timepicker.utils';
+import {GlobalLanguageEventService} from '../service/global-language-event.service';
 
 @Component({
   selector: 'app-usermanage',
@@ -25,6 +26,21 @@ export class UsermanageComponent implements OnInit {
   selectUserId: number;
   currentCode: string;
   currentLength: number;
+  selectedRoleName: string;
+  public settings: any;
+  translateList = {
+    'userName': '',
+    'role': '',
+    'email': '',
+    'operation': '',
+    'activeIcon': '',
+    'editIcon': '',
+    'saveIcon': '',
+    'cancelIcon': '',
+    'deleteIcon': '',
+    'noDataMessage': ''
+  };
+
   public modalRef: BsModalRef;
   public roleList = [
     {'roleId': '21453f5a-a910-43a3-a33c-270606edfb5e', 'roleName': 'ADMIN'},
@@ -50,92 +66,131 @@ export class UsermanageComponent implements OnInit {
 
   constructor(public user: User, private taskService: TaskService,
               private modalService: BsModalService,
-              private translate: TranslateService) {
+              private translate: TranslateService,
+              private globalLanguageService: GlobalLanguageEventService) {
     this.selectTestId = 0;
     this.selectUserId = 0;
     this.currentLength = 0;
     this.currentCode = '';
+    this.selectedRoleName = 'USER';
     this.user.mainShowing = false;
     // @ts-ignore
     this.tableData = [];
     this.source = new LocalDataSource(this.tableData);
   }
 
-  public settings = {
-    columns: {
-      name: {
-        title: this.translate.instant('userName'),
-        filter: false,
-        editable: false
-      },
-      roles: {
-        title: this.translate.instant('role'),
-        filter: false,
-        editor: {
-          type: 'list',
-          config: {
-            list: [
-              { value: 'ADMIN', title: 'ADMIN' },
-              { value: 'MANAGER', title: 'MANAGER' },
-              { value: 'USER', title: 'USER' },
-              { value: 'ACTUATOR', title: 'ACTUATOR' }
-            ]
+  initTranslate() {
+    this.translate.get('userName').subscribe(label => {
+      this.translateList.userName = label;
+    });
+    this.translate.get('role').subscribe(label => {
+      this.translateList.role = label;
+    });
+    this.translate.get('email').subscribe(label => {
+      this.translateList.email = label;
+    });
+    this.translate.get('operation').subscribe(label => {
+      this.translateList.operation = label;
+    });
+    this.translate.get('activeIcon').subscribe(label => {
+      this.translateList.activeIcon = label;
+    });
+    this.translate.get('editIcon').subscribe(label => {
+      this.translateList.editIcon = label;
+    });
+    this.translate.get('saveIcon').subscribe(label => {
+      this.translateList.saveIcon = label;
+    });
+    this.translate.get('cancelIcon').subscribe(label => {
+      this.translateList.cancelIcon = label;
+    });
+    this.translate.get('deleteIcon').subscribe(label => {
+      this.translateList.deleteIcon = label;
+    });
+    this.translate.get('noDataMessage').subscribe(label => {
+      this.translateList.noDataMessage = label;
+      this.setTableSettings();
+    });
+  }
+
+  setTableSettings() {
+    this.settings = {
+      actions: {
+        columnTitle: '',
+        add: false,
+        position: 'right',
+        custom: [
+          {
+            name: 'assign',
+            title: '<i title="' + this.translateList.activeIcon +
+              '" class="fa fa-1x fa-legal" aria-hidden="true"></i><i>       </i>',
           }
+        ]
+      },
+      columns: {
+        name: {
+          title: this.translateList.userName,
+          filter: false,
+          editable: false
+        },
+        // IOT permission, 去掉角色显示
+        /*roles: {
+          title: this.translateList.role,
+          filter: false,
+          editor: {
+            type: 'list',
+            config: {
+              list: [
+                { value: 'ADMIN', title: 'ADMIN' },
+                { value: 'MANAGER', title: 'MANAGER' },
+                { value: 'USER', title: 'USER' },
+                { value: 'ACTUATOR', title: 'ACTUATOR' }
+              ]
+            }
+          }
+        },*/
+        email: {
+          title: this.translateList.email,
+          filter: false,
         }
       },
-      email: {
-        title: this.translate.instant('email'),
-        filter: false,
-      }
-    },
-    pager: {
-      display: true,
-      perPage: 15
-    },
+      pager: {
+        display: true,
+        perPage: 15
+      },
 
-    isPaginationEnabled: true,
-    isGlobalSearchActivated: true,
-    // itemsByPage: 10,
-    selectMode: 'multi',
+      isPaginationEnabled: true,
+      isGlobalSearchActivated: true,
+      // itemsByPage: 10,
+      selectMode: 'multi',
 
-    // mode: "external",
-    mode: 'inline',
-    actions: {
-      columnTitle: this.translate.instant('operation'),
-      add: false,
-      position: 'right',
-      custom: [
-        {
-          name: 'assign',
-          title: '<i title="' + this.translate.instant('activeIcon') +
-            '" class="fa fa-1x fa-legal" aria-hidden="true"></i><i>       </i>',
-        }
-      ]
-    },
-    edit: {
-      position: 'right',
-      editButtonContent: '<i title="' + this.translate.instant('editIcon') +
-        '" class="fa fa-1x fa-pencil-square" aria-hidden="true"></i><i>       </i>',
-      saveButtonContent: '<i title="' + this.translate.instant('saveIcon') +
-        '" class="fa fa-1x fa-check"></i><i>       </i>',
-      cancelButtonContent: '<i title="' + this.translate.instant('cancelIcon') +
-        '" class="fa fa-1x fa-close"></i>',
-      confirmSave: true
-    },
-    delete: {
-      position: 'right',
-      deleteButtonContent: '<i title="' + this.translate.instant('deleteIcon') +
-        '" class="fa fa-1x fa-trash" aria-hidden="true"></i>',
-      confirmDelete: true
-    },
-    attr: {
-      class: 'table table-striped table-bordered table-hover'
-    },
-    defaultStyle: true,
-    noDataMessage: this.translate.instant('noDataMessage')
-  };
+      // mode: "external",
+      mode: 'inline',
+      edit: {
+        position: 'right',
+        editButtonContent: '<i title="' + this.translateList.editIcon +
+          '" class="fa fa-1x fa-pencil-square" aria-hidden="true"></i><i>       </i>',
+        saveButtonContent: '<i title="' + this.translateList.saveIcon +
+          '" class="fa fa-1x fa-check"></i><i>       </i>',
+        cancelButtonContent: '<i title="' + this.translateList.cancelIcon +
+          '" class="fa fa-1x fa-close"></i>',
+        confirmSave: true
+      },
+      delete: {
+        position: 'right',
+        deleteButtonContent: '<i title="' + this.translateList.deleteIcon +
+          '" class="fa fa-1x fa-trash" aria-hidden="true"></i>',
+        confirmDelete: true
+      },
+      attr: {
+        class: 'table table-striped table-bordered table-hover'
+      },
+      defaultStyle: true,
+      noDataMessage: this.translateList.noDataMessage
+    };
+  }
 
-  ngOnInit() {
+  getData() {
     // @ts-ignore
     this.tableData = [];
     this.source = new LocalDataSource(this.tableData);
@@ -149,9 +204,10 @@ export class UsermanageComponent implements OnInit {
           item.id = this.userList[i].user.userId;
           item.name = this.userList[i].user.username;
           item.email = this.userList[i].user.email;
-          if (this.userList[i].user.roles.length > 0) {
+          // IOT permission, 去掉角色显示
+          /*if (this.userList[i].user.roles.length > 0) {
             item.roles = this.userList[i].user.roles[0].name;
-          }
+          }*/
           this.tableData.push(item);
         }
       }
@@ -171,7 +227,14 @@ export class UsermanageComponent implements OnInit {
         this.testList = [];
       }
     });
-
+  }
+  ngOnInit() {
+    this.initTranslate();
+    // LISTEN TO EVENTS
+    this.globalLanguageService.languageChanged.subscribe(item => {
+      this.initTranslate();
+    });
+    this.getData();
   }
 
   onSearch(query) {
@@ -193,9 +256,10 @@ export class UsermanageComponent implements OnInit {
             item.id = this.userList[i].user.userId;
             item.name = this.userList[i].user.username;
             item.comment = this.userList[i].user.comment;
-            if (this.userList[i].user.roles.length > 0) {
+            // IOT permission, 去掉角色显示
+            /*if (this.userList[i].user.roles.length > 0) {
               item.roles = this.userList[i].user.roles[0].name;
-            }
+            }*/
             this.tableData2.push(item);
           }
         }
@@ -262,7 +326,6 @@ export class UsermanageComponent implements OnInit {
         }
         break;
       }
-      break;
     }
     return roleIdSet;
   }
@@ -321,6 +384,7 @@ export class UsermanageComponent implements OnInit {
 
   openCreateModal(template: TemplateRef<any>) {
     this.modalRef = this.modalService.show(template, {class: 'modal-lg create-model'});
+    this.selectedRoleName = 'USER';
     this.newUser = new User();
   }
 
@@ -331,11 +395,7 @@ export class UsermanageComponent implements OnInit {
   }
 
   createNewUser() {
-    const maxRoleId = this.newUser.roles[0].roleId;
-    this.newUser.roles = [];
-    for ( let i = 1; i <= maxRoleId; i++ ) {
-      this.newUser.roles.push({'roleId': i});
-    }
+    this.newUser.roles = this.getRoleIdByName(this.selectedRoleName);
     console.log(this.newUser);
     Swal({
       title:  this.translate.instant('createConfirm'),
@@ -391,27 +451,51 @@ export class UsermanageComponent implements OnInit {
   }
 
   generateCode() {
-    this.taskService.generateActiveCode(this.param).subscribe( res => {
+    this.taskService.getTestById(this.param.testIds[0]).subscribe( data => {
       // @ts-ignore
-      const codeJson = JSON.parse(res._body);
-      console.log(codeJson);
-      if (codeJson.hasOwnProperty('license')) {
-        // @ts-ignore
-        this.currentCode = codeJson.license.licenceKey;
-        Swal(
-          this.translate.instant('generateSuccess'),
-          this.translate.instant('generateDetail') + this.currentCode,
-          'success'
-        );
-        this.modalRef.hide();
-      } else {
-        // @ts-ignore
-        Swal.fire({
-          title: this.translate.instant('generateFail'),
-          type: 'error',
-          showConfirmButton: true,
-          timer: 3000
-        });
+      const testJson = JSON.parse(data._body);
+      if (testJson.hasOwnProperty('_embedded')) {
+        if (testJson._embedded.tests[0].test.questions.length > 0) {
+          this.taskService.generateActiveCode(this.param).subscribe( res => {
+            // @ts-ignore
+            const codeJson = JSON.parse(res._body);
+            console.log(codeJson);
+            if (codeJson.hasOwnProperty('license')) {
+              // @ts-ignore
+              this.currentCode = codeJson.license.licenceKey;
+              Swal(
+                this.translate.instant('generateSuccess'),
+                this.translate.instant('generateDetail') + this.currentCode,
+                'success'
+              );
+              this.modalRef.hide();
+            } else {
+              // @ts-ignore
+              Swal.fire({
+                title: this.translate.instant('generateFail'),
+                type: 'error',
+                showConfirmButton: true,
+                timer: 3000
+              });
+            }
+          }, error => {
+            // @ts-ignore
+            Swal.fire({
+              title: this.translate.instant('generateFail'),
+              type: 'error',
+              showConfirmButton: true,
+              timer: 3000
+            });
+          });
+        } else {
+          // @ts-ignore
+          Swal.fire({
+            title: this.translate.instant('testZeroAlert'),
+            type: 'error',
+            showConfirmButton: true,
+            timer: 3000
+          });
+        }
       }
     }, error => {
       // @ts-ignore
@@ -422,7 +506,5 @@ export class UsermanageComponent implements OnInit {
         timer: 3000
       });
     });
-
   }
-
 }

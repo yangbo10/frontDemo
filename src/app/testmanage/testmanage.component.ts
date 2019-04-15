@@ -7,6 +7,7 @@ import Swal from 'sweetalert2';
 import {Router} from '@angular/router';
 import {TranslateService} from 'ng2-translate';
 import {UploaderOptions, UploadFile, UploadInput, UploadOutput} from 'ngx-uploader';
+import {GlobalLanguageEventService} from '../service/global-language-event.service';
 
 const tr = document.createElement('tr');
 const aUpdate  =  tr.querySelector('a.bg-color-blue');
@@ -18,6 +19,7 @@ const aUpdate  =  tr.querySelector('a.bg-color-blue');
 })
 export class TestmanageComponent implements OnInit {
   testList: [any];
+  testNameList: [any];
   tableData: [any];
   tableData2: [any];
   source: LocalDataSource;
@@ -32,13 +34,30 @@ export class TestmanageComponent implements OnInit {
   uploadDone: boolean;
   files: UploadFile[];
   options: UploaderOptions;
+  settings: any;
+  detailSettings: any;
+  translateList = {
+    'questionIndex': '',
+    'questionName': '',
+    'questionDetail': '',
+    'testName': '',
+    'testComment': '',
+    'operation': '',
+    'detailIcon': '',
+    'editIcon': '',
+    'saveIcon': '',
+    'cancelIcon': '',
+    'deleteIcon': '',
+    'noDataMessage': ''
+  };
   @ViewChild('detailTemplate') detailTemplate: TemplateRef<any>;
   @ViewChild('mainTable') mainTable: TemplateRef<any>;
 
   constructor(public user: User, private taskService: TaskService,
               private modalService: BsModalService,
               private router: Router,
-              private translate: TranslateService) {
+              private translate: TranslateService,
+              private globalLanguageService: GlobalLanguageEventService) {
     this.testName = '';
     this.testComment = '';
     this.questionCount = 0;
@@ -47,116 +66,156 @@ export class TestmanageComponent implements OnInit {
     this.files = []; // local uploading files array
     // @ts-ignore
     this.tableData = [];
+    // @ts-ignore
+    this.testNameList = [];
     this.source = new LocalDataSource(this.tableData);
     this.uploadInput = new EventEmitter<UploadInput>();
     this.uploadDone = false;
     this.options = { concurrency: 1, maxUploads: 3 };
   }
 
-  public settings = {
-    columns: {
-      name: {
-        title: this.translate.instant('testName'),
-        filter: false,
-      },
-      comment: {
-        title: this.translate.instant('testComment'),
-        filter: false,
-      }
-    },
-    pager: {
-      display: true,
-      perPage: 15
-    },
+  initTranslate() {
+    this.translate.get('questionIndex').subscribe(label => {
+      this.translateList.questionIndex = label;
+    });
+    this.translate.get('questionName').subscribe(label => {
+      this.translateList.questionName = label;
+    });
+    this.translate.get('questionDetail').subscribe(label => {
+      this.translateList.questionDetail = label;
+    });
+    this.translate.get('testName').subscribe(label => {
+      this.translateList.testName = label;
+    });
+    this.translate.get('testComment').subscribe(label => {
+      this.translateList.testComment = label;
+    });
+    this.translate.get('operation').subscribe(label => {
+      this.translateList.operation = label;
+    });
+    this.translate.get('detailIcon').subscribe(label => {
+      this.translateList.detailIcon = label;
+    });
+    this.translate.get('editIcon').subscribe(label => {
+      this.translateList.editIcon = label;
+    });
+    this.translate.get('saveIcon').subscribe(label => {
+      this.translateList.saveIcon = label;
+    });
+    this.translate.get('cancelIcon').subscribe(label => {
+      this.translateList.cancelIcon = label;
+    });
+    this.translate.get('deleteIcon').subscribe(label => {
+      this.translateList.deleteIcon = label;
+    });
+    this.translate.get('noDataMessage').subscribe(label => {
+      this.translateList.noDataMessage = label;
+      this.setTableSettings();
+    });
+  }
 
-    isPaginationEnabled: true,
-    isGlobalSearchActivated: true,
-    // itemsByPage: 10,
-    selectMode: 'multi',
+  setTableSettings() {
+    this.settings = {
+        columns: {
+          name: {
+            title: this.translateList.testName,
+            filter: false,
+          },
+          comment: {
+            title: this.translateList.testComment,
+            filter: false,
+          }
+        },
+        pager: {
+          display: true,
+          perPage: 15
+        },
+        isPaginationEnabled: true,
+        isGlobalSearchActivated: true,
+        // itemsByPage: 10,
+        selectMode: 'multi',
+        // mode: "external",
+        mode: 'inline',
+        actions: {
+          columnTitle: '',
+          add: false,
+          position: 'right',
+          custom: [
+            {
+              name: 'view',
+              title: '<i title="' + this.translateList.detailIcon +
+                '" class="fa fa-1x fa-eye" aria-hidden="true"></i><i>       </i>',
+            }
+          ]
+        },
+        edit: {
+          position: 'right',
+          editButtonContent: '<i title="' + this.translateList.editIcon +
+            '" class="fa fa-1x fa-pencil-square" aria-hidden="true"></i><i>       </i>',
+          saveButtonContent: '<i title="' + this.translateList.saveIcon +
+            '" class="fa fa-1x fa-check"></i><i>       </i>',
+          cancelButtonContent: '<i title="' + this.translateList.cancelIcon +
+            '" class="fa fa-1x fa-close"></i>',
+          confirmSave: true
+        },
+        delete: {
+          position: 'right',
+          deleteButtonContent: '<i title="' + this.translateList.deleteIcon +
+            '" class="fa fa-1x fa-trash" aria-hidden="true"></i>',
+          confirmDelete: true
+        },
+        attr: {
+          class: 'table table-striped table-bordered table-hover'
+        },
+        defaultStyle: true,
+        noDataMessage: this.translateList.noDataMessage
+      };
+    this.detailSettings = {
+        columns: {
+          name: {
+            title: this.translateList.questionName,
+            filter: false,
+          },
+          detail: {
+            title: this.translateList.questionDetail,
+            filter: false,
+          }
+        },
+        pager: {
+          display: true,
+          perPage: 10
+        },
+        isPaginationEnabled: true,
+        actions: {
+          columnTitle: this.translateList.operation,
+          add: false,
+          position: 'right'
+        },
+        edit: {
+          position: 'right',
+          editButtonContent: '<i title="' + this.translateList.editIcon +
+            '" class="fa fa-1x fa-pencil-square" aria-hidden="true"></i><i>       </i>',
+          saveButtonContent: '<i title="' + this.translateList.saveIcon +
+            '" class="fa fa-1x fa-check"></i><i>       </i>',
+          cancelButtonContent: '<i title="' + this.translateList.cancelIcon +
+            '" class="fa fa-1x fa-close"></i>',
+          confirmSave: true
+        },
+        delete: {
+          position: 'right',
+          deleteButtonContent: '<i title="' + this.translateList.deleteIcon +
+            '" class="fa fa-1x fa-trash" aria-hidden="true"></i>',
+          confirmDelete: true
+        },
+        attr: {
+          class: 'table table-striped table-bordered table-hover'
+        },
+        defaultStyle: true,
+        noDataMessage: this.translateList.noDataMessage
+      };
+  }
 
-    // mode: "external",
-    mode: 'inline',
-    actions: {
-      columnTitle: this.translate.instant('operation'),
-      add: false,
-      position: 'right',
-      custom: [
-        {
-          name: 'view',
-          title: '<i title="' + this.translate.instant('detailIcon') +
-            '" class="fa fa-1x fa-eye" aria-hidden="true"></i><i>       </i>',
-        }
-      ]
-    },
-    edit: {
-      position: 'right',
-      editButtonContent: '<i title="' + this.translate.instant('editIcon') +
-        '" class="fa fa-1x fa-pencil-square" aria-hidden="true"></i><i>       </i>',
-      saveButtonContent: '<i title="' + this.translate.instant('saveIcon') +
-        '" class="fa fa-1x fa-check"></i><i>       </i>',
-      cancelButtonContent: '<i title="' + this.translate.instant('cancelIcon') +
-        '" class="fa fa-1x fa-close"></i>',
-      confirmSave: true
-    },
-    delete: {
-      position: 'right',
-      deleteButtonContent: '<i title="' + this.translate.instant('deleteIcon') +
-        '" class="fa fa-1x fa-trash" aria-hidden="true"></i>',
-      confirmDelete: true
-    },
-    attr: {
-      class: 'table table-striped table-bordered table-hover'
-    },
-    defaultStyle: true,
-    noDataMessage: this.translate.instant('noDataMessage')
-  };
-
-  public detailSettings = {
-    columns: {
-      name: {
-        title: this.translate.instant('questionName'),
-        filter: false,
-      },
-      detail: {
-        title: this.translate.instant('questionDetail'),
-        filter: false,
-      }
-    },
-    pager: {
-      display: true,
-      perPage: 10
-    },
-
-    isPaginationEnabled: true,
-    actions: {
-      columnTitle: this.translate.instant('operation'),
-      add: false,
-      position: 'right'
-    },
-    edit: {
-      position: 'right',
-      editButtonContent: '<i title="' + this.translate.instant('editIcon') +
-        '" class="fa fa-1x fa-pencil-square" aria-hidden="true"></i><i>       </i>',
-      saveButtonContent: '<i title="' + this.translate.instant('saveIcon') +
-        '" class="fa fa-1x fa-check"></i><i>       </i>',
-      cancelButtonContent: '<i title="' + this.translate.instant('cancelIcon') +
-        '" class="fa fa-1x fa-close"></i>',
-      confirmSave: true
-    },
-    delete: {
-      position: 'right',
-      deleteButtonContent: '<i title="' + this.translate.instant('deleteIcon') +
-        '" class="fa fa-1x fa-trash" aria-hidden="true"></i>',
-      confirmDelete: true
-    },
-    attr: {
-      class: 'table table-striped table-bordered table-hover'
-    },
-    defaultStyle: true,
-    noDataMessage: this.translate.instant('noDataMessage')
-  };
-
-  ngOnInit() {
+  getData() {
     // @ts-ignore
     this.tableData = [];
     this.source = new LocalDataSource(this.tableData);
@@ -170,6 +229,7 @@ export class TestmanageComponent implements OnInit {
           const item = {'id': '', 'name': '', 'comment': '', 'detail': []};
           item.id = this.testList[i].test.testId;
           item.name = this.testList[i].test.name;
+          this.testNameList.push(this.testList[i].test.name);
           item.comment = this.testList[i].test.comment;
           item.detail = this.testList[i].test.questions;
           this.tableData.push(item);
@@ -180,6 +240,15 @@ export class TestmanageComponent implements OnInit {
       this.source = new LocalDataSource(this.tableData);
       this.currentLength = this.tableData.length;
     });
+  }
+
+  ngOnInit() {
+    this.initTranslate();
+    // LISTEN TO EVENTS
+    this.globalLanguageService.languageChanged.subscribe(item => {
+      this.initTranslate();
+    });
+    this.getData();
 
   }
 
@@ -413,40 +482,50 @@ export class TestmanageComponent implements OnInit {
 
   createNewTest() {
     if (this.testName.trim() !== '') {
-      const newTestObj = {'name': this.testName, 'comment': this.testComment};
-      this.taskService.createTest(newTestObj).subscribe( res => {
-        this.modalRef.hide();
-        if (res.status >= 200) {
-          Swal({
-            title: this.translate.instant('createAlertTitle'),
-            text: this.translate.instant('createAlertDescribe'),
-            type: 'success',
-            showCancelButton: true,
-            confirmButtonText: this.translate.instant('yes'),
-            cancelButtonText: this.translate.instant('no')
-          }).then((result) => {
-            if (result.value) {
-              console.log('aaa');
-              this.router.navigate(['home/questionnaire']);
-            } else if (result.dismiss === Swal.DismissReason.cancel) {
-              this.ngOnInit();
-            }
-          });
-        } else {
-          // @ts-ignore
-          Swal.fire({
-            title: this.translate.instant('createFail'),
-            type: 'error',
-            showConfirmButton: true,
-            timer: 3000
-          });
-        }
-      });
+      // 如果试卷名已存在
+      if (this.testNameList.indexOf(this.testName) > -1) {
+        // @ts-ignore
+        Swal.fire({
+          title: this.translate.instant('testNameExisted'),
+          type: 'error',
+          showConfirmButton: true,
+          timer: 3000
+        });
+      } else {
+        const newTestObj = {'name': this.testName, 'comment': this.testComment};
+        this.taskService.createTest(newTestObj).subscribe( res => {
+          this.modalRef.hide();
+          if (res.status >= 200) {
+            Swal({
+              title: this.translate.instant('createAlertTitle'),
+              text: this.translate.instant('createAlertDescribe'),
+              type: 'success',
+              showCancelButton: true,
+              confirmButtonText: this.translate.instant('yes'),
+              cancelButtonText: this.translate.instant('no')
+            }).then((result) => {
+              if (result.value) {
+                console.log('aaa');
+                this.router.navigate(['home/questionnaire']);
+              } else if (result.dismiss === Swal.DismissReason.cancel) {
+                this.ngOnInit();
+              }
+            });
+          } else {
+            // @ts-ignore
+            Swal.fire({
+              title: this.translate.instant('createFail'),
+              type: 'error',
+              showConfirmButton: true,
+              timer: 3000
+            });
+          }
+        });
+      }
     } else {
       // @ts-ignore
       Swal.fire({
-        title: this.translate.instant('createFail'),
-        message: this.translate.instant('testNameEmpty'),
+        title: this.translate.instant('testNameEmpty'),
         type: 'error',
         showConfirmButton: true,
         timer: 3000
