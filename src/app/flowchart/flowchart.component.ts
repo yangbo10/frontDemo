@@ -106,6 +106,25 @@ export class FlowchartComponent implements OnInit {
         this.pageNum ++;
         // console.log(JSON.stringify(this.pointItem));
       }
+    }, error => {
+      console.log('error msg:', error.status);
+      if (error.status === 401) {
+        // @ts-ignore
+        Swal.fire({
+          title: '登录信息过期，请重新登陆获取鉴权。',
+          type: 'error',
+          showConfirmButton: true,
+          timer: 3000
+        });
+      } else {
+        // @ts-ignore
+        Swal.fire({
+          title: '网络连接错误。',
+          type: 'error',
+          showConfirmButton: true,
+          timer: 3000
+        });
+      }
     });
   }
 
@@ -278,6 +297,25 @@ export class FlowchartComponent implements OnInit {
           }
           this.questionDone = false;
         }
+      }, error => {
+        console.log('error msg:', error.status);
+        if (error.status === 401) {
+          // @ts-ignore
+          Swal.fire({
+            title: '登录信息过期，请重新登陆获取鉴权。',
+            type: 'error',
+            showConfirmButton: true,
+            timer: 3000
+          });
+        } else {
+          // @ts-ignore
+          Swal.fire({
+            title: '网络连接错误。',
+            type: 'error',
+            showConfirmButton: true,
+            timer: 3000
+          });
+        }
       });
     }
   }
@@ -290,7 +328,10 @@ export class FlowchartComponent implements OnInit {
       'url("../../assets/flowchart/' + imgName + '.png")');
     this.renderer.setAttribute(div, 'id', pointId);
     // 计算出小图标的X轴位置
-    const smallImgX = (this.materialPointList.indexOf(this.selectedPointId) * 100).toString() + 'px';
+    let smallImgX = (this.materialPointList.indexOf(this.selectedPointId) * 100).toString() + 'px';
+    if (imgName === 'question-leveling') {
+      smallImgX = (this.materialPointList.indexOf(this.selectedPointId) * 100 + 50).toString() + 'px';
+    }
     switch (rowNum) {
       case '1':
         this.renderer.addClass(div, 'img-div');
@@ -352,8 +393,8 @@ export class FlowchartComponent implements OnInit {
               showConfirmButton: true,
               timer: 3000
             });
-            if (this.selectedPointId !== '') {
-              // 如果已经存在了一个已选节点，则给第二个已选节点赋值
+            if (this.selectedPointId !== '' && this.pointItem.config[1].value === 'connection-kanban') {
+              // 看板回流这题如果已经存在了一个已选节点，则给第二个已选节点赋值
               this.selectedSecondPointId = pointId;
             } else {
               this.selectedPointId = pointId;
@@ -391,8 +432,8 @@ export class FlowchartComponent implements OnInit {
           showConfirmButton: true,
           timer: 3000
         });
-        if (this.selectedPointId !== '') {
-          // 如果已经存在了一个已选节点，则给第二个已选节点赋值
+        if (this.selectedPointId !== '' && this.pointItem.config[1].value === 'connection-kanban') {
+          // 看板回流这题如果已经存在了一个已选节点，则给第二个已选节点赋值
           this.selectedSecondPointId = pointId;
         } else {
           this.selectedPointId = pointId;
