@@ -13,6 +13,7 @@ import {TranslateService} from 'ng2-translate';
 import {TaskService} from '../service/taskService';
 import {SmalltableComponent} from '../smalltable/smalltable.component';
 import Swal from 'sweetalert2';
+import {Router} from '@angular/router';
 
 @Component({
   selector: 'app-flowchart',
@@ -53,7 +54,7 @@ export class FlowchartComponent implements OnInit {
               private translate: TranslateService,
               public viewContainerRef: ViewContainerRef,
               private componentFactoryResolver: ComponentFactoryResolver,
-              public elementRef: ElementRef) {
+              public elementRef: ElementRef, private router: Router) {
     this.user.mainShowing = false;
     this.pageNum = 0;
     this.templateId = 0;
@@ -73,6 +74,7 @@ export class FlowchartComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.initItems();
     // get templateId
     this.taskService.getTemplate().subscribe( data => {
       // @ts-ignore
@@ -86,8 +88,25 @@ export class FlowchartComponent implements OnInit {
         this.templateId = 0;
       }
     });
-
     this.smalltableComponentFactory = this.componentFactoryResolver.resolveComponentFactory(SmalltableComponent);
+  }
+
+  initItems() {
+    this.pageNum = 0;
+    this.templateId = 0;
+    this.questionDone = false;
+    this.inputFilled = false;
+    this.questionItem = {
+    };
+    this.formItem = {};
+    this.materialPointList = [];
+    this.selectedPointId = '';
+    this.selectedSecondPointId = '';
+    this.controlPointId = '';
+    this.lineList = [];
+    this.rectList = [];
+    this.kanbanList = [];
+    this.rectBlueList = [];
   }
 
   startFlowchart() {
@@ -290,8 +309,10 @@ export class FlowchartComponent implements OnInit {
           if (bodyJson.length > 0) {
             this.pointItem = bodyJson[0];
             this.currentType = this.pointItem.config[0].value;
+            const configLength = this.pointItem.config.length;
             console.log(this.currentType);
-            console.log(JSON.stringify(this.pointItem));
+            console.log(this.pointItem.config[configLength - 1]);
+            // console.log(JSON.stringify(this.pointItem));
           } else {
             this.currentType = 'flowchartEnd';
           }
@@ -557,6 +578,23 @@ export class FlowchartComponent implements OnInit {
   generateHighlight(pointId) {
     const point = document.getElementById(pointId);
     this.renderer.addClass(point, 'highlight');
+  }
+
+  resetChart() {
+    Swal({
+      title: this.translate.instant('confirmResetChart'),
+      type: 'warning',
+      showCancelButton: true,
+      confirmButtonText: this.translate.instant('yes'),
+      cancelButtonText: this.translate.instant('no')
+    }).then((result) => {
+      if (result.value) {
+        // this.router.navigate(['home/flowchart']);
+        window.location.reload();
+      } else if (result.dismiss === Swal.DismissReason.cancel) {
+      }
+    });
+    // window.location.reload();
   }
 
 }

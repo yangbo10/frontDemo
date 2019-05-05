@@ -6,6 +6,13 @@ import {TranslateService} from 'ng2-translate';
 @Injectable()
 export class TaskService {
     TASK_URL = 'http://10.177.241.51:10000/service/';
+    TAG_1 = '2f8db6e8-4533-411b-8c34-0a3c2cddd6f3';
+    TAG_2 = '11c1b4b9-d066-4dcf-8449-89bc5610d8b1';
+    TAG_3 = '803f897b-6ae2-4feb-93a8-d0fce67d805b';
+    TAG_SOURCE = 'ad09f93d-e20c-4266-a524-0737040b709b';
+    TAG_MAKE = 'a23c5813-8a42-46f8-8f04-4cdd125fe048';
+    TAG_DELIVERY = '';
+
     constructor(public http: Http, private router: Router, private translate: TranslateService) { }
 
     createAuthorizationHeader(headers: Headers) {
@@ -26,10 +33,11 @@ export class TaskService {
               // @ts-ignore
               const userList = JSON.parse(data._body);
               const userId = userList.user.userId;
-              const userRole = userList.user.roles[0].name;
+              const userRole = this.findHighestRole(userList.user.roles);
               localStorage.setItem('user_id', userId);
               localStorage.setItem('user_role', userRole);
               console.log(localStorage);
+              console.log(userList.user.roles);
               this.router.navigate(['/home']);
             });
           } else {
@@ -53,6 +61,26 @@ export class TaskService {
         });
       });
       return 0;
+    }
+
+    findHighestRole(userRoleList) {
+      const roleList = [
+        'ADMIN',
+        'MANAGER',
+        'USER',
+        'ACTUATOR'
+      ];
+      let index = roleList.length - 1;
+      let temp;
+      for (const item of userRoleList) {
+        temp = roleList.indexOf(item.name);
+        // 找出最小的数组下标
+        if (temp < index) {
+          index = temp;
+        }
+      }
+      console.log('index:', index);
+      return roleList[index];
     }
 
     logOut() {
@@ -162,10 +190,10 @@ export class TaskService {
       });
     }
 
-    getAllResult(userName) {
+    getAllResult(userName, userId) {
       const headers = new Headers();
       this.createAuthorizationHeader(headers);
-      return this.http.get(this.TASK_URL + 'api/results' + '?search=' + 'username==' + userName,  {
+      return this.http.get(this.TASK_URL + 'api/results' + '?search=' + 'createdBy==' + userId,  {
         headers: headers
       });
     }
@@ -173,7 +201,7 @@ export class TaskService {
     getResultById(resultId, tagId1, tagId3) {
       const headers = new Headers();
       this.createAuthorizationHeader(headers);
-      return this.http.get(this.TASK_URL + 'api/results/' + resultId + '/' + tagId1 + '/' + tagId3 + '/' + '/summary',  {
+      return this.http.get(this.TASK_URL + 'api/results/' + resultId + '/' + tagId1 + '/' + tagId3 + '/summary',  {
         headers: headers
       });
     }

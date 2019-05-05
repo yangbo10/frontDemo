@@ -6,6 +6,10 @@
 
   </ol>
 </section>
+<!--
+<div>
+  <video src="../../assets/video/test.mp4" controls = "controls" height="1080px" width="1920px"></video>
+</div>-->
 
 <div *ngIf="pageNum == 0" class="box col-md-12" style="background-color: white !important; min-height: 300px">
   <div class="col-md-12" style="margin:10px 30px 20px 10px; min-height: 20px;">
@@ -28,6 +32,7 @@
       <b>{{pointItem.taskDefinitionKey}}.</b><b>{{pointItem.name}}</b>
     </div>
     <div class="form-group">
+      <p>{{pointItem.config[pointItem.config.length - 1].value}}</p>
       <div *ngFor="let item of pointItem.form" class="form-group col-lg-4">
         <label>{{item.name}}</label>
         <input class="form-control" [(ngModel)]="item.value"  placeholder={{item.name}} type="text">
@@ -46,6 +51,7 @@
       <b>{{pointItem.taskDefinitionKey}}.</b><b>{{pointItem.name}}</b>
     </div>
     <div class="form-group">
+      <p>{{pointItem.config[pointItem.config.length - 1].value}}</p>
       <ng-container *ngFor="let item of pointItem.choice.question.answer.options">
         <label class = "box-header">
           <input name= {{questionItem.name}} value={{item.optionId}} [(ngModel)]="pointItem.form[1].value" type="radio" class="a-radio">
@@ -67,6 +73,7 @@
     </div>
     <div class="form-group">
       <div>请点击物料流上的节点</div>
+      <p>{{pointItem.config[pointItem.config.length - 1].value}}</p>
       <div *ngFor="let item of pointItem.form">
         <div *ngIf="item.writable" class="form-group col-lg-4">
           <label>{{item.name}}</label>
@@ -88,6 +95,7 @@
       <b>{{pointItem.taskDefinitionKey}}.</b><b>{{pointItem.name}}</b>
     </div>
     <div class="form-group">
+      <p>{{pointItem.config[pointItem.config.length - 1].value}}</p>
       <div *ngFor="let item of pointItem.form">
         <div *ngIf="item.writable" class="form-group col-lg-4">
           <label>{{item.name}}</label>
@@ -152,6 +160,8 @@
 <!--flowchart board-->
 <div name="drawnChart" class="box col-md-12" style="float:left;overflow-x:scroll;overFlow-y: hidden;white-space:nowrap; background-color: white !important; height: 600px; min-width: 1000px">
   <div #firstRow class="row" style="height: 100px;">
+    <button class="btn btn-block btn-primary btn-sm" style="width: 50px; float: right;
+     margin-top: 10px;margin-right: 15px" (click)="resetChart()">{{'resetChart'|translate}}</button>
   </div>
 
   <div #secondRow class="row" style="height: 100px;">

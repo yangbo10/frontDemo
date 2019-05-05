@@ -10,17 +10,17 @@
   <div style="padding-top: 15px">
 
   </div>
-  <div class="col-md-12">
+  <!--IOT permission, 去掉注册，搜索功能-->
+  <!--<div class="col-md-12">
     <input #search [hidden]="false" class="search form-inline" style="width: 200px" type="text"
            placeholder="{{'searchHolder'|translate}}" (keydown.enter)="onSearch(search.value)">
     <button class="btn btn-block btn-success btn-sm search-btn"
             (click)="onSearch(search.value)">{{'searchButton'|translate}}</button>
-    <!--IOT permission, 去掉注册功能-->
-    <!--<button class="btn btn-block btn-success btn-sm"
-            style="min-width: 80px; width: 6%; float: right; margin-bottom: 15px; margin-top: 0px; margin-left: 20px; margin-top: 5px;"
-            (click)="openCreateModal(template)">{{'createUserBtn'|translate}}</button>-->
 
-  </div>
+    <button class="btn btn-block btn-success btn-sm"
+            style="min-width: 80px; width: 6%; float: right; margin-bottom: 15px; margin-top: 0px; margin-left: 20px; margin-top: 5px;"
+            (click)="openCreateModal(template)">{{'createUserBtn'|translate}}</button>
+  </div>-->
 
   <div class="table-responsive col-md-12">
     <ng2-smart-table #mainTable [settings]="settings" [source]="source"

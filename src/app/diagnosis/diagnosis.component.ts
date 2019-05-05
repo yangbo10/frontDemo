@@ -31,7 +31,6 @@ export class DiagnosisComponent implements OnInit {
   makeAnswerIdList: [any];
   deliveryAnswerIdList: [any];
   answerObj: any;
-  resultDemo: any;
   diagnosisPhase: number;
   options1: object;
   options2: object;
@@ -56,6 +55,7 @@ export class DiagnosisComponent implements OnInit {
   answerStorage: any;
   currentUserId: string;
   gotHistory: boolean;
+  currentResultId: string;
 
   constructor(@Inject(DOCUMENT) private document: Document,
               public user: User, private taskService: TaskService,
@@ -98,6 +98,7 @@ export class DiagnosisComponent implements OnInit {
     this.questionShowing = true;
     this.findFirstUnFinish = false;
     this.currentUserId = localStorage.getItem('user_id');
+    this.currentResultId = null;
     // @ts-ignore
     this.testList = [];
     // @ts-ignore
@@ -138,7 +139,10 @@ export class DiagnosisComponent implements OnInit {
         this.testList = this.testDemo._embedded.tests;
       });
     }
+    this.initOptions();
+  }
 
+  initOptions() {
     this.options1 = {
       title : {
         text: '',
@@ -285,7 +289,6 @@ export class DiagnosisComponent implements OnInit {
         }
       ]
     };
-
   }
 
   protected windowScrollEvent($event: Event) {
@@ -305,7 +308,6 @@ export class DiagnosisComponent implements OnInit {
       });
     } else {
       this.selectedTest = test;
-      this.diagnosisPhase++;
       // 答题历史纪录功能暂时关闭
       /*const storage = JSON.parse(localStorage.getItem('answerStorage_' + this.currentUserId));
       if (storage !== null) {
@@ -316,6 +318,74 @@ export class DiagnosisComponent implements OnInit {
           this.answerStorage = storage;
         }
       }*/
+
+      // 获取后台的上次历史记录
+      this.taskService.getAllResult(localStorage.getItem('user_name'), localStorage.getItem('user_id')).subscribe( res => {
+        // @ts-ignorenu
+        const rawResult = JSON.parse(res._body);
+        // verify empty
+        if (rawResult.hasOwnProperty('_embedded')) {
+          const rawResultList = rawResult._embedded.results;
+          let rawOptionList = null;
+          let rawQuestionList = null;
+          let rawResultObject = null;
+          // 找到该试卷最新一条记录
+          for (let i = rawResultList.length - 1; i >= 0; i --) {
+            if (rawResultList[i].result.test.testId === this.selectedTest.testId) {
+              rawOptionList = rawResultList[i].result.choices;
+              rawQuestionList = rawResultList[i].result.test.questions;
+              rawResultObject = rawResultList[i];
+              console.log('result index:', i);
+              break;
+            }
+          }
+          // 判断是否为不完整记录，是则载入此记录继续答题，否则新建一次答题记录
+          if (rawResultObject === null) {
+            console.log('1');
+            this.diagnosisPhase++;
+          } else {
+            if (rawOptionList.length === rawQuestionList.length) {
+              console.log('2');
+              this.diagnosisPhase++;
+            } else {
+              console.log('3');
+              // 载入答题历史记录
+              console.log('loading history.....');
+              console.log(rawOptionList);
+              this.currentResultId = rawResultObject.result.resultId;
+              console.log('last result id:', this.currentResultId);
+              for (const item of rawOptionList) {
+                const answerItem = {
+                  'options': [
+                    {
+                      'optionId': item.options[0].optionId
+                    }
+                  ],
+                  'question': {
+                    'questionId': item.question.questionId,
+                    'questionIndex': ''
+                  },
+                  'point': {
+                    'score': item.question.weight * item.options[0].value,
+                    'totalScore': item.question.weight * item.question.answer.value,
+                  }
+                };
+                this.answerList.push(answerItem);
+              }
+
+              this.diagnosisPhase++;
+            }
+          }
+        } else {
+          // @ts-ignore
+          Swal.fire({
+            title: this.translate.instant('noReport'),
+            type: 'error',
+            showConfirmButton: true,
+            timer: 3000
+          });
+        }
+      });
     }
   }
 
@@ -328,6 +398,7 @@ export class DiagnosisComponent implements OnInit {
         this.reChoose = true;
         // find index
         index = i;
+        console.log('rechoose index:', index);
         break;
       }
     }
@@ -363,10 +434,11 @@ export class DiagnosisComponent implements OnInit {
     } else {
       switch (this.diagnosisPhase) {
         case 1: this.sourceAnswerList[index] = val; break;
-        case 3: this.makeAnswerList[index - this.sourceAnswerList.length] = val; break;
-        case 5: this.deliveryAnswerList[index - this.sourceAnswerList.length - this.makeAnswerList.length] = val; break;
+        case 3: this.makeAnswerList[index - this.sourceList.length] = val; break;
+        case 5: this.deliveryAnswerList[index - this.sourceList.length - this.makeList.length] = val; break;
       }
     }
+    console.log(this.answerList);
     // 答题历史纪录功能暂时关闭
     /*this.answerStorage.testId = this.selectedTestId;
     this.answerStorage.answerList = this.answerList;
@@ -423,6 +495,25 @@ export class DiagnosisComponent implements OnInit {
     return;
   }
 
+  saveMiddleAnswer() {
+    this.answerObj = {'name': '', 'test': '', 'user': '', 'choices': '', 'resultId': ''};
+    this.answerObj.name = 'result of ' + this.testDemo._embedded.tests[0].test.name;
+    this.answerObj.test = {'testId': this.testDemo._embedded.tests[0].test.testId};
+    this.answerObj.user = {'userId': localStorage.getItem('user_id')};
+    this.answerObj.choices = this.answerList;
+    this.answerObj.resultId = this.currentResultId;
+
+    console.log('Commit middle answer to server.....please wait');
+    console.log(JSON.stringify(this.answerObj));
+    this.taskService.commitAnswer(this.answerObj).subscribe(data => {
+      // @ts-ignore
+      const resultDemo = JSON.parse(data._body);
+      this.currentResultId = resultDemo.result.resultId;
+      this.questionShowing = false;
+      console.log(resultDemo);
+    });
+  }
+
   sentAnswer() {
     if (this.answerList.length === this.questionList.length) {
       Swal({
@@ -444,11 +535,11 @@ export class DiagnosisComponent implements OnInit {
           console.log(JSON.stringify(this.answerObj));
           this.taskService.commitAnswer(this.answerObj).subscribe(data => {
             // @ts-ignore
-            this.resultDemo = JSON.parse(data._body);
-            this.finalLevel = this.cacualateLevel(this.resultDemo.result.score);
+            const resultDemo = JSON.parse(data._body);
+            this.finalLevel = this.cacualateLevel(resultDemo.result.score);
             this.questionShowing = false;
-            console.log(this.resultDemo);
-            localStorage.setItem('overallScore', this.resultDemo.result.score);
+            console.log(resultDemo);
+            localStorage.setItem('overallScore', resultDemo.result.score);
             // 提交所有回答后清空localStorage 并 跳转到结果报告模块
             /*localStorage.setItem('answerStorage_' + this.currentUserId, null);*/
             this.router.navigate(['home/report']);
@@ -518,6 +609,7 @@ export class DiagnosisComponent implements OnInit {
           }
         ]
       };
+      this.saveMiddleAnswer();
       this.diagnosisPhase++;
       /*this.answerStorage.currentPhase = this.diagnosisPhase + 1;
       localStorage.setItem('answerStorage_' + this.currentUserId, JSON.stringify(this.answerStorage));*/
@@ -578,6 +670,7 @@ export class DiagnosisComponent implements OnInit {
           }
         ]
       };
+      this.saveMiddleAnswer();
       this.diagnosisPhase++;
       /*this.answerStorage.currentPhase = this.diagnosisPhase + 1;
       localStorage.setItem('answerStorage_' + this.currentUserId, JSON.stringify(this.answerStorage));*/
@@ -638,6 +731,7 @@ export class DiagnosisComponent implements OnInit {
           }
         ]
       };
+      this.saveMiddleAnswer();
       this.diagnosisPhase++;
       // 在第三阶段阶段结果页面退出重连会清空本地存储
       localStorage.setItem('answerStorage_' + this.currentUserId, null);
@@ -657,9 +751,9 @@ export class DiagnosisComponent implements OnInit {
     this.taskService.verifyActiveCode(this.activeCode, this.selectedTestId ).subscribe( res => {
       this.questionList = this.selectedTest.questions;
       for ( const item of this.questionList) {
-        if (item.tags[1].tagId === 'ad09f93d-e20c-4266-a524-0737040b709b') {
+        if (item.tags[1].tagId === this.taskService.TAG_SOURCE) {
           this.sourceList.push(item);
-        } else if (item.tags[1].tagId === 'a23c5813-8a42-46f8-8f04-4cdd125fe048') {
+        } else if (item.tags[1].tagId === this.taskService.TAG_MAKE) {
           this.makeList.push(item);
         } else {
           this.deliveryList.push(item);
@@ -674,6 +768,24 @@ export class DiagnosisComponent implements OnInit {
       });
       this.activeCodeCorrect = true;
       // -----------  present history here ------------
+      if (this.currentResultId !== null) {
+        switch (this.answerList.length) {
+          case this.sourceList.length:
+            this.diagnosisPhase = 3;
+            break;
+          case this.sourceList.length + this.makeList.length:
+            this.diagnosisPhase = 5;
+            break;
+          default:
+            this.diagnosisPhase = 1;
+            // @ts-ignore
+            this.answerList = [];
+            break;
+        }
+      }
+      console.log('source:', this.sourceList);
+      console.log('make:', this.makeList);
+      console.log('delivery:', this.deliveryList);
       /*if (this.gotHistory) {
         this.diagnosisPhase = this.answerStorage.currentPhase;
         this.answerList = this.answerStorage.answerList;
@@ -683,14 +795,6 @@ export class DiagnosisComponent implements OnInit {
         this.sourceAnswerIdList = this.answerStorage.sourceAnswerIdList;
         this.makeAnswerIdList = this.answerStorage.makeAnswerIdList;
         this.deliveryAnswerIdList = this.answerStorage.deliveryAnswerIdList;
-        switch (this.diagnosisPhase) {
-          case 1: console.log('1');
-             break;
-          case 3: console.log('3');
-            break;
-          case 5: console.log('5');
-            break;
-        }
       }*/
     }, error => {
       // @ts-ignore

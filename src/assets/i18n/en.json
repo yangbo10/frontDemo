@@ -294,6 +294,7 @@
   "startFlowchart": "startDrawing",
   "nextQuestion": "Next",
   "materialDrawn": "The material flow is drawn, and then the flow of information is drawn.",
-  "allFlowDrawn": "Congratulations, you have completed the drawing of all the material flow and information flow, and the factory diagnosis will be presented to you later."
-
+  "allFlowDrawn": "Congratulations, you have completed the drawing of all the material flow and information flow, and the factory diagnosis will be presented to you later.",
+  "resetChart": "Reset",
+  "confirmResetChart": "Do you want to reset this chart?"
 }

@@ -192,398 +192,38 @@ export class ReportComponent implements OnInit {
   }
 
   ngOnInit() {
-    if (localStorage.getItem('user_name') === 'admin') {
-      this.lineChartShowing = true;
-    } else {
-      this.lineChartShowing = true;
-    }
-    this.taskService.getAllResult(localStorage.getItem('user_name')).subscribe( res => {
+    this.lineChartShowing = true;
+    this.taskService.getAllResult(localStorage.getItem('user_name'), localStorage.getItem('user_id')).subscribe( res => {
       // @ts-ignore
       const rawResult = JSON.parse(res._body);
       // verify empty
       if (rawResult.hasOwnProperty('_embedded')) {
         const rawResultList = rawResult._embedded.results;
-        const rawOptionList = rawResultList[rawResultList.length - 1].result.choices;
-        this.resultId = rawResultList[rawResultList.length - 1].result.resultId;
-        this.overAllScore = rawResultList[rawResultList.length - 1].result.score;
-        this.overAllLevel = this.cacualateLevel(this.overAllScore);
-        this.finalLevel = this.cacualateOverallLevel(this.overAllScore);
-        this.optionList = [];
-        for ( const item of rawOptionList) {
-          this.optionList.push(item.options[0].value * item.question.weight);
-        }
-
-        this.taskService.getResultById(this.resultId, '2f8db6e8-4533-411b-8c34-0a3c2cddd6f3',
-          '803f897b-6ae2-4feb-93a8-d0fce67d805b').subscribe( data => {
-          this.taskService.getTagResult(this.resultId, '11c1b4b9-d066-4dcf-8449-89bc5610d8b1').subscribe( data2 => {
-            // @ts-ignore
-            const tagResult = JSON.parse(data2._body);
-            if (tagResult.hasOwnProperty('Source')) {
-              this.tagResultList.Source.level = this.cacualateLevel(tagResult.Source.normalized);
-              this.tagResultList.Source.normalized = tagResult.Source.normalized;
-            }
-            if (tagResult.hasOwnProperty('Make')) {
-              this.tagResultList.Make.level = this.cacualateLevel(tagResult.Make.normalized);
-              this.tagResultList.Make.normalized = tagResult.Make.normalized;
-            }
-            if (tagResult.hasOwnProperty('Delivery')) {
-              this.tagResultList.Delivery.level = this.cacualateLevel(tagResult.Delivery.normalized);
-              this.tagResultList.Delivery.normalized = tagResult.Delivery.normalized;
-            }
-            this.options7 = {
-              title: {
-                text: 'GSMD'
-              },
-              tooltip: {},
-              legend: {
-              },
-              radar: {
-                // shape: 'circle',
-                name: {
-                  textStyle: {
-                    color: '#fff',
-                    backgroundColor: '#999',
-                    borderRadius: 3,
-                    padding: [3, 5]
-                  }
-                },
-                indicator: [
-                  { name: 'General', max: 100},
-                  { name: 'Source', max: 100},
-                  { name: 'Make', max: 100},
-                  { name: 'Deliver', max: 100}
-                ],
-                center: ['50%', '50%'],
-                radius: '60%'
-              },
-              series: [{
-                name: this.translate.instant('score'),
-                type: 'radar',
-                // areaStyle: {normal: {}},
-                data : [
-                  {
-                    value : [this.overAllScore,
-                      this.tagResultList.Source.normalized,
-                      this.tagResultList.Make.normalized,
-                      this.tagResultList.Delivery.normalized]
-                  }
-                ],
-                label: {
-                  show: false
-                }
-              }]
-            };
-            }
-          );
-          // @ts-ignore
-          this.resultObjRaw = JSON.parse(data._body);
-          this.fullResultList.Enabler = this.resultObjRaw.Enabler;
-          this.fullResultList.Lean = this.resultObjRaw['Lean'];
-          this.fullResultList['I4.0'] = this.resultObjRaw['I4.0'];
-          this.fullResultList.Enabler.Standardization.level =
-            this.cacualateLevel(this.fullResultList.Enabler.Standardization.normalized);
-          this.fullResultList.Enabler['Associate Involvement'].level =
-            this.cacualateLevel(this.fullResultList.Enabler['Associate Involvement'].normalized);
-          this.fullResultList.Enabler['Transparent Processes'].level =
-            this.cacualateLevel(this.fullResultList.Enabler['Transparent Processes'].normalized);
-          this.fullResultList.Lean.Flexibility.level =
-            this.cacualateLevel(this.fullResultList.Lean.Flexibility.normalized);
-          this.fullResultList.Lean['Continuous Improvement'].level =
-            this.cacualateLevel(this.fullResultList.Lean['Continuous Improvement'].normalized);
-          this.fullResultList.Lean['Perfect Quality'].level =
-            this.cacualateLevel(this.fullResultList.Lean['Perfect Quality'].normalized);
-          this.fullResultList.Lean['Process Orientation'].level =
-            this.cacualateLevel(this.fullResultList.Lean['Process Orientation'].normalized);
-          this.fullResultList.Lean['Pull System'].level =
-            this.cacualateLevel(this.fullResultList.Lean['Pull System'].normalized);
-          this.fullResultList['I4.0'].Resource.level =
-            this.cacualateLevel(this.fullResultList['I4.0'].Resource.normalized);
-          this.fullResultList['I4.0'].Digitization.level =
-            this.cacualateLevel(this.fullResultList['I4.0'].Digitization.normalized);
-          this.fullResultList['I4.0'].Automation.level =
-            this.cacualateLevel(this.fullResultList['I4.0'].Automation.normalized);
-
-          console.log(this.fullResultList.Enabler);
-          console.log(this.fullResultList.Lean);
-          console.log(this.fullResultList['I4.0']);
-
-          this.simpleResultList.Enabler.total = this.fullResultList.Enabler['Associate Involvement'].total +
-            this.fullResultList.Enabler['Transparent Processes'].total + this.fullResultList.Enabler.Standardization.total;
-          this.simpleResultList.Enabler.actual = this.fullResultList.Enabler['Associate Involvement'].actual +
-            this.fullResultList.Enabler['Transparent Processes'].actual + this.fullResultList.Enabler.Standardization.actual;
-          this.simpleResultList.Enabler.normalized =
-            ((this.simpleResultList.Enabler.actual / this.simpleResultList.Enabler.total) * 100).toFixed(2);
-          this.simpleResultList.Enabler.level = this.cacualateLevel(this.simpleResultList.Enabler.normalized);
-
-          this.simpleResultList.Lean.total = this.fullResultList.Lean['Continuous Improvement'].total +
-            this.fullResultList.Lean['Perfect Quality'].total + this.fullResultList.Lean['Process Orientation'].total +
-            this.fullResultList.Lean['Pull System'].total + this.fullResultList.Lean.Flexibility.total;
-          this.simpleResultList.Lean.actual = this.fullResultList.Lean['Continuous Improvement'].actual +
-            this.fullResultList.Lean['Perfect Quality'].actual + this.fullResultList.Lean['Process Orientation'].actual +
-            this.fullResultList.Lean['Pull System'].actual + this.fullResultList.Lean.Flexibility.actual;
-          this.simpleResultList.Lean.normalized =
-            ((this.simpleResultList.Lean.actual / this.simpleResultList.Lean.total) * 100).toFixed(2);
-          this.simpleResultList.Lean.level = this.cacualateLevel(this.simpleResultList.Lean.normalized);
-
-          this.simpleResultList['I4.0'].total = this.fullResultList['I4.0'].Resource.total +
-            this.fullResultList['I4.0'].Digitization.total + this.fullResultList['I4.0'].Automation.total;
-          this.simpleResultList['I4.0'].actual = this.fullResultList['I4.0'].Resource.actual +
-            this.fullResultList['I4.0'].Digitization.actual + this.fullResultList['I4.0'].Automation.actual;
-          this.simpleResultList['I4.0'].normalized =
-            ((this.simpleResultList['I4.0'].actual / this.simpleResultList['I4.0'].total) * 100).toFixed(2);
-          this.simpleResultList['I4.0'].level = this.cacualateLevel(this.simpleResultList['I4.0'].normalized);
-
-          console.log(this.fullResultList);
-          this.indexList = [];
-          for ( let i = 1; i <= this.optionList.length; i ++ ) {
-            this.indexList.push(i);
+        let rawOptionList = rawResultList[rawResultList.length - 1].result.choices;
+        let rawQuestionList = rawResultList[rawResultList.length - 1].result.test.questions;
+        let rawResultObject = rawResultList[rawResultList.length - 1];
+        // 找出最新的一条完整记录
+        for (let i = rawResultList.length - 1; i >= 0; i --) {
+          if (rawResultList[i].result.choices.length === rawResultList[i].result.test.questions.length) {
+            rawOptionList = rawResultList[i].result.choices;
+            rawQuestionList = rawResultList[i].result.test.questions;
+            rawResultObject = rawResultList[i];
+            console.log('result index:', i);
+            break;
           }
-          this.options1 = {
-            title: {
-              text: 'Enabler-STA Radar Graph'
-            },
-            tooltip: {},
-            legend: {
-            },
-            radar: {
-              // shape: 'circle',
-              name: {
-                textStyle: {
-                  color: '#fff',
-                  backgroundColor: '#999',
-                  borderRadius: 3,
-                  padding: [3, 5]
-                }
-              },
-              indicator: [
-                { name: 'Standardization', max: 100},
-                { name: 'Associate Involvement', max: 100},
-                { name: 'Transparent Processes', max: 100}
-              ],
-              center: ['50%', '55%'],
-              radius: '50%'
-            },
-            series: [{
-              name: this.translate.instant('score'),
-              type: 'radar',
-              // areaStyle: {normal: {}},
-              data: [
-                {
-                  value : [this.fullResultList.Enabler.Standardization.normalized,
-                    this.fullResultList.Enabler['Associate Involvement'].normalized,
-                    this.fullResultList.Enabler['Transparent Processes'].normalized]
-                }
-              ],
-              label: {
-                show: false
-              }
-            }]
-          };
-
-          this.options2 = {
-            title: {
-              text: 'Lean-CFPPP Radar Graph'
-            },
-            tooltip: {},
-            legend: {
-            },
-            radar: {
-              // shape: 'circle',
-              name: {
-                textStyle: {
-                  color: '#fff',
-                  backgroundColor: '#999',
-                  borderRadius: 3,
-                  padding: [3, 5]
-                }
-              },
-              indicator: [
-                { name: 'Perfect Quality', max: 100},
-                { name: 'Continuous Improvement', max: 100},
-                { name: 'Associate Involvement', max: 100},
-                { name: 'Pull System', max: 100},
-                { name: 'Process Orientation', max: 100}
-              ],
-              center: ['53%', '55%'],
-              radius: '48%'
-            },
-            series: [{
-              name: this.translate.instant('score'),
-              type: 'radar',
-              // areaStyle: {normal: {}},
-              data : [
-                {
-                  value : [this.fullResultList.Lean['Perfect Quality'].normalized,
-                    this.fullResultList.Lean['Continuous Improvement'].normalized,
-                    this.fullResultList.Enabler['Associate Involvement'].normalized,
-                    this.fullResultList.Lean['Pull System'].normalized,
-                    this.fullResultList.Lean['Process Orientation'].normalized]
-                }
-              ],
-              label: {
-                show: false
-              }
-            }]
-          };
-
-          this.options3 = {
-            title: {
-              text: 'I4.0-RDA Radar Graph'
-            },
-            tooltip: {},
-            legend: {
-            },
-            radar: {
-              // shape: 'circle',
-              name: {
-                textStyle: {
-                  color: '#fff',
-                  backgroundColor: '#999',
-                  borderRadius: 3,
-                  padding: [3, 5]
-                }
-              },
-              indicator: [
-                { name: 'Process Orientation', max: 100},
-                { name: 'Perfect Quality', max: 100},
-                { name: 'Continuous Improvement', max: 100}
-              ],
-              center: ['45%', '55%'],
-              radius: '50%'
-            },
-            series: [{
-              name: this.translate.instant('score'),
-              type: 'radar',
-              // areaStyle: {normal: {}},
-              data : [
-                {
-                  value : [this.fullResultList.Lean['Process Orientation'].normalized,
-                    this.fullResultList.Lean['Perfect Quality'].normalized,
-                    this.fullResultList.Lean['Continuous Improvement'].normalized]
-                }
-              ],
-              label: {
-                show: false
-              }
-            }]
-          };
-
-          this.options4 = {
-            title: {
-              text: 'Source-Enabler Lean I4.0 Radar Graph'
-            },
-            tooltip: {},
-            legend: {
-            },
-            radar: {
-              // shape: 'circle',
-              name: {
-                textStyle: {
-                  color: '#fff',
-                  backgroundColor: '#999',
-                  borderRadius: 3,
-                  padding: [3, 5]
-                }
-              },
-              indicator: [
-                { name: 'Enabler', max: 100},
-                { name: 'Lean', max: 100},
-                { name: 'I4.0', max: 100}
-              ],
-              center: ['50%', '55%'],
-              radius: '60%'
-            },
-            series: [{
-              name: this.translate.instant('score'),
-              type: 'radar',
-              // areaStyle: {normal: {}},
-              data : [
-                {
-                  value : [this.simpleResultList.Enabler.normalized,
-                    this.simpleResultList.Lean.normalized, this.simpleResultList['I4.0'].normalized]
-                }
-              ],
-              label: {
-                show: false
-              }
-            }]
-          };
-
-          this.options5 = {
-            title: {
-              text: '11 Dimensions Radar Graph'
-            },
-            tooltip: {},
-            legend: {
-            },
-            radar: {
-              // shape: 'circle',
-              name: {
-                textStyle: {
-                  color: '#fff',
-                  backgroundColor: '#999',
-                  borderRadius: 3,
-                  padding: [3, 5]
-                }
-              },
-              indicator: [
-                { name: 'Standardization', max: 100},
-                { name: 'Automation', max: 100},
-                { name: 'Digitization', max: 100},
-                { name: 'Resource', max: 100},
-                { name: 'Pull System', max: 100},
-                { name: 'Process Orientation', max: 100},
-                { name: 'Perfect Quality', max: 100},
-                { name: 'Flexibility', max: 100},
-                { name: 'Continuous Improvement', max: 100},
-                { name: 'Associate Involvement', max: 100},
-                { name: 'Transparent Processes', max: 100}
-              ],
-              center: ['41%', '50%'],
-              radius: '60%'
-            },
-            series: [{
-              name: this.translate.instant('score'),
-              type: 'radar',
-              // areaStyle: {normal: {}},
-              data : [
-                {
-                  value : [this.fullResultList.Enabler.Standardization.normalized, this.fullResultList['I4.0'].Automation.normalized,
-                    this.fullResultList['I4.0'].Digitization.normalized, this.fullResultList['I4.0'].Resource.normalized,
-                    this.fullResultList.Lean['Pull System'].normalized, this.fullResultList.Lean['Process Orientation'].normalized,
-                    this.fullResultList.Lean['Perfect Quality'].normalized, this.fullResultList.Lean.Flexibility.normalized,
-                    this.fullResultList.Lean['Continuous Improvement'].normalized,
-                    this.fullResultList.Enabler['Associate Involvement'].normalized,
-                    this.fullResultList.Enabler['Transparent Processes'].normalized]
-                }
-              ],
-              label: {
-                show: false
-              }
-            }]
-          };
-
-          this.options6 = {
-            title: {
-              text: 'Source Questions Status',
-              y: 0
-            },
-            xAxis: {
-              type: 'category',
-              data: this.indexList
-            },
-            yAxis: {
-              type: 'value'
-            },
-            series: [{
-              data: this.optionList,
-              type: 'line'
-            }]
-          };
-
-
-
-        });
+        }
+        // 判断结果列表最新一项是否为中间结果
+        if (rawOptionList.length < rawQuestionList.length) {
+          // @ts-ignore
+          Swal.fire({
+            title: this.translate.instant('noReport'),
+            type: 'error',
+            showConfirmButton: true,
+            timer: 3000
+          });
+        } else {
+          this.setScores(rawResultObject, rawOptionList);
+        }
       } else {
         // @ts-ignore
         Swal.fire({
@@ -594,7 +234,388 @@ export class ReportComponent implements OnInit {
         });
       }
     });
+  }
 
+  setScores (rawResultObject, rawOptionList) {
+    this.resultId = rawResultObject.result.resultId;
+    this.overAllScore = rawResultObject.result.score;
+    this.overAllLevel = this.cacualateLevel(this.overAllScore);
+    this.finalLevel = this.cacualateOverallLevel(this.overAllScore);
+    this.optionList = [];
+    for ( const item of rawOptionList) {
+      this.optionList.push(item.options[0].value * item.question.weight);
+    }
+    this.taskService.getResultById(this.resultId, this.taskService.TAG_1,
+      this.taskService.TAG_3).subscribe( data => {
+      this.taskService.getTagResult(this.resultId, this.taskService.TAG_2).subscribe( data2 => {
+        // @ts-ignore
+        const tagResult = JSON.parse(data2._body);
+        if (tagResult.hasOwnProperty('Source')) {
+          this.tagResultList.Source.level = this.cacualateLevel(tagResult.Source.normalized);
+          this.tagResultList.Source.normalized = tagResult.Source.normalized;
+        }
+        if (tagResult.hasOwnProperty('Make')) {
+          this.tagResultList.Make.level = this.cacualateLevel(tagResult.Make.normalized);
+          this.tagResultList.Make.normalized = tagResult.Make.normalized;
+        }
+        if (tagResult.hasOwnProperty('Delivery')) {
+          this.tagResultList.Delivery.level = this.cacualateLevel(tagResult.Delivery.normalized);
+          this.tagResultList.Delivery.normalized = tagResult.Delivery.normalized;
+        }
+      });
+      // @ts-ignore
+      this.resultObjRaw = JSON.parse(data._body);
+      this.fullResultList.Enabler = this.resultObjRaw.Enabler;
+      this.fullResultList.Lean = this.resultObjRaw['Lean'];
+      this.fullResultList['I4.0'] = this.resultObjRaw['I4.0'];
+      this.fullResultList.Enabler.Standardization.level =
+        this.cacualateLevel(this.fullResultList.Enabler.Standardization.normalized);
+      this.fullResultList.Enabler['Associate Involvement'].level =
+        this.cacualateLevel(this.fullResultList.Enabler['Associate Involvement'].normalized);
+      this.fullResultList.Enabler['Transparent Processes'].level =
+        this.cacualateLevel(this.fullResultList.Enabler['Transparent Processes'].normalized);
+      this.fullResultList.Lean.Flexibility.level =
+        this.cacualateLevel(this.fullResultList.Lean.Flexibility.normalized);
+      this.fullResultList.Lean['Continuous Improvement'].level =
+        this.cacualateLevel(this.fullResultList.Lean['Continuous Improvement'].normalized);
+      this.fullResultList.Lean['Perfect Quality'].level =
+        this.cacualateLevel(this.fullResultList.Lean['Perfect Quality'].normalized);
+      this.fullResultList.Lean['Process Orientation'].level =
+        this.cacualateLevel(this.fullResultList.Lean['Process Orientation'].normalized);
+      this.fullResultList.Lean['Pull System'].level =
+        this.cacualateLevel(this.fullResultList.Lean['Pull System'].normalized);
+      this.fullResultList['I4.0'].Resource.level =
+        this.cacualateLevel(this.fullResultList['I4.0'].Resource.normalized);
+      this.fullResultList['I4.0'].Digitization.level =
+        this.cacualateLevel(this.fullResultList['I4.0'].Digitization.normalized);
+      this.fullResultList['I4.0'].Automation.level =
+        this.cacualateLevel(this.fullResultList['I4.0'].Automation.normalized);
+
+      console.log(this.fullResultList.Enabler);
+      console.log(this.fullResultList.Lean);
+      console.log(this.fullResultList['I4.0']);
+
+      this.simpleResultList.Enabler.total = this.fullResultList.Enabler['Associate Involvement'].total +
+        this.fullResultList.Enabler['Transparent Processes'].total + this.fullResultList.Enabler.Standardization.total;
+      this.simpleResultList.Enabler.actual = this.fullResultList.Enabler['Associate Involvement'].actual +
+        this.fullResultList.Enabler['Transparent Processes'].actual + this.fullResultList.Enabler.Standardization.actual;
+      this.simpleResultList.Enabler.normalized =
+        ((this.simpleResultList.Enabler.actual / this.simpleResultList.Enabler.total) * 100).toFixed(2);
+      this.simpleResultList.Enabler.level = this.cacualateLevel(this.simpleResultList.Enabler.normalized);
+
+      this.simpleResultList.Lean.total = this.fullResultList.Lean['Continuous Improvement'].total +
+        this.fullResultList.Lean['Perfect Quality'].total + this.fullResultList.Lean['Process Orientation'].total +
+        this.fullResultList.Lean['Pull System'].total + this.fullResultList.Lean.Flexibility.total;
+      this.simpleResultList.Lean.actual = this.fullResultList.Lean['Continuous Improvement'].actual +
+        this.fullResultList.Lean['Perfect Quality'].actual + this.fullResultList.Lean['Process Orientation'].actual +
+        this.fullResultList.Lean['Pull System'].actual + this.fullResultList.Lean.Flexibility.actual;
+      this.simpleResultList.Lean.normalized =
+        ((this.simpleResultList.Lean.actual / this.simpleResultList.Lean.total) * 100).toFixed(2);
+      this.simpleResultList.Lean.level = this.cacualateLevel(this.simpleResultList.Lean.normalized);
+
+      this.simpleResultList['I4.0'].total = this.fullResultList['I4.0'].Resource.total +
+        this.fullResultList['I4.0'].Digitization.total + this.fullResultList['I4.0'].Automation.total;
+      this.simpleResultList['I4.0'].actual = this.fullResultList['I4.0'].Resource.actual +
+        this.fullResultList['I4.0'].Digitization.actual + this.fullResultList['I4.0'].Automation.actual;
+      this.simpleResultList['I4.0'].normalized =
+        ((this.simpleResultList['I4.0'].actual / this.simpleResultList['I4.0'].total) * 100).toFixed(2);
+      this.simpleResultList['I4.0'].level = this.cacualateLevel(this.simpleResultList['I4.0'].normalized);
+
+      console.log(this.fullResultList);
+      this.indexList = [];
+      for ( let i = 1; i <= this.optionList.length; i ++ ) {
+        this.indexList.push(i);
+      }
+      this.setOptions();
+    });
+  }
+
+  setOptions () {
+    this.options1 = {
+      title: {
+        text: 'Enabler-STA Radar Graph'
+      },
+      tooltip: {},
+      legend: {
+      },
+      radar: {
+        // shape: 'circle',
+        name: {
+          textStyle: {
+            color: '#fff',
+            backgroundColor: '#999',
+            borderRadius: 3,
+            padding: [3, 5]
+          }
+        },
+        indicator: [
+          { name: 'Standardization', max: 100},
+          { name: 'Associate Involvement', max: 100},
+          { name: 'Transparent Processes', max: 100}
+        ],
+        center: ['50%', '55%'],
+        radius: '50%'
+      },
+      series: [{
+        name: this.translate.instant('score'),
+        type: 'radar',
+        // areaStyle: {normal: {}},
+        data: [
+          {
+            value : [this.fullResultList.Enabler.Standardization.normalized,
+              this.fullResultList.Enabler['Associate Involvement'].normalized,
+              this.fullResultList.Enabler['Transparent Processes'].normalized]
+          }
+        ],
+        label: {
+          show: false
+        }
+      }]
+    };
+
+    this.options2 = {
+      title: {
+        text: 'Lean-CFPPP Radar Graph'
+      },
+      tooltip: {},
+      legend: {
+      },
+      radar: {
+        // shape: 'circle',
+        name: {
+          textStyle: {
+            color: '#fff',
+            backgroundColor: '#999',
+            borderRadius: 3,
+            padding: [3, 5]
+          }
+        },
+        indicator: [
+          { name: 'Perfect Quality', max: 100},
+          { name: 'Continuous Improvement', max: 100},
+          { name: 'Associate Involvement', max: 100},
+          { name: 'Pull System', max: 100},
+          { name: 'Process Orientation', max: 100}
+        ],
+        center: ['53%', '55%'],
+        radius: '48%'
+      },
+      series: [{
+        name: this.translate.instant('score'),
+        type: 'radar',
+        // areaStyle: {normal: {}},
+        data : [
+          {
+            value : [this.fullResultList.Lean['Perfect Quality'].normalized,
+              this.fullResultList.Lean['Continuous Improvement'].normalized,
+              this.fullResultList.Enabler['Associate Involvement'].normalized,
+              this.fullResultList.Lean['Pull System'].normalized,
+              this.fullResultList.Lean['Process Orientation'].normalized]
+          }
+        ],
+        label: {
+          show: false
+        }
+      }]
+    };
+
+    this.options3 = {
+      title: {
+        text: 'I4.0-RDA Radar Graph'
+      },
+      tooltip: {},
+      legend: {
+      },
+      radar: {
+        // shape: 'circle',
+        name: {
+          textStyle: {
+            color: '#fff',
+            backgroundColor: '#999',
+            borderRadius: 3,
+            padding: [3, 5]
+          }
+        },
+        indicator: [
+          { name: 'Process Orientation', max: 100},
+          { name: 'Perfect Quality', max: 100},
+          { name: 'Continuous Improvement', max: 100}
+        ],
+        center: ['45%', '55%'],
+        radius: '50%'
+      },
+      series: [{
+        name: this.translate.instant('score'),
+        type: 'radar',
+        // areaStyle: {normal: {}},
+        data : [
+          {
+            value : [this.fullResultList.Lean['Process Orientation'].normalized,
+              this.fullResultList.Lean['Perfect Quality'].normalized,
+              this.fullResultList.Lean['Continuous Improvement'].normalized]
+          }
+        ],
+        label: {
+          show: false
+        }
+      }]
+    };
+
+    this.options4 = {
+      title: {
+        text: 'Source-Enabler Lean I4.0 Radar Graph'
+      },
+      tooltip: {},
+      legend: {
+      },
+      radar: {
+        // shape: 'circle',
+        name: {
+          textStyle: {
+            color: '#fff',
+            backgroundColor: '#999',
+            borderRadius: 3,
+            padding: [3, 5]
+          }
+        },
+        indicator: [
+          { name: 'Enabler', max: 100},
+          { name: 'Lean', max: 100},
+          { name: 'I4.0', max: 100}
+        ],
+        center: ['50%', '55%'],
+        radius: '60%'
+      },
+      series: [{
+        name: this.translate.instant('score'),
+        type: 'radar',
+        // areaStyle: {normal: {}},
+        data : [
+          {
+            value : [this.simpleResultList.Enabler.normalized,
+              this.simpleResultList.Lean.normalized, this.simpleResultList['I4.0'].normalized]
+          }
+        ],
+        label: {
+          show: false
+        }
+      }]
+    };
+
+    this.options5 = {
+      title: {
+        text: '11 Dimensions Radar Graph'
+      },
+      tooltip: {},
+      legend: {
+      },
+      radar: {
+        // shape: 'circle',
+        name: {
+          textStyle: {
+            color: '#fff',
+            backgroundColor: '#999',
+            borderRadius: 3,
+            padding: [3, 5]
+          }
+        },
+        indicator: [
+          { name: 'Standardization', max: 100},
+          { name: 'Automation', max: 100},
+          { name: 'Digitization', max: 100},
+          { name: 'Resource', max: 100},
+          { name: 'Pull System', max: 100},
+          { name: 'Process Orientation', max: 100},
+          { name: 'Perfect Quality', max: 100},
+          { name: 'Flexibility', max: 100},
+          { name: 'Continuous Improvement', max: 100},
+          { name: 'Associate Involvement', max: 100},
+          { name: 'Transparent Processes', max: 100}
+        ],
+        center: ['41%', '50%'],
+        radius: '60%'
+      },
+      series: [{
+        name: this.translate.instant('score'),
+        type: 'radar',
+        // areaStyle: {normal: {}},
+        data : [
+          {
+            value : [this.fullResultList.Enabler.Standardization.normalized, this.fullResultList['I4.0'].Automation.normalized,
+              this.fullResultList['I4.0'].Digitization.normalized, this.fullResultList['I4.0'].Resource.normalized,
+              this.fullResultList.Lean['Pull System'].normalized, this.fullResultList.Lean['Process Orientation'].normalized,
+              this.fullResultList.Lean['Perfect Quality'].normalized, this.fullResultList.Lean.Flexibility.normalized,
+              this.fullResultList.Lean['Continuous Improvement'].normalized,
+              this.fullResultList.Enabler['Associate Involvement'].normalized,
+              this.fullResultList.Enabler['Transparent Processes'].normalized]
+          }
+        ],
+        label: {
+          show: false
+        }
+      }]
+    };
+
+    this.options6 = {
+      title: {
+        text: 'Source Questions Status',
+        y: 0
+      },
+      xAxis: {
+        type: 'category',
+        data: this.indexList
+      },
+      yAxis: {
+        type: 'value'
+      },
+      series: [{
+        data: this.optionList,
+        type: 'line'
+      }]
+    };
+    this.options7 = {
+      title: {
+        text: 'GSMD'
+      },
+      tooltip: {},
+      legend: {
+      },
+      radar: {
+        // shape: 'circle',
+        name: {
+          textStyle: {
+            color: '#fff',
+            backgroundColor: '#999',
+            borderRadius: 3,
+            padding: [3, 5]
+          }
+        },
+        indicator: [
+          { name: 'General', max: 100},
+          { name: 'Source', max: 100},
+          { name: 'Make', max: 100},
+          { name: 'Deliver', max: 100}
+        ],
+        center: ['50%', '50%'],
+        radius: '60%'
+      },
+      series: [{
+        name: this.translate.instant('score'),
+        type: 'radar',
+        // areaStyle: {normal: {}},
+        data : [
+          {
+            value : [this.overAllScore,
+              this.tagResultList.Source.normalized,
+              this.tagResultList.Make.normalized,
+              this.tagResultList.Delivery.normalized]
+          }
+        ],
+        label: {
+          show: false
+        }
+      }]
+    };
   }
 
   cacualateLevel(score) {

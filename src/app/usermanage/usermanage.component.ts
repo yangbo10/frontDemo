@@ -43,10 +43,10 @@ export class UsermanageComponent implements OnInit {
 
   public modalRef: BsModalRef;
   public roleList = [
-    {'roleId': '21453f5a-a910-43a3-a33c-270606edfb5e', 'roleName': 'ADMIN'},
-    {'roleId': '06183543-9af4-4ccc-8b80-43140ddc6a6d', 'roleName': 'MANAGER'},
-    {'roleId': 'bc7fafb8-5394-4f07-843e-f12d23aaca84', 'roleName': 'USER'},
-    {'roleId': '7680cdac-4f9d-4a47-9cb3-06154d4279ff', 'roleName': 'ACTUATOR'}
+    {'roleId': '', 'roleName': 'ADMIN'},
+    {'roleId': '', 'roleName': 'MANAGER'},
+    {'roleId': '', 'roleName': 'USER'},
+    {'roleId': '', 'roleName': 'ACTUATOR'}
   ];
   public param = {
     'modules': [
@@ -118,6 +118,9 @@ export class UsermanageComponent implements OnInit {
       actions: {
         columnTitle: '',
         add: false,
+        // 屏蔽edit功能
+        edit: false,
+        delete: false,
         position: 'right',
         custom: [
           {

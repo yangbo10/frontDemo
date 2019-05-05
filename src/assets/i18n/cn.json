@@ -293,6 +293,8 @@
   "startFlowchart": "开始价值流绘制",
   "nextQuestion": "下一步",
   "materialDrawn": "物料流绘制完成，接下来进行信息流绘制",
-  "allFlowDrawn": "恭喜你，完成了所有物料流和信息流的绘制，工厂的诊断结果稍后给您呈现"
+  "allFlowDrawn": "恭喜你，完成了所有物料流和信息流的绘制，工厂的诊断结果稍后给您呈现",
+  "resetChart": "重置",
+  "confirmResetChart": "确认重置？"
 
 }
