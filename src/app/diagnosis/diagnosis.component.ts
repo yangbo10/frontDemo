@@ -144,48 +144,30 @@ export class DiagnosisComponent implements OnInit {
 
   initOptions() {
     this.options1 = {
-      title : {
-        text: '',
-        subtext: '',
-        x: 'center'
-      },
-      tooltip : {
-        trigger: 'item',
-        formatter: '{a} <br/>{b} : {c} ({d}%)'
-      },
-      legend: {
-        orient: 'vertical',
-        left: 'left',
-        data: ['A', 'B']
-      },
       series : [
         {
           name: this.translate.instant('score'),
           type: 'pie',
-          radius : '55%',
-          center: ['50%', '60%'],
+          radius : ['50%', '70%'],
           data: this.pieData1,
-          label: {
-            normal: {
-              show: false
+          itemStyle : {
+            normal : {
+              label : {
+                show : false
+              },
+              labelLine : {
+                show : false
+              }
             },
-            emphasis: {
-              show: true
-            }
-          },
-          lableLine: {
-            normal: {
-              show: false
-            },
-            emphasis: {
-              show: true
-            }
-          },
-          itemStyle: {
-            emphasis: {
-              shadowBlur: 10,
-              shadowOffsetX: 0,
-              shadowColor: 'rgba(0, 0, 0, 0.5)'
+            emphasis : {
+              label : {
+                show : true,
+                position : 'center',
+                textStyle : {
+                  fontSize : '30',
+                  fontWeight : 'bold'
+                }
+              }
             }
           }
         }
@@ -193,48 +175,30 @@ export class DiagnosisComponent implements OnInit {
     };
 
     this.options2 = {
-      title : {
-        text: '',
-        subtext: '',
-        x: 'center'
-      },
-      tooltip : {
-        trigger: 'item',
-        formatter: '{a} <br/>{b} : {c} ({d}%)'
-      },
-      legend: {
-        orient: 'vertical',
-        left: 'left',
-        data: ['A', 'B']
-      },
       series : [
         {
           name: this.translate.instant('score'),
           type: 'pie',
-          radius : '55%',
-          center: ['50%', '60%'],
+          radius : ['50%', '70%'],
           data: this.pieData2,
-          label: {
-            normal: {
-              show: false
+          itemStyle : {
+            normal : {
+              label : {
+                show : false
+              },
+              labelLine : {
+                show : false
+              }
             },
-            emphasis: {
-              show: true
-            }
-          },
-          lableLine: {
-            normal: {
-              show: false
-            },
-            emphasis: {
-              show: true
-            }
-          },
-          itemStyle: {
-            emphasis: {
-              shadowBlur: 10,
-              shadowOffsetX: 0,
-              shadowColor: 'rgba(0, 0, 0, 0.5)'
+            emphasis : {
+              label : {
+                show : true,
+                position : 'center',
+                textStyle : {
+                  fontSize : '30',
+                  fontWeight : 'bold'
+                }
+              }
             }
           }
         }
@@ -242,48 +206,30 @@ export class DiagnosisComponent implements OnInit {
     };
 
     this.options3 = {
-      title : {
-        text: '',
-        subtext: '',
-        x: 'center'
-      },
-      tooltip : {
-        trigger: 'item',
-        formatter: '{a} <br/>{b} : {c} ({d}%)'
-      },
-      legend: {
-        orient: 'vertical',
-        left: 'left',
-        data: ['A', 'B']
-      },
       series : [
         {
           name: this.translate.instant('score'),
           type: 'pie',
-          radius : '55%',
-          center: ['50%', '60%'],
+          radius : ['50%', '70%'],
           data: this.pieData3,
-          label: {
-            normal: {
-              show: false
+          itemStyle : {
+            normal : {
+              label : {
+                show : false
+              },
+              labelLine : {
+                show : false
+              }
             },
-            emphasis: {
-              show: true
-            }
-          },
-          lableLine: {
-            normal: {
-              show: false
-            },
-            emphasis: {
-              show: true
-            }
-          },
-          itemStyle: {
-            emphasis: {
-              shadowBlur: 10,
-              shadowOffsetX: 0,
-              shadowColor: 'rgba(0, 0, 0, 0.5)'
+            emphasis : {
+              label : {
+                show : true,
+                position : 'center',
+                textStyle : {
+                  fontSize : '30',
+                  fontWeight : 'bold'
+                }
+              }
             }
           }
         }
@@ -354,6 +300,8 @@ export class DiagnosisComponent implements OnInit {
               console.log(rawOptionList);
               this.currentResultId = rawResultObject.result.resultId;
               console.log('last result id:', this.currentResultId);
+              // @ts-ignore
+              this.answerList = [];
               for (const item of rawOptionList) {
                 const answerItem = {
                   'options': [
@@ -378,12 +326,7 @@ export class DiagnosisComponent implements OnInit {
           }
         } else {
           // @ts-ignore
-          Swal.fire({
-            title: this.translate.instant('noReport'),
-            type: 'error',
-            showConfirmButton: true,
-            timer: 3000
-          });
+          this.diagnosisPhase++;
         }
       });
     }
@@ -575,35 +518,30 @@ export class DiagnosisComponent implements OnInit {
         {value: sourceTotal - sourceActual}
       ];
       this.options1 = {
-        title : {
-          text: '',
-          subtext: '',
-          x: 'center'
-        },
-        tooltip : {
-          trigger: 'item',
-          formatter: '{a} <br/>{b} : {c} ({d}%)'
-        },
         series : [
           {
-            name: 'Score',
+            name: this.translate.instant('score'),
             type: 'pie',
-            radius : '55%',
-            center: ['50%', '60%'],
+            radius : ['50%', '70%'],
             data: this.pieData1,
-            label: {
-              normal: {
-                show: false
+            itemStyle : {
+              normal : {
+                label : {
+                  show : false
+                },
+                labelLine : {
+                  show : false
+                }
               },
-              emphasis: {
-                show: false
-              }
-            },
-            itemStyle: {
-              emphasis: {
-                shadowBlur: 10,
-                shadowOffsetX: 0,
-                shadowColor: 'rgba(0, 0, 0, 0.5)'
+              emphasis : {
+                label : {
+                  show : true,
+                  position : 'center',
+                  textStyle : {
+                    fontSize : '30',
+                    fontWeight : 'bold'
+                  }
+                }
               }
             }
           }
@@ -636,35 +574,30 @@ export class DiagnosisComponent implements OnInit {
         {value: makeTotal - makeActual}
       ];
       this.options2 = {
-        title : {
-          text: '',
-          subtext: '',
-          x: 'center'
-        },
-        tooltip : {
-          trigger: 'item',
-          formatter: '{a} <br/>{b} : {c} ({d}%)'
-        },
         series : [
           {
-            name: 'Score',
+            name: this.translate.instant('score'),
             type: 'pie',
-            radius : '55%',
-            center: ['50%', '60%'],
+            radius : ['50%', '70%'],
             data: this.pieData2,
-            label: {
-              normal: {
-                show: false
+            itemStyle : {
+              normal : {
+                label : {
+                  show : false
+                },
+                labelLine : {
+                  show : false
+                }
               },
-              emphasis: {
-                show: false
-              }
-            },
-            itemStyle: {
-              emphasis: {
-                shadowBlur: 10,
-                shadowOffsetX: 0,
-                shadowColor: 'rgba(0, 0, 0, 0.5)'
+              emphasis : {
+                label : {
+                  show : true,
+                  position : 'center',
+                  textStyle : {
+                    fontSize : '30',
+                    fontWeight : 'bold'
+                  }
+                }
               }
             }
           }
@@ -697,35 +630,30 @@ export class DiagnosisComponent implements OnInit {
         {value: deliveryTotal - deliveryActual}
       ];
       this.options3 = {
-        title : {
-          text: '',
-          subtext: '',
-          x: 'center'
-        },
-        tooltip : {
-          trigger: 'item',
-          formatter: '{a} <br/>{b} : {c} ({d}%)'
-        },
         series : [
           {
-            name: 'Score',
+            name: this.translate.instant('score'),
             type: 'pie',
-            radius : '55%',
-            center: ['50%', '60%'],
+            radius : ['50%', '70%'],
             data: this.pieData3,
-            label: {
-              normal: {
-                show: false
+            itemStyle : {
+              normal : {
+                label : {
+                  show : false
+                },
+                labelLine : {
+                  show : false
+                }
               },
-              emphasis: {
-                show: false
-              }
-            },
-            itemStyle: {
-              emphasis: {
-                shadowBlur: 10,
-                shadowOffsetX: 0,
-                shadowColor: 'rgba(0, 0, 0, 0.5)'
+              emphasis : {
+                label : {
+                  show : true,
+                  position : 'center',
+                  textStyle : {
+                    fontSize : '30',
+                    fontWeight : 'bold'
+                  }
+                }
               }
             }
           }
@@ -750,6 +678,12 @@ export class DiagnosisComponent implements OnInit {
     this.selectedTestId = this.selectedTest.testId;
     this.taskService.verifyActiveCode(this.activeCode, this.selectedTestId ).subscribe( res => {
       this.questionList = this.selectedTest.questions;
+      // @ts-ignore
+      this.sourceList = [];
+      // @ts-ignore
+      this.makeList = [];
+      // @ts-ignore
+      this.deliveryList = [];
       for ( const item of this.questionList) {
         if (item.tags[1].tagId === this.taskService.TAG_SOURCE) {
           this.sourceList.push(item);
