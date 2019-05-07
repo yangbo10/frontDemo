@@ -1,7 +1,7 @@
 {
   "login":"Login",
   "register":"Register",
-  "userName":"Username",
+  "userName":"Account",
   "password":"Password",
   "userNameValid":"Username cannot be empty",
   "passwordValid":"Password cannot be empty",
@@ -12,6 +12,10 @@
   "OnlineSystem":"Online Diagnostic System",
   "LogOut":"Sign out",
   "switchLanguage":"中文",
+  "forgotPassward": "Forgot passward",
+  "connect us":"Connect us",
+  "Remember my login status": "Remember my login status",
+
   "sure":"Sure",
   "cancel":"Cancel",
   "canceled":"Cancelled",

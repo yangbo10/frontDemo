@@ -2,35 +2,55 @@
 <!-- Horizontal Form -->
 <div class="login-box">
 <div class="box box-info">
-  <div class="box-header with-border">
-    <h3 class="box-title">{{'login'|translate}}</h3>
-  </div><!-- /.box-header -->
+
   <!-- form start -->
   <form class="form-horizontal" name="form" (ngSubmit)="f.form.valid && login()" #f="ngForm" novalidate>
-    <div class="box-body">
-      <div class="form-group">
-        <label class="col-sm-2 control-label">{{'userName'|translate}}</label>
-        <div class="col-sm-10">
-          <input type="text" class="form-control" placeholder="{{'userName'|translate}}" name="username" [(ngModel)]="user.username" #username="ngModel" required>
-          <div *ngIf="f.submitted && !username.valid" class="help-block">{{' userNameValid'|translate}}</div>
+    <!-- login box -->
+    <div class="login_box center_align_div">
+      <div class="login_content_box">
+        <img id="login_logo" src="assets/images-new/index/u20.png"/>
+        <div class="center_align_div">
+          <div class="login_input_box">
+            <img class="login_input_img" src="assets/images-new/index/u57.svg"/>
+            <input style="line-height: normal !important;" id="username" type="text" value="" placeholder="{{'userName'|translate}}" name="username" [(ngModel)]="user.username" #username="ngModel" required />
+            <div *ngIf="f.submitted && !username.valid" >{{' userNameValid'|translate}}</div>
+          </div>
+        </div>
+        <div class="line_gap_20"></div>
+        <div class="center_align_div">
+          <div class="login_input_box">
+            <img class="login_input_img" src="assets/images-new/index/u55.svg"/>
+            <input style="line-height: normal !important;" id="password" type="password" value="" placeholder="{{'password'|translate}}" name="password" [(ngModel)]="user.password" #password="ngModel" required />
+            <div *ngIf="f.submitted && !password.valid" >{{'passwordValid'|translate}}</div>
+          </div>
+        </div>
+        <div class="line_gap_20"></div>
+        <div class="center_align_div">
+          <img class="login_remember_img" src="assets/images-new/index/u53.svg"/>
+          <!--<input type="checkbox" id="remember" class="login_remember_img" src="assets/images-new/index/u53.svg">-->
+          <div class="login_remember_text">{{'Remember my login status'|translate}}</div>
+
+        </div>
+        <div class="line_gap_20"></div>
+        <div class="center_align_div">
+          <button type="submit" class="login_submit_button">{{'login'|translate}}</button>
+        </div>
+        <div class="line_gap_10"></div>
+        <div class="center_align_div">
+          <div class="login_bottom_menu">
+            <div>{{'forgotPassward'|translate}}</div>
+            <div>{{'connect us'|translate}}</div>
+          </div>
         </div>
       </div>
-      <div class="form-group">
-        <label class="col-sm-2 control-label">{{'password'|translate}}</label>
-        <div class="col-sm-10">
-          <input type="password" class="form-control"  placeholder="{{'password'|translate}}" name="password" [(ngModel)]="user.password" #password="ngModel" required>
-          <div *ngIf="f.submitted && !password.valid" class="help-block">{{'passwordValid'|translate}}</div>
-        </div>
-      </div>
-    </div><!-- /.box-body -->
-    <div class="box-footer">
-      <!--<button type="button" class="btn btn-default"
-              (click)="openCreateModal(template)">{{'register'|translate}}</button>-->
-      <button type="submit" class="btn btn-info pull-right">{{'login'|translate}}</button>
-    </div><!-- /.box-footer -->
+    </div>
+    <!-- login box end -->
+
   </form>
 </div><!-- /.box -->
 </div>
+
+
 
 <ng-template #template>
   <form class="form-horizontal" name="form" (ngSubmit)="f.form.valid && registerUser()" #f="ngForm" novalidate>
