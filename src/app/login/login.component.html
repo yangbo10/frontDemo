@@ -1,7 +1,12 @@
-<button class="btn btn-default" (click)="changeLanguage()" style="margin-top: 8px; margin-right: 5px;float: right;">{{'switchLanguage'|translate}}</button>
-<!-- Horizontal Form -->
-<div class="login-box">
-<div class="box box-info">
+<div class="col-md-11"></div>
+<div class="col-md-1" style="min-width: 80px">
+  <div  class="col-md-6"></div>
+  <div class="col-md-6"><button class="btn btn-default" (click)="changeLanguage()" style="margin-top: 8px; margin-right: 5px;position: absolute">{{'switchLanguage'|translate}}</button>
+  </div>
+</div>
+  <!-- Horizontal Form -->
+
+
 
   <!-- form start -->
   <form class="form-horizontal" name="form" (ngSubmit)="f.form.valid && login()" #f="ngForm" novalidate>
@@ -47,8 +52,7 @@
     <!-- login box end -->
 
   </form>
-</div><!-- /.box -->
-</div>
+
 
 
 
@@ -98,3 +102,4 @@
     </div>
   </form>
 </ng-template>
+

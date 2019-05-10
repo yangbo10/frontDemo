@@ -4447,18 +4447,17 @@ td,th{
   line-height:40px;
 }
 .login_box{
-  height:615px;
-  -ms-overflow-x:hidden;
-  overflow-x:hidden;
-  -ms-overflow-y:hidden;
-  overflow-y:hidden;
-  background-image:url('../../images-new/index/u0_state0.png');
-  background-position:center top;
-  background-repeat:repeat-x;
-  background-attachment:scroll;
-  background-size:1451px 615px;
-  text-align:center;
-  margin-bottom:25px;
+  min-height: 900px;
+  -ms-overflow-x: hidden;
+  overflow-x: hidden;
+  -ms-overflow-y: hidden;
+  overflow-y: hidden;
+  background-image: url('../../images-new/index/u0_state0.png');
+  background-position: center top;
+  background-repeat: round;
+  background-attachment: scroll;
+  background-size: 1451px 615px;
+  text-align: center;
 }
 .login_content_box{
   width:70%;

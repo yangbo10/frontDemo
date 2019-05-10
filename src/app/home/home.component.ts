@@ -34,9 +34,9 @@ export class HomeComponent implements OnInit {
 }
 
   ngOnInit() {
-    if (localStorage.getItem('access_token') === null) {
+    /*if (localStorage.getItem('access_token') === null) {
       this.router.navigate(['']);
-    }
+    }*/
   }
 
   logOut() {
