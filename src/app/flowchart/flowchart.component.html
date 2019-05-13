@@ -1,21 +1,15 @@
-<section class="content-header">
-  <h1>
-    {{'flowchartMenu'|translate}}
-  </h1>
-  <ol class="breadcrumb">
 
-  </ol>
-</section>
 <!--
 <div>
   <video src="../../assets/video/test.mp4" controls = "controls" height="1080px" width="1920px"></video>
 </div>-->
 
-<div *ngIf="pageNum == 0" class="box col-md-12" style="background-color: white !important; min-height: 300px">
-  <div class="col-md-12" style="margin:10px 30px 20px 10px; min-height: 20px;">
+<div *ngIf="pageNum == 0" class="paper_section" style="min-height: 400px;overflow: auto;">
+  <div class="paper_title_box">{{'flowchartMenu'|translate}}</div>
+  <div class="col-md-12" style="margin-bottom:20px; min-height: 20px;">
     <h2>{{'welcomeToFlowchart'|translate}}</h2>
   </div>
-  <!--<div class="col-md-12" style="margin:10px 30px 20px 10px; min-height: 20px;">
+  <!--<div class="col-md-12" style="margin-bottom:20px; min-height: 20px;">
     <h3 style="width: 30%;margin: 0 auto;padding-bottom: 10px">{{'inputProductName'|translate}}</h3>
     <input class="form-control" [(ngModel)]="productName" style="height: 30px; width: 30% ;margin: 0 auto">
   </div>-->
@@ -26,8 +20,9 @@
 
 
 <!--type = form-->
-<div name="type_form" *ngIf="currentType == 'form'" class="box col-md-12" style="background-color: white !important; min-height: 300px">
-  <div class="col-md-12" style="margin:10px 30px 20px 10px; min-height: 20px;">
+<div name="type_form" *ngIf="currentType == 'form'" class="paper_section" style="min-height: 400px;overflow: auto;">
+  <div class="paper_title_box">{{'flowchartMenu'|translate}}</div>
+  <div class="col-md-12" style="margin-bottom:20px; min-height: 20px;">
     <div class = "box-header">
       <b>{{pointItem.taskDefinitionKey}}.</b><b>{{pointItem.name}}</b>
     </div>
@@ -40,13 +35,14 @@
     </div>
   </div>
   <div class="col-md-12" style="min-height: 50px">
-    <button class="btn btn-block btn-primary btn-lg" style="width: 20%; margin-left: 25px;float: left; margin-bottom: 15px" (click)="goToNextStep()">{{'nextQuestion'|translate}}</button>
+    <button class="btn btn-block btn-primary btn-lg" style="width: 20%; margin-left: 25px;float: left; margin-bottom: 15px" (click)="goToNextStep()" [disabled]="buttonDisabled">{{'nextQuestion'|translate}}</button>
   </div>
 </div>
 
 <!--type = question-->
-<div name="type_choose" *ngIf="currentType == 'question'" class="box col-md-12" style="background-color: white !important; min-height: 300px">
-  <div class="col-md-12" style="margin:10px 30px 20px 10px; min-height: 20px;">
+<div name="type_choose" *ngIf="currentType == 'question'" class="paper_section" style="min-height: 400px;overflow: auto;">
+  <div class="paper_title_box">{{'flowchartMenu'|translate}}</div>
+  <div class="col-md-12" style="margin-bottom:20px; min-height: 20px;">
     <div class = "box-header">
       <b>{{pointItem.taskDefinitionKey}}.</b><b>{{pointItem.name}}</b>
     </div>
@@ -61,13 +57,14 @@
     </div>
   </div>
   <div class="col-md-12" style="min-height: 50px">
-    <button class="btn btn-block btn-primary btn-lg" style="width: 20%; float: left;margin-left: 25px; margin-bottom: 15px" (click)="goToNextStep()">{{'nextQuestion'|translate}}</button>
+    <button class="btn btn-block btn-primary btn-lg" style="width: 20%; float: left;margin-left: 25px; margin-bottom: 15px" (click)="goToNextStep()" [disabled]="buttonDisabled">{{'nextQuestion'|translate}}</button>
   </div>
 </div>
 
 <!--type = line-->
-<div name="type_form" *ngIf="currentType == 'line'" class="box col-md-12" style="background-color: white !important; min-height: 300px">
-  <div class="col-md-12" style="margin:10px 30px 20px 10px; min-height: 20px;">
+<div name="type_form" *ngIf="currentType == 'line'" class="paper_section" style="min-height: 400px;overflow: auto;">
+  <div class="paper_title_box">{{'flowchartMenu'|translate}}</div>
+  <div class="col-md-12" style="margin-bottom:20px; min-height: 20px;">
     <div class = "box-header">
       <b>{{pointItem.taskDefinitionKey}}.</b><b>{{pointItem.name}}</b>
     </div>
@@ -83,14 +80,15 @@
     </div>
   </div>
   <div class="col-md-12" style="min-height: 50px">
-    <button class="btn btn-block btn-primary btn-lg" style="width: 20%; float: left; margin-left: 25px;margin-bottom: 15px" (click)="goToNextStep()">{{'nextQuestion'|translate}}</button>
+    <button class="btn btn-block btn-primary btn-lg" style="width: 20%; float: left; margin-left: 25px;margin-bottom: 15px" (click)="goToNextStep()" [disabled]="buttonDisabled">{{'nextQuestion'|translate}}</button>
   </div>
 </div>
 
 
 <!--type = image-->
-<div name="type_form" *ngIf="currentType == 'image'" class="box col-md-12" style="background-color: white !important; min-height: 300px">
-  <div class="col-md-12" style="margin:10px 30px 20px 10px; min-height: 20px;">
+<div name="type_form" *ngIf="currentType == 'image'" class="paper_section" style="min-height: 400px;overflow: auto;">
+  <div class="paper_title_box">{{'flowchartMenu'|translate}}</div>
+  <div class="col-md-12" style="margin-bottom:20px; min-height: 20px;">
     <div class = "box-header">
       <b>{{pointItem.taskDefinitionKey}}.</b><b>{{pointItem.name}}</b>
     </div>
@@ -105,13 +103,14 @@
     </div>
   </div>
   <div class="col-md-12" style="min-height: 50px">
-    <button class="btn btn-block btn-primary btn-lg" style="width: 20%; float: left;margin-left: 25px; margin-bottom: 15px" (click)="goToNextStep()">{{'nextQuestion'|translate}}</button>
+    <button class="btn btn-block btn-primary btn-lg" style="width: 20%; float: left;margin-left: 25px; margin-bottom: 15px" (click)="goToNextStep()" [disabled]="buttonDisabled">{{'nextQuestion'|translate}}</button>
   </div>
 </div>
 
 <!--type = highlight-->
-<div name="type_form" *ngIf="currentType == 'highlight'" class="box col-md-12" style="background-color: white !important; min-height: 300px">
-  <div class="col-md-12" style="margin:10px 30px 20px 10px; min-height: 20px;">
+<div name="type_form" *ngIf="currentType == 'highlight'" class="paper_section" style="min-height: 400px;overflow: auto;">
+  <div class="paper_title_box">{{'flowchartMenu'|translate}}</div>
+  <div class="col-md-12" style="margin-bottom:20px; min-height: 20px;">
     <div class = "box-header">
       <b>{{pointItem.taskDefinitionKey}}.</b><b>{{pointItem.name}}</b>
     </div>
@@ -126,44 +125,47 @@
     </div>
   </div>
   <div class="col-md-12" style="min-height: 50px">
-    <button class="btn btn-block btn-primary btn-lg" style="width: 20%; float: left; margin-left: 25px;margin-bottom: 15px" (click)="goToNextStep()">{{'nextQuestion'|translate}}</button>
+    <button class="btn btn-block btn-primary btn-lg" style="width: 20%; float: left; margin-left: 25px;margin-bottom: 15px" (click)="goToNextStep()" [disabled]="buttonDisabled">{{'nextQuestion'|translate}}</button>
   </div>
 </div>
 
 <!--type = vendorEnd-->
-<div name="type_form" *ngIf="currentType == 'vendorEnd'" class="box col-md-12" style="background-color: white !important; min-height: 300px">
-  <div class="col-md-12" style="margin:10px 30px 20px 10px; min-height: 20px;">
+<div name="type_form" *ngIf="currentType == 'vendorEnd'" class="paper_section" style="min-height: 400px;overflow: auto;">
+  <div class="paper_title_box">{{'flowchartMenu'|translate}}</div>
+  <div class="col-md-12" style="margin-bottom:20px; min-height: 20px;">
     <h1>供应商端物流绘制完成，接下来进行工厂物料流绘制！</h1>
   </div>
   <div class="col-md-12" style="min-height: 50px">
-    <button class="btn btn-block btn-primary btn-lg" style="width: 20%; float: left; margin-left: 25px;margin-bottom: 15px" (click)="goToNextStep()">{{'nextQuestion'|translate}}</button>
+    <button class="btn btn-block btn-primary btn-lg" style="width: 20%; float: left; margin-left: 25px;margin-bottom: 15px" (click)="goToNextStep()" [disabled]="buttonDisabled">{{'nextQuestion'|translate}}</button>
   </div>
 </div>
 
 <!--type = materialEnd-->
-<div name="type_form" *ngIf="currentType == 'materialEnd'" class="box col-md-12" style="background-color: white !important; min-height: 300px">
-  <div class="col-md-12" style="margin:10px 30px 20px 10px; min-height: 20px;">
+<div name="type_form" *ngIf="currentType == 'materialEnd'" class="paper_section" style="min-height: 400px;overflow: auto;">
+  <div class="paper_title_box">{{'flowchartMenu'|translate}}</div>
+  <div class="col-md-12" style="margin-bottom:20px; min-height: 20px;">
     <h1>物料流绘制完成，接下来进行信息流绘制！</h1>
   </div>
   <div class="col-md-12" style="min-height: 50px">
-    <button class="btn btn-block btn-primary btn-lg" style="width: 20%; float: left; margin-left: 25px;margin-bottom: 15px" (click)="goToNextStep()">{{'nextQuestion'|translate}}</button>
+    <button class="btn btn-block btn-primary btn-lg" style="width: 20%; float: left; margin-left: 25px;margin-bottom: 15px" (click)="goToNextStep()" [disabled]="buttonDisabled">{{'nextQuestion'|translate}}</button>
   </div>
 </div>
 
 <!--type = flowchartEnd-->
-<div name="type_form" *ngIf="currentType == 'flowchartEnd'" class="box col-md-12" style="background-color: white !important; min-height: 300px">
-  <div class="col-md-12" style="margin:10px 30px 20px 10px; min-height: 20px;">
+<div name="type_form" *ngIf="currentType == 'flowchartEnd'" class="paper_section" style="min-height: 400px;overflow: auto;">
+  <div class="paper_title_box">{{'flowchartMenu'|translate}}</div>
+  <div class="col-md-12" style="margin-bottom:20px; min-height: 20px;">
     <h1>恭喜你，完成了所有物料流和信息流的绘制，工厂的诊断结果稍后给您呈现！</h1>
   </div>
 </div>
 
 <!--flowchart board-->
-<div name="drawnChart" class="box col-md-12" style="float:left;overflow-x:scroll;overFlow-y: hidden;white-space:nowrap; background-color: white !important; height: 600px; min-width: 1000px">
+<div name="drawnChart" class="paper_section" style="float:left;overflow-x:scroll;overFlow-y: hidden;white-space:nowrap; background-color: white !important; height: 600px;width:-webkit-fill-available;">
   <div #firstRow class="row" style="height: 100px;">
     <button class="btn btn-block btn-primary btn-sm" style="width: 50px; float: right;
      margin-top: 10px;margin-right: 15px" (click)="resetChart()">{{'resetChart'|translate}}</button>
   </div>
-
+'
   <div #secondRow class="row" style="height: 100px;">
   </div>
 

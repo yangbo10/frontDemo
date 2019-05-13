@@ -43,6 +43,7 @@ export class FlowchartComponent implements OnInit {
   inputFilled: boolean;
   kanbanList: any;
   rectBlueList: any;
+  buttonDisabled: boolean;
   @ViewChild('firstRow') firstRow: ElementRef;
   @ViewChild('secondRow') secondRow: ElementRef;
   @ViewChild('thirdRow') thirdRow: ElementRef;
@@ -71,6 +72,7 @@ export class FlowchartComponent implements OnInit {
     this.rectList = [];
     this.kanbanList = [];
     this.rectBlueList = [];
+    this.buttonDisabled = false;
   }
 
   ngOnInit() {
@@ -148,6 +150,8 @@ export class FlowchartComponent implements OnInit {
   }
 
   goToNextStep() {
+    //防止重复点击
+    this.buttonDisabled = true;
     const param: { [key: string]: string; } = {};
     for (const item of this.pointItem.form) {
       param[item.id] = item.value;
@@ -296,6 +300,8 @@ export class FlowchartComponent implements OnInit {
       default:
         break;
     }
+    //复原button
+    this.buttonDisabled = false;
 
     if (this.questionDone) {
       // 当前选择ID归零

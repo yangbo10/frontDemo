@@ -29,7 +29,9 @@ export class TaskService {
           if (res.headers.get('x-access-token') !== null) {
             localStorage.setItem('access_token', res.headers.get('x-access-token'));
             localStorage.setItem('user_name', username);
+            console.log('got x access token.');
             this.getUserByName().subscribe( data => {
+              console.log('got user detail.');
               // @ts-ignore
               const userList = JSON.parse(data._body);
               const userId = userList.user.userId;

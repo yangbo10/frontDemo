@@ -1,14 +1,7 @@
 
-<section class="content-header">
-  <h1>
-    {{'reportTitle'|translate}}
-  </h1>
-  <ol class="breadcrumb">
 
-  </ol>
-</section>
-
-<div *ngIf="firstPage" class="box col-md-12" style="background-color: white !important;">
+<div *ngIf="firstPage" class="paper_section" style="min-height: 850px;overflow: auto;">
+  <div class="paper_title_box">{{'reportTitle'|translate}}</div>
   <div class="col-md-12" style="margin:10px 30px 20px 10px; min-height: 20px;">
     <h3>{{'reportThankYou'|translate}}</h3>
     <h3>{{finalLevel}}</h3>
@@ -26,7 +19,8 @@
 
 </div>
 
-<div *ngIf="secondPage" class="box col-md-12" style="background-color: white !important;">
+<div *ngIf="secondPage" class="paper_section" style="min-height: 850px;overflow: auto;">
+  <div class="paper_title_box">{{'reportTitle'|translate}}</div>
   <div #main class="row" style="padding-top: 20px">
     <div *ngIf="exporting">
       <div class="col-md-12" style="margin:10px 30px 20px 10px; min-height: 20px;">

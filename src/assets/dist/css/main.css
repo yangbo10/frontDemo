@@ -4447,16 +4447,15 @@ td,th{
   line-height:40px;
 }
 .login_box{
-  min-height: 900px;
+  min-height: 1050px;
   -ms-overflow-x: hidden;
   overflow-x: hidden;
-  -ms-overflow-y: hidden;
-  overflow-y: hidden;
+  -ms-overflow-y: auto;
+  overflow-y: auto;
   background-image: url('../../images-new/index/u0_state0.png');
   background-position: center top;
   background-repeat: round;
   background-attachment: scroll;
-  background-size: 1451px 615px;
   text-align: center;
 }
 .login_content_box{

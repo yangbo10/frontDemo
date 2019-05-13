@@ -2,170 +2,97 @@
 
   <!-- Main Header -->
   <header class="main-header">
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <meta content='width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no' name='viewport'>
-    <script src="../../assets/plugins/jQuery/jquery-2.2.3.min.js"></script>
 
+    <!-- Logo -->
+    <a class="logo" style="height: 88px;">
+      <div class="head_logo"><img src="assets/images-new/index/u4.png"></div>
+    </a>
 
-    <!-- heading start -->
-    <div class="headings">
-      <div><img src="../../assets/images-new/index/u18.png" class="head_bosch_color" /></div>
-      <div class="head_main">
-        <div class="head_logo"><img src="../../assets/images-new/index/u4.png" /></div>
-        <div class="head_middle"></div>
-        <div class="head_menu_section">
-          <div class="head_menu_items">
-            <span (click)="goHome()">{{'mainPage'|translate}}</span>
-            <span (click)="logOut()">{{'LogOut'|translate}}</span>
-            <img src="../../assets/images-new/index/u14.png"/>
-            <span (click)="changeLanguage()" id="item_language">{{'switchLanguage'|translate}}</span>
-            <img id="item_arrow" src="../../assets/images-new/index/u16.png"/>
+    <!-- Header Navbar -->
+    <nav class="navbar navbar-static-top" role="navigation">
+      <!-- Sidebar toggle button-->
+      <a class="sidebar-toggle" data-toggle="offcanvas" role="button" style="padding-top: 60px">
+        <span class="sr-only">Toggle navigation</span>
+      </a>
+      <!-- Navbar Right Menu -->
+      <div class="navbar-custom-menu">
+        <ul class="nav navbar-nav">
+          <div class="head_menu_section">
+            <div class="head_menu_items">
+              <span (click)="goHome()">{{'mainPage'|translate}}</span>
+              <span (click)="logOut()">{{'LogOut'|translate}}</span>
+              <img src="assets/images-new/index/u14.png">
+              <span (click)="changeLanguage()">{{'switchLanguage'|translate}}</span>
+              <img id="item_arrow" src="assets/images-new/index/u16.png">
+            </div>
+            <div class="head_menu_text">
+              <img src="assets/images-new/index/u20.png">
+              <span>{{'OnlineSystem'|translate}}</span>
+            </div>
           </div>
-          <div class="head_menu_text">
-            <img src="../../assets/images-new/index/u20.png"/>
-            <span>工业在线诊断平台</span>
-          </div>
-        </div>
-        <div style="clear:both;"></div>
+         </ul>
       </div>
-    </div>
-    <!-- heading end -->
-
-
-
+    </nav>
   </header>
-  <div class="blank_headings"></div>
-  <div class="main_section">
-  <!-- left side menu -->
-  <div class="left_side_menu" id="left">
-    <div><img id="left_side_menu_arrow" src="../../assets/images-new/home/u69.png"/></div>
-    <div><img class="left_side_menu_items" src="../../assets/images-new/home/u73_mouseOver.svg"/></div>
-    <div><img class="left_side_menu_items" src="../../assets/images-new/home/u71.svg" onmouseover="toggle_menuitem(this);" onmouseout="toggle_menuitem(this);"/></div>
-    <div><img class="left_side_menu_items" src="../../assets/images-new/home/u75.svg" onmouseover="toggle_menuitem(this);" onmouseout="toggle_menuitem(this);"/></div>
-    <div><img class="left_side_menu_items" src="../../assets/images-new/home/u77.svg" onmouseover="toggle_menuitem(this);" onmouseout="toggle_menuitem(this);"/></div>
-    <div><img class="left_side_menu_items" src="../../assets/images-new/home/u79.svg" onmouseover="toggle_menuitem(this);" onmouseout="toggle_menuitem(this);"/></div>
-    <div><img class="left_side_menu_items" src="../../assets/images-new/home/u81.svg" onmouseover="toggle_menuitem(this);" onmouseout="toggle_menuitem(this);"/></div>
-    <div><img class="left_side_menu_items" src="../../assets/images-new/home/u83.svg" onmouseover="toggle_menuitem(this);" onmouseout="toggle_menuitem(this);"/></div>
-  </div>
-  <!-- left side menu end -->
+  <!-- Left side column. contains the logo and sidebar -->
+  <aside class="main-sidebar" style="padding-top: 100px; min-height: 80%">
+    <!-- sidebar: style can be found in sidebar.less -->
+    <section class="sidebar">
 
-  <div class="content-wrapper">
+
+      <!-- Sidebar Menu -->
+      <ul class="sidebar-menu">
+        <li class="header"></li>
+        <!-- Optionally, you can add icons to the links    class="active"-->
+        <li (click)="changePage()"><a routerLink="diagnosis"><i class='fa fa-edit'></i> <span>{{'diagnosisMenu'|translate}}</span></a></li>
+        <li (click)="changePage()"><a routerLink="flowchart"><i class='fa fa-edit'></i> <span>{{'flowchartMenu'|translate}}</span></a></li>
+        <li (click)="changePage()"><a routerLink="report"><i class='fa fa-bar-chart'></i> <span>{{'reportMenu'|translate}}</span></a></li>
+        <li (click)="changePage()" *ngIf="user.roles[0].roleId == 'ADMIN'
+         || user.roles[0].roleId == 'MANAGER'">
+          <a routerLink="questionnaire"><i class='fa fa-database'></i> <span>{{'questionMenu'|translate}}</span></a></li>
+        <li (click)="changePage()" *ngIf="user.roles[0].roleId == 'ADMIN'
+         || user.roles[0].roleId == 'MANAGER'">
+          <a routerLink="test"><i class='fa fa-th-list'></i> <span>{{'testMenu'|translate}}</span></a></li>
+        <li (click)="changePage()" *ngIf="user.roles[0].roleId == 'ADMIN'">
+          <a routerLink="user"><i class='fa fa-user'></i> <span>{{'userMenu'|translate}}</span></a></li>
+        <li (click)="changePage()"><a routerLink="contact"><i class='fa fa-phone'></i> <span>{{'contactMenu'|translate}}</span></a></li>
+      </ul><!-- /.sidebar-menu -->
+    </section>
+    <!-- /.sidebar -->
+  </aside>
+
+  <!-- Content Wrapper. Contains page content -->
+  <div class="content-wrapper" style="min-height: 20% !important;">
 
     <!-- Main content -->
     <section class="content">
-      <div class="row" style="display: flex;">
-        <div class="col-lg-3 col-xs-6">
-          <div class="boxes box1">
-            <div class="box_img"><img src="../../assets/images-new/1-1/u166.svg"/></div>
-            <div class="box_text"><span class="box_text_title">试卷名称</span><br /><span class="box_text_desc">14题</span></div>
-            <div style="clear:both;"></div>
-          </div>
-          <div class="box_bottom"><img src="../../assets/images-new/1-1/u204.svg"/>诊&nbsp; 断</div>
+      <div *ngIf="user.mainShowing" class="big_blue_box" style="height: 800px">
+        <div class="center_align_div">
+          <img class="white_big_logo" src="assets/images-new/home/u115.svg">
         </div>
-        <div class="col-lg-3 col-xs-6">
-          <div class="boxes box2">
-            <div class="box_img"><img src="../../assets/images-new/1-1/u166.svg"/></div>
-            <div class="box_text"><span class="box_text_title">试卷名称</span><br /><span class="box_text_desc">17题</span></div>
-            <div style="clear:both;"></div>
+        <div class="center_align_div">
+          <div class="big_blue_box_buttons">
+            <button class="big_blue_box_button" style="margin-right:65px;" (click)="changePage()" routerLink="diagnosis">{{'startDiagnosis'|translate}}</button>
+            <button class="big_blue_box_button" (click)="changePage()" routerLink="flowchart">{{'flowchartMenu'|translate}}</button>
           </div>
-          <div class="box_bottom"><img src="../../assets/images-new/1-1/u204.svg"/>诊&nbsp; 断</div>
-        </div>
-        <div class="col-lg-3 col-xs-6">
-          <div class="boxes box3">
-            <div class="box_img"><img src="../../assets/images-new/1-1/u166.svg"/></div>
-            <div class="box_text"><span class="box_text_title">试卷名称</span><br /><span class="box_text_desc">28题</span></div>
-            <div style="clear:both;"></div>
-          </div>
-          <div class="box_bottom"><img src="../../assets/images-new/1-1/u204.svg"/>诊&nbsp; 断</div>
-        </div>
-        <div class="col-lg-3 col-xs-6">
-          <div class="boxes box4">
-            <div class="box_img"><img src="../../assets/images-new/1-1/u166.svg"/></div>
-            <div class="box_text"><span class="box_text_title">试卷名称</span><br /><span class="box_text_desc">15题</span></div>
-            <div style="clear:both;"></div>
-          </div>
-          <div class="box_bottom"><img src="../../assets/images-new/1-1/u204.svg"/>诊&nbsp; 断</div>
         </div>
       </div>
-      <div class="row" style="display: flex;">
-        <div class="col-lg-3 col-xs-6">
-          <div class="boxes box5">
-            <div class="box_img"><img src="../../assets/images-new/1-1/u166.svg"/></div>
-            <div class="box_text"><span class="box_text_title">试卷名称</span><br /><span class="box_text_desc">16题</span></div>
-            <div style="clear:both;"></div>
-          </div>
-          <div class="box_bottom"><img src="../../assets/images-new/1-1/u204.svg"/>诊&nbsp; 断</div>
-        </div>
-        <div class="col-lg-3 col-xs-6">
-          <div class="boxes box6">
-            <div class="box_img"><img src="../../assets/images-new/1-1/u166.svg"/></div>
-            <div class="box_text"><span class="box_text_title">试卷名称</span><br /><span class="box_text_desc">27题</span></div>
-            <div style="clear:both;"></div>
-          </div>
-          <div class="box_bottom"><img src="../../assets/images-new/1-1/u204.svg"/>诊&nbsp; 断</div>
-        </div>
-        <div class="col-lg-3 col-xs-6">
-          <div class="boxes box7">
-            <div class="box_img"><img src="../../assets/images-new/1-1/u166.svg"/></div>
-            <div class="box_text"><span class="box_text_title">试卷名称</span><br /><span class="box_text_desc">10题</span></div>
-            <div style="clear:both;"></div>
-          </div>
-          <div class="box_bottom"><img src="../../assets/images-new/1-1/u204.svg"/>诊&nbsp; 断</div>
-        </div>
-        <div class="col-lg-3 col-xs-6">
-          <div class="boxes box8">
-            <div class="box_img"><img src="../../assets/images-new/1-1/u166.svg"/></div>
-            <div class="box_text"><span class="box_text_title">试卷名称</span><br /><span class="box_text_desc">8题</span></div>
-            <div style="clear:both;"></div>
-          </div>
-          <div class="box_bottom"><img src="../../assets/images-new/1-1/u204.svg"/>诊&nbsp; 断</div>
-        </div>
-      </div>
+      <router-outlet></router-outlet>
+
+      <!-- Your Page Content Here -->
+
     </section><!-- /.content -->
   </div><!-- /.content-wrapper -->
-    <!-- bottom section -->
+
+  <!-- Main Footer -->
+  <footer>
     <div class="bottom_section">
       <div class="bottom_copyright">© 博世软件创新 | 沪ICP备10002431号-24</div>
       <div class="bottom_menu"><span>版本说明&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; 法律声明&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; 数据保护&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Cookies</span></div>
       <div style="clear:both;"></div>
     </div>
-    <div><img src="../../assets/images-new/index/u18.png" class="head_bosch_color" /></div>
-    <!-- bottom section end -->
-  </div>>
-
-  <!-- js code for circle chart -->
-  <script src="../../assets/dist/js/circleChart.min.js"></script>
-  <script>
-    $(".circleChart#circle1").circleChart({
-      color:"#008ecf",
-      speed:1000,
-      widthRatio:0.15,
-      size:150,
-      value: 75,
-      startAngle:75,
-      lineCap:"square"
-    });
-    $(".circleChart#circle2").circleChart({
-      color:"#008ecf",
-      speed:1000,
-      widthRatio:0.15,
-      size:150,
-      value: 34,
-      startAngle:75,
-      lineCap:"square"
-    });
-    $(".circleChart#circle3").circleChart({
-      color:"#008ecf",
-      speed:1000,
-      widthRatio:0.15,
-      size:150,
-      value: 89,
-      startAngle:75,
-      lineCap:"square"
-    });
-  </script>
-  <script src="../../assets/dist/js/main.js"></script>
-  <!-- js code end -->
+    <div><img src="assets/images-new/index/u18.png" class="head_bosch_color"></div>
+  </footer>
 
 
 

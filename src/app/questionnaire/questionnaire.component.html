@@ -1,15 +1,7 @@
-<section class="content-header">
-  <h1>
-    {{'questionnaireTitle'|translate}}
-  </h1>
-  <ol class="breadcrumb">
 
-  </ol>
-</section>
-<div class="box col-md-12" style="min-height: 850px">
-  <div style="padding-top: 15px">
+<div class="paper_section" style="min-height: 850px;overflow: auto;">
+  <div class="paper_title_box">{{'questionnaireTitle'|translate}}</div>
 
-  </div>
   <div class="col-md-12">
     <input #search [hidden]="false" class="search form-inline" style="width: 200px" type="text" placeholder="{{'searchHolder'|translate}}" (keydown.enter)="onSearch(search.value)">
     <button class="btn btn-block btn-success btn-sm search-btn"

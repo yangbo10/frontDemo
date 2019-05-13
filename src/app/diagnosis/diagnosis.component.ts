@@ -123,12 +123,18 @@ export class DiagnosisComponent implements OnInit {
     this.deliveryList = [];
     // @ts-ignore
     this.pieData1 = [
+      {value: 0},
+      {value: 100}
     ];
     // @ts-ignore
     this.pieData2 = [
+      {value: 0},
+      {value: 100}
     ];
     // @ts-ignore
     this.pieData3 = [
+      {value: 0},
+      {value: 100}
     ];
     if (localStorage.getItem('access_token') === null) {
       this.router.navigate(['']);
@@ -242,6 +248,7 @@ export class DiagnosisComponent implements OnInit {
   }
 
   startDiagnosis(test) {
+    this.activeCode = '';
     this.unFinishedQuestionHeight = 0;
     console.log(test);
     if (test.questions.length === 0 ) {
@@ -518,6 +525,18 @@ export class DiagnosisComponent implements OnInit {
         {value: sourceTotal - sourceActual}
       ];
       this.options1 = {
+        title: {
+          text: this.phaseOneScore,
+          x: 'center',
+          y: 'center',
+          itemGap: 20,
+          textStyle : {
+            color : 'rgba(30,144,255,0.8)',
+            fontFamily : '微软雅黑',
+            fontSize : 35,
+            fontWeight : 'bolder'
+          }
+        },
         series : [
           {
             name: this.translate.instant('score'),
@@ -574,6 +593,18 @@ export class DiagnosisComponent implements OnInit {
         {value: makeTotal - makeActual}
       ];
       this.options2 = {
+        title: {
+          text: this.phaseTwoScore,
+          x: 'center',
+          y: 'center',
+          itemGap: 20,
+          textStyle : {
+            color : 'rgba(30,144,255,0.8)',
+            fontFamily : '微软雅黑',
+            fontSize : 35,
+            fontWeight : 'bolder'
+          }
+        },
         series : [
           {
             name: this.translate.instant('score'),
@@ -619,7 +650,7 @@ export class DiagnosisComponent implements OnInit {
       // calculate score
       let deliveryTotal = 0;
       let deliveryActual = 0;
-      for (const item of this.makeAnswerList) {
+      for (const item of this.deliveryAnswerList) {
         deliveryTotal = deliveryTotal + item.point.totalScore;
         deliveryActual = deliveryActual + item.point.score;
       }
@@ -630,6 +661,18 @@ export class DiagnosisComponent implements OnInit {
         {value: deliveryTotal - deliveryActual}
       ];
       this.options3 = {
+        title: {
+          text: this.phaseThreeScore,
+          x: 'center',
+          y: 'center',
+          itemGap: 20,
+          textStyle : {
+            color : 'rgba(30,144,255,0.8)',
+            fontFamily : '微软雅黑',
+            fontSize : 35,
+            fontWeight : 'bolder'
+          }
+        },
         series : [
           {
             name: this.translate.instant('score'),
